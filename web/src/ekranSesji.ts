@@ -2,7 +2,7 @@ import { dataIso, wynikSesji, type Historia } from './historia';
 import type { Zestaw } from './katalog';
 import { Odtwarzacz, krokiZestawu, type Zdarzenie } from './odtwarzacz';
 import type { Srodowisko } from './srodowisko';
-import { sygnalPoZmianie } from './sygnaly';
+import { odliczaniePomiedzy, sygnalPoZmianie, type Chwila } from './sygnaly';
 import { linieInstrukcji, minutySekundy, pozycjaGrupy } from './tekstSesji';
 import { svgRyciny } from './ryciny';
 import { widokSesji } from './widokSesji';
@@ -28,6 +28,7 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, pytanie: HTMLDia
 	let otwarta = true;
 	let ekranTrzymany = false;
 	let poczatek: Date | undefined;
+	let ostatniaChwila: Chwila | undefined;
 
 	el<HTMLElement>('.tytul').textContent = zestaw.nazwa;
 
@@ -137,10 +138,22 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, pytanie: HTMLDia
 		poZdarzeniach(ruch(srodowisko.teraz()), krok);
 	};
 
+	const chwilaTeraz = (): Chwila | undefined => {
+		const stan = odtwarzacz.stan;
+		return stan.rodzaj === 'trwa' ? { krok: stan.krok, zostalo: odtwarzacz.zostaloWFazie(srodowisko.teraz()) } : undefined;
+	};
+
+	const odliczaj = () => {
+		const chwila = chwilaTeraz();
+		if (odliczaniePomiedzy(ostatniaChwila, chwila)) srodowisko.dzwiek.zagraj('odliczanie');
+		ostatniaChwila = chwila;
+	};
+
 	const petla = () => {
 		if (!otwarta) return;
 		if (srodowisko.widoczna()) {
 			dzialaj((t) => odtwarzacz.tik(t));
+			odliczaj();
 			rysuj();
 		}
 		srodowisko.naKlatke(petla);
@@ -149,6 +162,7 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, pytanie: HTMLDia
 	const poPowrocie = () => {
 		if (!otwarta || !srodowisko.widoczna()) return;
 		dzialaj((t) => odtwarzacz.tik(t));
+		ostatniaChwila = chwilaTeraz();
 		if (wSesji()) trzymajEkran();
 		rysuj();
 	};

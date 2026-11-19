@@ -23,7 +23,10 @@ body {
 	display: none !important;
 }
 .ekran {
-	min-height: 100dvh;
+	height: 100dvh;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
 	max-width: 40rem;
 	margin: 0 auto;
 	padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
@@ -56,9 +59,17 @@ body {
 .sesja {
 	--kolor: var(--akcent);
 	--kolor-napisu: var(--akcent-napis);
+	gap: clamp(0.5rem, 2dvh, 1.25rem);
+}
+.scena {
+	flex: 1 1 0;
+	min-height: 7rem;
+	container-type: size;
 	display: flex;
 	flex-direction: column;
-	gap: 1.25rem;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
 }
 .sesja[data-faza='rozluznienie'] {
 	--kolor: var(--szalwia);
@@ -101,15 +112,15 @@ body {
 }
 .grupa {
 	margin: 0.3rem 0 0;
-	font-size: 1.9rem;
+	font-size: clamp(1.3rem, 4dvh, 1.9rem);
 	line-height: 1.15;
 }
 .pierscien {
 	position: relative;
-	width: min(70vw, 38dvh, 18rem);
+	width: min(100cqw, 70cqh, 18rem);
 	aspect-ratio: 1;
-	margin: 0 auto;
 	flex-shrink: 0;
+	container-type: inline-size;
 }
 .pierscien svg {
 	width: 100%;
@@ -139,26 +150,36 @@ body {
 	gap: 0.4rem;
 }
 .cyfry {
-	font-size: clamp(3.5rem, 22vw, 6rem);
+	font-size: 30cqw;
 	font-weight: 700;
 	line-height: 1;
 	font-variant-numeric: tabular-nums;
 }
 .faza {
 	max-width: 75%;
-	font-size: clamp(0.8rem, 4.2vw, 1.1rem);
+	font-size: max(0.7rem, 6cqw);
 	font-weight: 700;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
 	color: var(--kolor-napisu);
 }
 .sesja[data-stan='koniec'] .cyfry {
-	font-size: 2rem;
+	font-size: min(2rem, 16cqw);
 }
 .opis {
 	display: grid;
-	gap: 0.5rem;
+	gap: clamp(0.25rem, 1dvh, 0.5rem);
 	margin: 0;
+	flex-shrink: 0;
+}
+@media (max-height: 760px) {
+	.opis {
+		font-size: 0.9rem;
+	}
+	.sesja .przycisk {
+		min-height: 3rem;
+		font-size: 1.15rem;
+	}
 }
 .opis dt {
 	font-weight: 700;
@@ -234,7 +255,7 @@ dialog .przycisk {
 }
 .rycina {
 	align-self: center;
-	width: min(32vw, 16dvh, 8rem);
+	width: min(26cqh, 8rem);
 	aspect-ratio: 1;
 	flex-shrink: 0;
 	color: var(--kolor);
@@ -258,6 +279,14 @@ dialog .przycisk {
 }
 .historia {
 	margin-top: 2rem;
+	flex: 1 1 0;
+	min-height: 6rem;
+	display: flex;
+	flex-direction: column;
+}
+.historia .wpisy {
+	overflow-y: auto;
+	min-height: 0;
 }
 .historia-naglowek {
 	display: flex;

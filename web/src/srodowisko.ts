@@ -44,6 +44,7 @@ type Ton = [hz: number, sekundy: number, opoznienie: number];
 const tony: Record<Sygnal, Ton[]> = {
 	napinanie: [[660, 0.35, 0], [880, 0.45, 0.18]],
 	rozluznienie: [[660, 0.35, 0], [440, 0.6, 0.18]],
+	odliczanie: [[990, 0.12, 0]],
 	koniec: [[523, 0.4, 0], [659, 0.4, 0.2], [784, 0.8, 0.4]]
 };
 
@@ -56,6 +57,8 @@ function dzwiekWebAudio(): Dzwiek {
 		odblokuj() {
 			const Kontekst = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
 			if (!Kontekst) return;
+			const sesjaAudio = (navigator as unknown as { audioSession?: { type: string } }).audioSession;
+			if (sesjaAudio) sesjaAudio.type = 'playback';
 			audio ??= new Kontekst();
 			wznow();
 		},

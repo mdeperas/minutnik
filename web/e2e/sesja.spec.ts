@@ -112,3 +112,11 @@ test('rycina grupy zmienia stan razem z fazą', async ({ page }) => {
 	await expect(rycina).toHaveAttribute('data-plik', /-napiecie\.svg$/);
 	await expect(rycina).not.toHaveAttribute('data-plik', pierwsza);
 });
+
+test('ostatnie 3 sekundy fazy tykają: trzy tiki przed rozluźnieniem', async ({ page }) => {
+	await otworz(page, 4);
+	await przycisk(page, 'Start').click();
+	await expect(faza(page)).toHaveText('Rozluźnienie');
+	const { sygnaly } = await page.evaluate(() => (window as unknown as { __nagranie: { sygnaly: string[] } }).__nagranie);
+	expect(sygnaly.slice(0, 5)).toEqual(['napinanie', 'odliczanie', 'odliczanie', 'odliczanie', 'rozluznienie']);
+});
