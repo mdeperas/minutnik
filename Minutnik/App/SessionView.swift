@@ -61,21 +61,26 @@ struct SessionView: View {
 
     @ViewBuilder
     private var ring: some View {
-        if let step = model.currentStep, let phase = model.currentPhaseName, let breath = model.currentBreath {
+        if let step = model.currentStep, let phase = model.currentPhaseName, let breath = model.currentBreath, let duration = model.currentPhaseDuration {
             VStack(spacing: 8) {
-                BreathRing(breath: breath, color: Color(PhaseKind.relaxation.ringColor), reduceMotion: reduceMotion)
+                BreathRing(
+                    breath: breath,
+                    phaseRemainingFraction: PhaseLook(phaseName: phase, remaining: model.remainingInPhase, duration: duration, reduceMotion: true).remainingFraction,
+                    color: Color(PhaseKind.relaxation.ringColor),
+                    reduceMotion: reduceMotion
+                )
                     .layoutPriority(1)
-                HStack(spacing: 12) {
+                HStack(alignment: .firstTextBaseline, spacing: 12) {
                     Text(phase)
+                        .font(.headline)
                         .foregroundStyle(Color(PhaseKind.relaxation.labelColor))
                         .accessibilityIdentifier("session.phase")
                     Text(ClockText.minutesSeconds(model.remainingInPhase))
+                        .font(.largeTitle.bold())
                         .monospacedDigit()
-                        .foregroundStyle(Color(PhaseLook.secondaryText))
                         .accessibilityLabel("Zostało \(ClockText.minutesSeconds(model.remainingInPhase))")
                         .accessibilityIdentifier("session.remainingPhase")
                 }
-                .font(.title3.weight(.semibold))
             }
             .id(step)
             .transition(.opacity)

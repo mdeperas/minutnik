@@ -41,8 +41,8 @@ describe('oddech pudełkowy', () => {
 	});
 
 	it('pierścień rozluźnienia: cyfry 4-3-2-1 etapu, obwód ubywa przez 4 s, płuca rosną przy wdechu', () => {
-		expect(pierscienOddechu(1_000, false)).toEqual({ cyfry: '3', napis: 'Wdech', zostaloObwodu: 0.75, pluca: 0.4 + 0.6 * 0.25 });
-		expect(pierscienOddechu(6_000, false)).toMatchObject({ cyfry: '2', napis: 'Trzymaj', zostaloObwodu: 0.5, pluca: 1 });
+		expect(pierscienOddechu(1_000, false)).toEqual({ cyfry: '3', napis: 'Wdech', pluca: 0.4 + 0.6 * 0.25 });
+		expect(pierscienOddechu(6_000, false)).toMatchObject({ cyfry: '2', napis: 'Trzymaj', pluca: 1 });
 		expect(pierscienOddechu(13_000, true)).toMatchObject({ napis: 'Trzymaj', pluca: 1 });
 	});
 });

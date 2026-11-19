@@ -3,7 +3,7 @@ import { nagranie, podrobGranice } from './podrobki';
 
 const przycisk = (page: Page, nazwa: string) => page.locator('#sesja').getByRole('button', { name: nazwa, exact: true });
 
-test('rozluźnienie: duży pierścień oddechu 4-3-2-1, mały licznik fazy i wibracje co 4 s', async ({ page }) => {
+test('rozluźnienie: oddychające kółko 4-3-2-1, pierścień i duży zegar fazy i wibracje co 4 s', async ({ page }) => {
 	await podrobGranice(page, 4);
 	await page.goto('');
 	await page.getByRole('button', { name: /^12 grup/ }).click();
@@ -19,6 +19,9 @@ test('rozluźnienie: duży pierścień oddechu 4-3-2-1, mały licznik fazy i wib
 	await expect(page.locator('#sesja .oddech-etap')).toHaveText('Wdech');
 	await expect(page.locator('#sesja .oddech-etap')).toHaveText('Trzymaj');
 	await expect(page.locator('#sesja .oddech-etap')).toHaveText('Wydech');
+	const ubylo = Number(await page.locator('#sesja .postep').evaluate((c) => (c as SVGElement).style.strokeDashoffset));
+	expect(ubylo).toBeGreaterThan(0.1);
+	expect(ubylo).toBeLessThan(0.35);
 	const n = await nagranie(page);
 	expect(n.wibracje[0]).toBe('zmiana');
 	expect(n.wibracje.filter((w) => w === 'tik').length).toBeGreaterThanOrEqual(2);

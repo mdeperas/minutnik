@@ -142,7 +142,6 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, srodowisko: Srod
 		const zegar = minutySekundy(zostaloMs);
 		zostaloOddechu.textContent = zegar;
 		zostaloOddechu.setAttribute('aria-label', `Zostało ${zegar}`);
-		postep.style.strokeDashoffset = String(1 - o.zostaloObwodu);
 		svg.style.setProperty('--skala', '1');
 		plucaOddechu.style.setProperty('--oddech', String(o.pluca));
 	};

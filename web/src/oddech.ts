@@ -45,13 +45,12 @@ export function skalaPluc(pelnosc: number, ograniczRuch: boolean): number {
 export interface PierscienOddechu {
 	cyfry: string;
 	napis: string;
-	zostaloObwodu: number;
 	pluca: number;
 }
 
 export function pierscienOddechu(mineloMs: number, ograniczRuch: boolean): PierscienOddechu {
 	const o = oddech(mineloMs);
-	return { cyfry: String(o.sekunda), napis: o.napis, zostaloObwodu: 1 - o.postepEtapu, pluca: skalaPluc(o.pelnosc, ograniczRuch) };
+	return { cyfry: String(o.sekunda), napis: o.napis, pluca: skalaPluc(o.pelnosc, ograniczRuch) };
 }
 
 export function zmianaEtapuPomiedzy(przed: Chwila | undefined, teraz: Chwila | undefined, czasMs: number, rodzaj: RodzajFazy): boolean {

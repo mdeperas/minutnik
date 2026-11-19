@@ -2,6 +2,7 @@ import SwiftUI
 
 struct BreathRing: View {
     let breath: BoxBreath
+    let phaseRemainingFraction: Double
     let color: Color
     let reduceMotion: Bool
 
@@ -18,10 +19,10 @@ struct BreathRing: View {
                 ZStack {
                     Circle().stroke(Color(PhaseLook.track), lineWidth: line)
                     Circle()
-                        .trim(from: 0, to: 1 - breath.stageProgress)
+                        .trim(from: 0, to: phaseRemainingFraction)
                         .stroke(color, style: StrokeStyle(lineWidth: line, lineCap: .round))
                         .rotationEffect(.degrees(-90))
-                        .animation(.linear(duration: 0.25), value: breath.stageProgress)
+                        .animation(.linear(duration: 0.25), value: phaseRemainingFraction)
                 }
                 .padding(line / 2)
                 VStack(spacing: side * 0.03) {
