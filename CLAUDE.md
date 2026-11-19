@@ -33,6 +33,7 @@ Wzorzec projektu: apka Thread Cam (tam nic nie zmieniamy).
   Apka: `xcodegen` (`preGenCommand`) odpala `bin/ryciny-do-apki` → `Minutnik/Ryciny.xcassets` (w `.gitignore`, wektory, kolor fazy wpieczony: napięcie = obwód napinania, rozluźnienie = szałwia z `web/src/wyglad.ts`; łuki o zerowym promieniu zamienione na linie, bo CoreSVG ich nie czyta).
   Wybór: `FigureCatalog`. PWA: `web/src/ryciny.ts` (`?raw` w buildzie, wyróżnienie przez `color`).
 - Mapa ścieżek i testów: `docs/COVERAGE.md`.
+- Muzyka w tle: pliki `web/public/muzyka/*.m4a` (apka bierze je jako zasoby przez `project.yml`), generator `muzyka/generuj.py`, licencje `muzyka/ŹRÓDŁA.md`. PWA nie wkłada ich do precache (cache `minutnik-muzyka` na żądanie).
 
 ## PWA (`web/`)
 
@@ -134,6 +135,10 @@ Jedna lista do zbiorczej próby, po kolei; przy każdym punkcie odpisz ✅/❌. 
   (cyfry i „NAPINANIE”), przy rozluźnieniu szałwiowa zieleń; pierścień płynnie się kurczy przy napinaniu i rośnie przy
   rozluźnieniu, a z Reduce Motion stoi (ubywa tylko obwód); jak minutnik PRM na stronie kursu.
 
+- M6 Muzyka: na starcie „Muzyka: Kosmos” → „Start” → muzyka gra ciszej niż sygnały, tiki 3-2-1 słychać; zablokuj ekran → muzyka i sygnały grają dalej;
+  „Pauza” → muzyka płynnie cichnie, „Wznów” → wraca; ikona nuty u góry → wycisza; na końcu muzyka wygasa; pętla po 2,5 min bez kliku;
+  po zabiciu apki wybór „Kosmos” zostaje. To samo raz z „Synthwave”.
+
 ## Ręcznie na iPhonie: PWA (czego Playwright nie sprawdzi)
 
 Po `bin/publikuj` i zielonym przebiegu, Safari na iPhonie; przy każdym punkcie ✅/❌.
@@ -146,5 +151,7 @@ Po `bin/publikuj` i zielonym przebiegu, Safari na iPhonie; przy każdym punkcie 
 - W6 Historia/eksport: sesja do końca i druga przerwana → „Ukończona · N min” i „Przerwana po K z N faz”, najnowsza na górze;
   po zamknięciu apki z przełącznika wpisy są dalej; „Eksportuj” → arkusz z `minutnik-historia.json` → zapis w Plikach, oba wpisy.
 - W7 Offline: tryb samolotowy, zamknięcie i start z ikony → lista i sesja działają.
+- W9 Muzyka: „Muzyka: Synthwave” → „Start” → muzyka gra (ekran włączony) pod sygnałami; „Pauza” wycisza płynnie; przycisk ♪ wycisza;
+  po pierwszym odtworzeniu tryb samolotowy → ta sama ścieżka dalej gra.
 - W8 Aktualizacja: po nowym `bin/publikuj` start z ikony → po chwili nowa wersja na liście bez ręcznego odświeżania;
   publikacja w trakcie sesji → sesja nie przeładowuje się, nowa wersja dopiero po jej końcu; historia zostaje.

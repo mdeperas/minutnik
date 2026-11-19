@@ -15,7 +15,10 @@ targets:
   Minutnik:
     type: application
     platform: iOS
-    sources: [Minutnik]
+    sources:
+      - Minutnik
+      - path: web/public/muzyka
+        buildPhase: resources
     info:
       path: Minutnik/Info.plist
       properties:

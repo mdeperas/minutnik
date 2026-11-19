@@ -11,6 +11,8 @@ struct AppEnvironment {
     let history: SessionHistory
     let haptics: HapticPlayer
     let figures: FigureCatalog?
+    let music: MusicPlayer
+    let settings: UserDefaults
     var about: Result<ReadingText, Error> = .failure(ReadingTextError.missingFile)
 
     static var current: AppEnvironment {
@@ -28,11 +30,19 @@ struct AppEnvironment {
             history: SessionHistory(storage: FileHistoryStorage()),
             haptics: CoreHapticPlayer(),
             figures: FigureCatalog.bundled(),
+            music: LoopMusicPlayer(),
+            settings: .standard,
             about: Result { try ReadingText.bundled() }
         )
     }
 
+    var musicTrack: MusicTrack {
+        get { MusicTrack(stored: settings.string(forKey: MusicTrack.defaultsKey)) }
+        nonmutating set { settings.set(newValue.rawValue, forKey: MusicTrack.defaultsKey) }
+    }
+
     func makeSession(_ set: ExerciseSet) -> SessionModel {
-        SessionModel(set: set, clock: clock, signals: signals, notifier: notifier, audioEvents: audioEvents, history: history, haptics: haptics, figures: figures)
+        SessionModel(set: set, clock: clock, signals: signals, notifier: notifier, audioEvents: audioEvents, history: history, haptics: haptics, figures: figures,
+                     music: music, musicTrack: musicTrack)
     }
 }

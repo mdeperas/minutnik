@@ -4,6 +4,7 @@ struct StartView: View {
     let environment: AppEnvironment
     @State private var session: SessionModel?
     @State private var readingAbout = false
+    @State private var musicTrack: MusicTrack = .none
 
     private let tension = Color(PhaseKind.tension.ringColor)
     private let tensionLabel = Color(PhaseKind.tension.labelColor)
@@ -17,7 +18,9 @@ struct StartView: View {
                     .font(.title3.bold())
                     .foregroundStyle(.white)
                 setCards
+                musicPicker
                 aboutButton
+                    .frame(maxWidth: .infinity)
                 Spacer(minLength: 0)
                 Text(environment.version.label)
                     .font(.footnote)
@@ -31,6 +34,7 @@ struct StartView: View {
             .navigationDestination(item: $session) { SessionView(model: $0) }
             .navigationDestination(isPresented: $readingAbout) { ReadingView(text: environment.about) }
         }
+        .onAppear { musicTrack = environment.musicTrack }
         .task { await environment.notifier.requestAuthorization() }
         .loggedScreen("start")
     }
@@ -64,6 +68,33 @@ struct StartView: View {
             .accessibilityElement(children: .combine)
         }
         .padding(.top, 12)
+    }
+
+    private var musicPicker: some View {
+        HStack(spacing: 6) {
+            Text("Muzyka").font(.headline).foregroundStyle(.white)
+            ForEach(MusicTrack.allCases) { track in
+                let chosen = track == musicTrack
+                Button {
+                    musicTrack = track
+                    environment.musicTrack = track
+                } label: {
+                    Text(track.label)
+                        .font(.subheadline.bold())
+                        .lineLimit(1)
+                        .fixedSize()
+                        .foregroundStyle(chosen ? .white : Color(white: 0.83))
+                        .padding(.horizontal, 10)
+                        .frame(minHeight: 44)
+                        .background(Capsule().fill(chosen ? tension.opacity(0.3) : Color(white: 0.07)))
+                        .overlay(Capsule().strokeBorder(chosen ? tension : Color(white: 0.25), lineWidth: 1))
+                }
+                .accessibilityAddTraits(chosen ? .isSelected : [])
+                .accessibilityIdentifier("start.music.\(track.rawValue)")
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Muzyka")
     }
 
     private var aboutButton: some View {

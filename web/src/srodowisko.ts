@@ -6,6 +6,12 @@ export interface Dzwiek {
 	zagraj(sygnal: Sygnal): void;
 }
 
+export interface Muzyka {
+	graj(plik: string): void;
+	glosnosc(wartosc: number, sekundy: number): void;
+	zatrzymaj(): void;
+}
+
 export type Wibracja = 'tik' | 'zmiana';
 
 export interface Wibracje {
@@ -24,10 +30,12 @@ export interface Srodowisko {
 	widoczna(): boolean;
 	poZmianieWidocznosci(akcja: () => void): () => void;
 	dzwiek: Dzwiek;
+	muzyka: Muzyka;
 	ekran: BlokadaEkranu;
 	wibracje: Wibracje;
 	data(): Date;
 	magazynHistorii: Magazyn;
+	magazynMuzyki: Magazyn;
 	udostepnij(plik: File): Promise<void>;
 	zainstalowana(): boolean;
 	poNowejWersji(akcja: () => void): void;
@@ -36,6 +44,7 @@ export interface Srodowisko {
 export interface Podrobki {
 	tempo?: number;
 	dzwiek?: Dzwiek;
+	muzyka?: Muzyka;
 	ekran?: BlokadaEkranu;
 	wibracje?: Wibracje;
 	widoczna?: () => boolean;
@@ -56,12 +65,70 @@ const tony: Record<Sygnal, Ton[]> = {
 	koniec: [[523, 0.4, 0], [659, 0.4, 0.2], [784, 0.8, 0.4]]
 };
 
-function dzwiekWebAudio(): Dzwiek {
+function webAudio(): { dzwiek: Dzwiek; muzyka: Muzyka } {
 	let audio: AudioContext | undefined;
+	let zrodlo: AudioBufferSourceNode | undefined;
+	let wzmocnienie: GainNode | undefined;
+	let grany: string | undefined;
+	let cel = 0;
+	const bufory = new Map<string, Promise<AudioBuffer>>();
 	const wznow = () => {
 		if (audio && audio.state !== 'running') void audio.resume().catch(() => {});
 	};
-	return {
+	const wczytaj = (kontekst: AudioContext, plik: string) => {
+		let bufor = bufory.get(plik);
+		if (!bufor) {
+			bufor = fetch(`${import.meta.env.BASE_URL}${plik}`)
+				.then((odpowiedz) => odpowiedz.arrayBuffer())
+				.then((dane) => kontekst.decodeAudioData(dane));
+			bufor.catch(() => bufory.delete(plik));
+			bufory.set(plik, bufor);
+		}
+		return bufor;
+	};
+	const muzyka: Muzyka = {
+		graj(plik) {
+			if (!audio || grany === plik) return;
+			muzyka.zatrzymaj();
+			grany = plik;
+			cel = 0;
+			const kontekst = audio;
+			const glosnosc = kontekst.createGain();
+			glosnosc.gain.value = 0;
+			glosnosc.connect(kontekst.destination);
+			wzmocnienie = glosnosc;
+			void wczytaj(kontekst, plik)
+				.then((bufor) => {
+					if (grany !== plik || wzmocnienie !== glosnosc) return;
+					const nowe = kontekst.createBufferSource();
+					nowe.buffer = bufor;
+					nowe.loop = true;
+					nowe.connect(glosnosc);
+					nowe.start();
+					zrodlo = nowe;
+				})
+				.catch(() => {});
+		},
+		glosnosc(wartosc, sekundy) {
+			if (!audio || !wzmocnienie) return;
+			const g = wzmocnienie.gain;
+			g.cancelScheduledValues(audio.currentTime);
+			g.setValueAtTime(cel, audio.currentTime);
+			g.linearRampToValueAtTime(wartosc, audio.currentTime + sekundy);
+			cel = wartosc;
+		},
+		zatrzymaj() {
+			try {
+				zrodlo?.stop();
+			} catch {}
+			zrodlo?.disconnect();
+			wzmocnienie?.disconnect();
+			zrodlo = undefined;
+			wzmocnienie = undefined;
+			grany = undefined;
+		}
+	};
+	const dzwiek: Dzwiek = {
 		odblokuj() {
 			const Kontekst = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
 			if (!Kontekst) return;
@@ -87,6 +154,7 @@ function dzwiekWebAudio(): Dzwiek {
 			}
 		}
 	};
+	return { dzwiek, muzyka };
 }
 
 const wzoryWibracji: Record<Wibracja, number | number[]> = { tik: 40, zmiana: [80, 60, 80] };
@@ -130,10 +198,10 @@ function blokadaWakeLock(): BlokadaEkranu {
 
 const kluczHistorii = 'minutnik.historia';
 
-const magazynLocalStorage: Magazyn = {
-	wczytaj: () => localStorage.getItem(kluczHistorii),
-	zapisz: (tekst) => localStorage.setItem(kluczHistorii, tekst)
-};
+const magazynLocalStorage = (klucz: string): Magazyn => ({
+	wczytaj: () => localStorage.getItem(klucz),
+	zapisz: (tekst) => localStorage.setItem(klucz, tekst)
+});
 
 async function udostepnijLubPobierz(plik: File): Promise<void> {
 	if (navigator.canShare?.({ files: [plik] })) {
@@ -171,6 +239,7 @@ function obserwujNoweWersje(akcja: () => void) {
 
 export function srodowiskoPrzegladarki(podrobki: Podrobki = {}): Srodowisko {
 	const mnoznik = podrobki.tempo ?? 1;
+	const audio = webAudio();
 	return {
 		teraz: () => performance.now() * mnoznik,
 		naKlatke: (akcja) => requestAnimationFrame(() => akcja()),
@@ -180,11 +249,13 @@ export function srodowiskoPrzegladarki(podrobki: Podrobki = {}): Srodowisko {
 			document.addEventListener('visibilitychange', akcja);
 			return () => document.removeEventListener('visibilitychange', akcja);
 		},
-		dzwiek: podrobki.dzwiek ?? dzwiekWebAudio(),
+		dzwiek: podrobki.dzwiek ?? audio.dzwiek,
+		muzyka: podrobki.muzyka ?? audio.muzyka,
 		ekran: podrobki.ekran ?? blokadaWakeLock(),
 		wibracje: podrobki.wibracje ?? wibracjeNavigatora,
 		data: () => new Date(),
-		magazynHistorii: magazynLocalStorage,
+		magazynHistorii: magazynLocalStorage(kluczHistorii),
+		magazynMuzyki: magazynLocalStorage('minutnik.muzyka'),
 		udostepnij: udostepnijLubPobierz,
 		zainstalowana,
 		poNowejWersji: obserwujNoweWersje

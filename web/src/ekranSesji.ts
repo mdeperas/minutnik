@@ -7,11 +7,12 @@ import { pierscienOddechu, zmianaEtapuPomiedzy } from './oddech';
 import { linieInstrukcji, minutySekundy, pozycjaGrupy } from './tekstSesji';
 import { svgRyciny } from './ryciny';
 import { widokSesji } from './widokSesji';
+import { glosnoscW, plikSciezki, wyciszanieSekundy, type Sciezka } from './muzyka';
 import { rodzajFazy, wygladFazy, wyroznia } from './wyglad';
 
-type Akcja = 'rycina' | 'start' | 'pauza' | 'wznow' | 'pomin' | 'przerwij' | 'koniec' | 'wroc';
+type Akcja = 'rycina' | 'muzyka' | 'start' | 'pauza' | 'wznow' | 'pomin' | 'przerwij' | 'koniec' | 'wroc';
 
-export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, srodowisko: Srodowisko, historia: Historia, zamknij: () => void): void {
+export function otworzSesje(zestaw: Zestaw, sciezka: Sciezka, ekran: HTMLElement, srodowisko: Srodowisko, historia: Historia, zamknij: () => void): void {
 	const odtwarzacz = new Odtwarzacz(krokiZestawu(zestaw));
 	const el = <T extends Element>(selektor: string) => ekran.querySelector<T>(selektor)!;
 	const przycisk = (akcja: Akcja) => el<HTMLButtonElement>(`[data-akcja="${akcja}"]`);
@@ -37,6 +38,10 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, srodowisko: Srod
 	let ekranTrzymany = false;
 	let poczatek: Date | undefined;
 	let ostatniaChwila: Chwila | undefined;
+	const przelacznikMuzyki = el<HTMLButtonElement>('.muzyka-przelacz');
+	const plikMuzyki = plikSciezki(sciezka);
+	let muzykaWyciszona = false;
+	let glosnoscGrana = 0;
 
 	el<HTMLElement>('.tytul').textContent = zestaw.nazwa;
 
@@ -64,6 +69,19 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, srodowisko: Srod
 			rycina.dataset.plik = obraz.plik;
 			rycina.innerHTML = obraz.svg;
 		}
+	};
+
+	const pilnujMuzyki = () => {
+		const cel = glosnoscW(sciezka, muzykaWyciszona, odtwarzacz.stan);
+		if (cel === glosnoscGrana) return;
+		glosnoscGrana = cel;
+		srodowisko.muzyka.glosnosc(cel, wyciszanieSekundy);
+	};
+
+	const pokazPrzelacznikMuzyki = () => {
+		przelacznikMuzyki.hidden = !plikMuzyki;
+		przelacznikMuzyki.setAttribute('aria-pressed', String(muzykaWyciszona));
+		przelacznikMuzyki.setAttribute('aria-label', muzykaWyciszona ? 'Włącz muzykę' : 'Wycisz muzykę');
 	};
 
 	const rysuj = () => {
@@ -190,6 +208,7 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, srodowisko: Srod
 			srodowisko.wibracje.wibruj('zmiana');
 		}
 		pilnujEkranu();
+		pilnujMuzyki();
 	};
 
 	const dzialaj = (ruch: (teraz: number) => Zdarzenie[]) => {
@@ -239,6 +258,7 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, srodowisko: Srod
 		schowajRycine();
 		przestanSluchac();
 		if (ekranTrzymany) srodowisko.ekran.pusc();
+		srodowisko.muzyka.zatrzymaj();
 		ekran.removeEventListener('click', klik);
 		ekran.hidden = true;
 		zamknij();
@@ -246,8 +266,14 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, srodowisko: Srod
 
 	const akcje: Record<Akcja, () => void> = {
 		rycina: powiekszRycine,
+		muzyka: () => {
+			muzykaWyciszona = !muzykaWyciszona;
+			pokazPrzelacznikMuzyki();
+			pilnujMuzyki();
+		},
 		start: () => {
 			srodowisko.dzwiek.odblokuj();
+			if (plikMuzyki) srodowisko.muzyka.graj(plikMuzyki);
 			poczatek = srodowisko.data();
 			dzialaj((t) => odtwarzacz.start(t));
 		},
@@ -269,6 +295,7 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, srodowisko: Srod
 	const przestanSluchac = srodowisko.poZmianieWidocznosci(poPowrocie);
 	ekran.addEventListener('click', klik);
 	uwagaEkranu.hidden = true;
+	pokazPrzelacznikMuzyki();
 	ekran.hidden = false;
 	rysuj();
 	przycisk('start').focus();

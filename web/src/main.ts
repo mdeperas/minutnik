@@ -8,6 +8,7 @@ import { minutyZestawu } from './tekstSesji';
 import tekstOCwiczeniu from '../o-cwiczeniu-publiczne.json';
 import { dekodujTekst } from './oCwiczeniu';
 import { polaczCzytanie, wypelnijCzytanie } from './ekranCzytania';
+import { nazwySciezek, odczytajSciezke, sciezki } from './muzyka';
 
 const srodowisko = srodowiskoPrzegladarki(window.__minutnikPodrobki);
 const listaEkran = document.querySelector<HTMLElement>('#lista-ekran')!;
@@ -27,6 +28,24 @@ try {
 } catch {
 	otworzCzytanie.hidden = true;
 }
+
+let sciezka = odczytajSciezke(srodowisko.magazynMuzyki.wczytaj());
+const wyborMuzyki = listaEkran.querySelector<HTMLElement>('.muzyka-wybor')!;
+const przyciskiMuzyki = sciezki.map((s) => {
+	const przycisk = document.createElement('button');
+	przycisk.type = 'button';
+	przycisk.textContent = nazwySciezek[s];
+	przycisk.addEventListener('click', () => {
+		sciezka = s;
+		srodowisko.magazynMuzyki.zapisz(s);
+
+		pokazWyborMuzyki();
+	});
+	wyborMuzyki.append(przycisk);
+	return przycisk;
+});
+const pokazWyborMuzyki = () => przyciskiMuzyki.forEach((p, i) => p.setAttribute('aria-pressed', String(sciezki[i] === sciezka)));
+pokazWyborMuzyki();
 
 try {
 	dekodujKatalog(surowe).forEach((zestaw, indeks) => {
@@ -54,7 +73,7 @@ try {
 		przycisk.addEventListener('click', () => {
 			listaEkran.hidden = true;
 			aktualizacja.poczatekSesji();
-			otworzSesje(zestaw, sesja, srodowisko, historia, () => {
+			otworzSesje(zestaw, sciezka, sesja, srodowisko, historia, () => {
 				aktualizacja.koniecSesji();
 				listaEkran.hidden = false;
 				przycisk.focus();

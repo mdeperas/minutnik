@@ -47,7 +47,8 @@ final class SessionModelIntegrationTests: XCTestCase {
         })
         model = AppEnvironment(version: AppVersion(info: [:]), clock: clock, signals: signals, notifier: notifier,
             audioEvents: audio, catalog: .failure(ExerciseCatalogError.missingFile), history: history, haptics: haptics,
-            figures: try! FigureCatalog(json: Data(#"{"Grupa 1": {"napiecie": "g1-n.svg", "rozluznienie": "g1-r.svg"}}"#.utf8))
+            figures: try! FigureCatalog(json: Data(#"{"Grupa 1": {"napiecie": "g1-n.svg", "rozluznienie": "g1-r.svg"}}"#.utf8)),
+            music: RecordingMusicPlayer(), settings: UserDefaults(suiteName: "minutnik-tests")!
         ).makeSession(set)
     }
 
@@ -246,9 +247,11 @@ final class SessionModelIntegrationTests: XCTestCase {
         XCTAssertFalse(clock.isTicking)
     }
 
-    func testCurrentGroupFollowsPhasesAndClearsAfterStop() {
+    func testCurrentGroupFollowsPhasesAndStaysAfterStopLikePwa() {
         XCTAssertFalse(model.isInProgress)
+        XCTAssertTrue(model.allowsLeaving)
         model.start()
+        XCTAssertFalse(model.allowsLeaving)
         XCTAssertEqual(model.currentGroupPosition, "Grupa 1 z 3")
         XCTAssertEqual(model.currentGroupName, "Grupa 1")
         model.skip()
@@ -261,7 +264,11 @@ final class SessionModelIntegrationTests: XCTestCase {
         XCTAssertTrue(model.isInProgress)
         model.stop()
         XCTAssertFalse(model.isInProgress)
-        XCTAssertNil(model.currentGroupPosition)
+        XCTAssertEqual(model.currentGroupPosition, "Grupa 2 z 3")
+        XCTAssertEqual(model.currentGroupName, "Grupa 2")
+        XCTAssertEqual(model.shownPhaseName, "Napinanie 2")
+        XCTAssertFalse(model.allowsLeaving)
+        XCTAssertNil(model.currentFigureName)
     }
 
     func testNaturalEndAddsCompletedRecordThatSurvivesRestart() {

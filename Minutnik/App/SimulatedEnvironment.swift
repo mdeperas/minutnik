@@ -33,6 +33,8 @@ enum SimulatedEnvironment {
             history: SessionHistory(storage: InMemoryHistoryStorage()),
             haptics: RecordingHapticPlayer(),
             figures: FigureCatalog.bundled(),
+            music: RecordingMusicPlayer(),
+            settings: config,
             about: Result { try ReadingText.bundled() }
         )
     }

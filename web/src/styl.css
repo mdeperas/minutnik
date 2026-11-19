@@ -521,3 +521,43 @@ body {
 	flex: none;
 	align-self: stretch;
 }
+
+.muzyka-wybor {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.4rem;
+}
+.muzyka-etykieta {
+	color: #fff;
+	font-weight: 700;
+	margin-right: 0.25rem;
+}
+.muzyka-wybor button,
+.muzyka-przelacz {
+	min-height: 2.75rem;
+	padding: 0 0.7rem;
+	border: 1px solid #3a3c43;
+	border-radius: 999px;
+	background: #111216;
+	color: #d4d6db;
+	font-size: 0.95rem;
+	font: inherit;
+	font-weight: 700;
+	cursor: pointer;
+}
+.muzyka-wybor button[aria-pressed='true'] {
+	border-color: var(--akcent);
+	background: color-mix(in srgb, var(--akcent) 26%, #000);
+	color: #fff;
+}
+.muzyka-przelacz {
+	grid-column: 3;
+	justify-self: end;
+	min-width: 2.75rem;
+	color: var(--akcent);
+}
+.muzyka-przelacz[aria-pressed='true'] {
+	color: #6b6e76;
+	text-decoration: line-through;
+}

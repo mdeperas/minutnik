@@ -49,6 +49,15 @@ final class RecordingHapticPlayer: HapticPlayer {
     func play(_ cue: HapticCue) { played.append(cue) }
 }
 
+@MainActor
+final class RecordingMusicPlayer: MusicPlayer {
+    private(set) var calls: [String] = []
+
+    func play(_ fileName: String) { calls.append("play \(fileName)") }
+    func fade(to volume: Float, over seconds: TimeInterval) { calls.append("fade \(volume)") }
+    func stop() { calls.append("stop") }
+}
+
 final class InMemoryHistoryStorage: HistoryStorage {
     private(set) var data: Data?
 

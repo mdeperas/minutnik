@@ -44,6 +44,13 @@ protocol SignalPlayer: AnyObject {
 }
 
 @MainActor
+protocol MusicPlayer: AnyObject {
+    func play(_ fileName: String)
+    func fade(to volume: Float, over seconds: TimeInterval)
+    func stop()
+}
+
+@MainActor
 protocol HapticPlayer: AnyObject {
     func play(_ cue: HapticCue)
 }

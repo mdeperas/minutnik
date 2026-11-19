@@ -11,13 +11,12 @@ struct SessionView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            HStack(spacing: 8) {
-                header.frame(maxWidth: .infinity)
-                figure
-            }
-            .layoutPriority(1)
+            header
+                .frame(maxWidth: .infinity)
+                .layoutPriority(1)
             ring
                 .frame(minHeight: 96, maxHeight: .infinity)
+            figure
             instructions
                 .layoutPriority(1)
         }
@@ -28,7 +27,8 @@ struct SessionView: View {
         .foregroundStyle(.white)
         .navigationTitle(model.setName)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(model.isInProgress)
+        .navigationBarBackButtonHidden(!model.allowsLeaving)
+        .toolbar { musicToggle }
         .onChange(of: model.currentStep) { old, new in
             guard old != nil, new != nil, !reduceMotion else { return }
             withAnimation(.timingCurve(0.2, 0.8, 0.2, 1, duration: 0.9)) { ringSpin += 360 }
@@ -71,8 +71,10 @@ struct SessionView: View {
                 )
                     .layoutPriority(1)
                 HStack(alignment: .firstTextBaseline, spacing: 12) {
-                    Text(phase)
-                        .font(.headline)
+                    Text(phase.uppercased())
+                        .font(.title3.bold())
+                        .tracking(1)
+                        .accessibilityLabel(phase)
                         .foregroundStyle(Color(PhaseKind.relaxation.labelColor))
                         .accessibilityIdentifier("session.phase")
                     Text(ClockText.minutesSeconds(model.remainingInPhase))
@@ -96,9 +98,16 @@ struct SessionView: View {
             .transition(.opacity)
             .animation(.easeInOut(duration: 0.6), value: step)
         } else {
-            Text(stateLabel)
-                .font(.largeTitle.bold())
-                .accessibilityIdentifier("session.phase")
+            ZStack {
+                Circle()
+                    .strokeBorder(Color(PhaseLook.track), lineWidth: 18)
+                    .frame(maxWidth: 288)
+                Text(stateLabel)
+                    .font(.largeTitle.bold())
+                    .accessibilityIdentifier("session.phase")
+            }
+            .aspectRatio(1, contentMode: .fit)
+            .frame(maxWidth: .infinity)
         }
     }
 
@@ -108,7 +117,8 @@ struct SessionView: View {
             Image(name)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 84, height: 84)
+                .frame(width: 96, height: 96)
+                .frame(maxWidth: .infinity)
                 .modifier(FigureMatch(id: name, space: figureSpace, isSource: !figureZoomed, enabled: !reduceMotion))
                 .opacity(figureZoomed ? 0 : 1)
                 .id(name)
@@ -164,9 +174,9 @@ struct SessionView: View {
     }
 
     private var instructions: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 10) {
             ForEach(model.currentInstructions, id: \.label) { line in
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: 6) {
                     Text(line.label).bold().foregroundStyle(labelColor(line.label))
                     Text(line.text).foregroundStyle(Color(PhaseLook.secondaryText))
                 }
@@ -179,7 +189,7 @@ struct SessionView: View {
     }
 
     private func labelColor(_ label: String) -> Color {
-        guard let kind = model.currentPhaseName.map(PhaseKind.init), kind.highlights(label) else { return .white }
+        guard let kind = model.shownPhaseName.map(PhaseKind.init), kind.highlights(label) else { return .white }
         return Color(kind.labelColor)
     }
 
@@ -209,6 +219,7 @@ struct SessionView: View {
     private func wideButton(_ title: String, id: String, prominent: Bool = false, role: ButtonRole? = nil, action: @escaping () -> Void) -> some View {
         let button = Button(role: role, action: action) {
             Text(title).font(.title3.bold()).frame(maxWidth: .infinity).padding(.vertical, 8)
+                .foregroundStyle(prominent ? Color(PhaseLook.background) : .white)
         }
         .accessibilityIdentifier(id)
         if prominent { button.buttonStyle(.borderedProminent) } else { button.buttonStyle(.bordered) }
@@ -234,6 +245,22 @@ private struct FigureMatch: ViewModifier {
             content.matchedGeometryEffect(id: id, in: space, isSource: isSource)
         } else {
             content
+        }
+    }
+
+}
+
+extension SessionView {
+    @ToolbarContentBuilder
+    private var musicToggle: some ToolbarContent {
+        if model.hasMusic {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button { model.toggleMusic() } label: {
+                    Image(systemName: model.musicMuted ? "speaker.slash" : "music.note")
+                }
+                .accessibilityLabel(model.musicMuted ? "Włącz muzykę" : "Wycisz muzykę")
+                .accessibilityIdentifier("session.music")
+            }
         }
     }
 }

@@ -6,12 +6,13 @@ export interface Nagranie {
 	trzymania: number;
 	puszczenia: number;
 	wibracje: string[];
+	muzyka: string[];
 }
 
 export async function podrobGranice(page: Page, tempo: number, wakeLockDostepny = true) {
 	await page.addInitScript(
 		({ tempo, wakeLockDostepny }) => {
-			const nagranie = { sygnaly: [] as string[], odblokowania: 0, trzymania: 0, puszczenia: 0, wibracje: [] as string[] };
+			const nagranie = { sygnaly: [] as string[], odblokowania: 0, trzymania: 0, puszczenia: 0, wibracje: [] as string[], muzyka: [] as string[] };
 			const stan = { widoczna: true };
 			Object.assign(window, { __nagranie: nagranie, __widocznosc: stan });
 			window.__minutnikPodrobki = {
@@ -20,6 +21,11 @@ export async function podrobGranice(page: Page, tempo: number, wakeLockDostepny 
 				dzwiek: {
 					odblokuj: () => void nagranie.odblokowania++,
 					zagraj: (sygnal) => void nagranie.sygnaly.push(sygnal)
+				},
+				muzyka: {
+					graj: (plik) => void nagranie.muzyka.push(`graj ${plik}`),
+					glosnosc: (wartosc) => void nagranie.muzyka.push(`glosnosc ${wartosc}`),
+					zatrzymaj: () => void nagranie.muzyka.push('zatrzymaj')
 				},
 				wibracje: { wibruj: (rodzaj) => void nagranie.wibracje.push(rodzaj) },
 				ekran: {

@@ -20,8 +20,16 @@ final class SessionModel {
     private let figures: FigureCatalog?
     private var pausedByInterruption = false
     private var startedAt: Date?
+    private var lastStep: Int?
+    private let music: MusicPlayer?
+    let musicTrack: MusicTrack
+    private(set) var musicMuted = false
+    private var musicVolume: Float = 0
 
-    init(set: ExerciseSet, clock: SessionClock, signals: SignalPlayer, notifier: PhaseNotifier, audioEvents: AudioSessionEvents, history: SessionHistory, haptics: HapticPlayer, figures: FigureCatalog? = nil) {
+    init(set: ExerciseSet, clock: SessionClock, signals: SignalPlayer, notifier: PhaseNotifier, audioEvents: AudioSessionEvents, history: SessionHistory, haptics: HapticPlayer, figures: FigureCatalog? = nil,
+         music: MusicPlayer? = nil, musicTrack: MusicTrack = .none) {
+        self.music = music
+        self.musicTrack = musicTrack
         self.player = SessionPlayer(set: set)
         self.setName = set.name
         self.set = set
@@ -43,10 +51,16 @@ final class SessionModel {
 
     var isInProgress: Bool { currentStep != nil }
 
+    var allowsLeaving: Bool { player.state == .ready }
+
+    private var shownStep: Int? { currentStep ?? lastStep }
+
     var currentPhaseName: String? { currentStep.map { phaseNames[$0] } }
 
+    var shownPhaseName: String? { shownStep.map { phaseNames[$0] } }
+
     var currentGroupPosition: String? {
-        currentStep.map { PhaseText.groupPosition(player.steps[$0].groupIndex, of: set.groups.count) }
+        shownStep.map { PhaseText.groupPosition(player.steps[$0].groupIndex, of: set.groups.count) }
     }
 
     var currentPhaseDuration: TimeInterval? { currentStep.map { player.steps[$0].duration } }
@@ -61,15 +75,15 @@ final class SessionModel {
         return HapticBeat.at(step: step, kind: PhaseKind(phaseName: phaseNames[step]), remaining: remainingInPhase, duration: duration)
     }
 
-    var currentGroupName: String? { currentStep.map { set.groups[player.steps[$0].groupIndex].name } }
+    var currentGroupName: String? { shownStep.map { set.groups[player.steps[$0].groupIndex].name } }
 
     var currentFigureName: String? {
-        guard let group = currentGroupName, let phase = currentPhaseName else { return nil }
+        guard currentStep != nil, let group = currentGroupName, let phase = currentPhaseName else { return nil }
         return figures?.assetName(group: group, kind: PhaseKind(phaseName: phase))
     }
 
     var currentInstructions: [PhaseLine] {
-        guard let step = currentStep.map({ player.steps[$0] }) else { return [] }
+        guard let step = shownStep.map({ player.steps[$0] }) else { return [] }
         return PhaseText.lines(set.groups[step.groupIndex].phases[step.phaseIndex].instructions)
     }
 
@@ -79,6 +93,20 @@ final class SessionModel {
     func skip() { perform(playsNow: true) { $0.skip(now: $1) } }
     func stop() { perform { $0.stop(now: $1) } }
     func tick() { perform(replans: false) { $0.tick(now: $1) } }
+
+    var hasMusic: Bool { musicTrack != .none && music != nil }
+
+    func toggleMusic() {
+        musicMuted.toggle()
+        followMusic()
+    }
+
+    private func followMusic() {
+        let target = musicTrack.volume(muted: musicMuted, state: player.state)
+        guard target != musicVolume, let music else { return }
+        musicVolume = target
+        music.fade(to: target, over: MusicTrack.fadeSeconds)
+    }
 
     private func handle(_ event: AudioSessionEvent) {
         Log.sound.notice("zdarzenie audio: \(String(describing: event), privacy: .public)")
@@ -100,6 +128,7 @@ final class SessionModel {
         let before = player.state
         now = clock.now
         let events = action(&player, now)
+        if let step = Self.step(of: player.state) { lastStep = step }
         playHaptics(after: before)
         guard player.state != before else { return }
         pausedByInterruption = false
@@ -111,6 +140,7 @@ final class SessionModel {
                 signals.plan(signalNow(after: events, playsNow: playsNow) + upcomingSignals())
                 notifier.replace(with: alerts())
             }
+            if before == .ready, let file = musicTrack.fileName { music?.play(file) }
             if !wasRunning { clock.startTicking { [weak self] in self?.tick() } }
         case .finished:
             if playsNow { signals.plan([ScheduledSignal(at: now, signal: .sessionFinished)]) }
@@ -123,6 +153,7 @@ final class SessionModel {
             notifier.cancelAll()
             clock.stopTicking()
         }
+        followMusic()
         Log.session.notice("stan: \(String(describing: self.player.state), privacy: .public)")
     }
 
@@ -139,6 +170,10 @@ final class SessionModel {
                 completed: player.state == .finished, phasesDone: phasesDone, phasesTotal: player.steps.count))
         }
         startedAt = nil
+        if musicTrack != .none {
+            music?.stop()
+            musicVolume = 0
+        }
         signals.endSession()
         notifier.cancelAll()
         clock.stopTicking()
