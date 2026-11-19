@@ -1,0 +1,25 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+cel="${1:-$HOME/Repositories/minutnik-publiczne}"
+prywatne=(docs/research)
+for plik in lokalne/srodowisko.sh lokalne/podpis.xcconfig lokalne/zakazane.txt lokalne/zestawy.json; do
+  [ -f "$plik" ] || { echo "Brak $plik: bez niego nie sprawdzę, czy nic prywatnego nie wycieka." >&2; exit 1; }
+done
+[ ! -e "$cel" ] || { echo "$cel już istnieje. Usuń go albo podaj inny katalog." >&2; exit 1; }
+[ -z "$(git status --porcelain -- . ':!grafika/ryciny')" ] || { echo "Najpierw commit: eksportuję HEAD, a drzewo ma zmiany." >&2; exit 1; }
+source lokalne/srodowisko.sh
+autor="${PUBLICZNY_AUTOR:-Minutnik <minutnik@example.invalid>}"
+
+mkdir -p "$cel"
+git archive HEAD | tar -x -C "$cel"
+for sciezka in "${prywatne[@]}"; do rm -rf "${cel:?}/$sciezka"; done
+git -C "$cel" init -q -b master
+git -C "$cel" add -A
+nazwa="${autor% <*}"
+email="${autor##*<}"
+email="${email%>}"
+GIT_AUTHOR_NAME="$nazwa" GIT_AUTHOR_EMAIL="$email" GIT_COMMITTER_NAME="$nazwa" GIT_COMMITTER_EMAIL="$email" \
+  git -C "$cel" -c commit.gpgsign=false commit -q -m "Minutnik: pierwsza wersja publiczna"
+DEVICE_ID="$DEVICE_ID" node --no-warnings bin/sprawdz-publiczne.ts "$cel"
+echo "$cel: jeden commit, gotowe do przeglądu przed pushem"

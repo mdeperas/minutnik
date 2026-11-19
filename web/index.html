@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pl">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="theme-color" content="#17181c" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="apple-mobile-web-app-title" content="Minutnik" />
+		<title>Minutnik</title>
+		<link rel="manifest" href="/manifest.webmanifest" />
+		<link rel="apple-touch-icon" href="/ikona-180.png" />
+		<link rel="stylesheet" href="/src/styl.css" />
+	</head>
+	<body>
+		<main id="lista-ekran" class="ekran">
+			<h1>Minutnik</h1>
+			<ul id="zestawy" class="zestawy" aria-label="Zestawy"></ul>
+			<section id="historia" class="historia" aria-labelledby="historia-tytul" hidden>
+				<div class="historia-naglowek">
+					<h2 id="historia-tytul">Historia</h2>
+					<button type="button" class="eksport">Eksportuj</button>
+				</div>
+				<ul class="wpisy" aria-label="Historia"></ul>
+			</section>
+			<p class="instalacja" hidden>Żeby historia nie znikła, dodaj Minutnik do ekranu: Udostępnij → Dodaj do ekranu początkowego.</p>
+			<p class="wersja"></p>
+		</main>
+
+		<main id="sesja" class="ekran sesja" hidden data-faza="napinanie">
+			<header class="pasek">
+				<button type="button" class="wroc" data-akcja="wroc">Wróć</button>
+				<h1 class="tytul"></h1>
+			</header>
+			<div class="naglowek">
+				<p class="licznik"><span class="pozycja"></span> <span class="zostalo-sesji"></span></p>
+				<h2 class="grupa" aria-live="polite"></h2>
+			</div>
+			<div class="pierscien">
+				<svg viewBox="0 0 200 200" aria-hidden="true">
+					<circle class="tor" cx="100" cy="100" r="88"></circle>
+					<circle class="postep" cx="100" cy="100" r="88" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0" transform="rotate(-90 100 100)"></circle>
+				</svg>
+				<div class="srodek">
+					<span class="cyfry" role="timer"></span>
+					<span class="faza" aria-live="polite"></span>
+				</div>
+			</div>
+			<div class="rycina" aria-hidden="true" hidden></div>
+			<p class="uwaga-ekran" role="status" hidden>Ekran może zgasnąć w trakcie sesji.</p>
+			<dl class="opis"></dl>
+			<div class="sterowanie">
+				<button type="button" class="przycisk glowny" data-akcja="start">Start</button>
+				<button type="button" class="przycisk glowny" data-akcja="pauza" hidden>Pauza</button>
+				<button type="button" class="przycisk glowny" data-akcja="wznow" hidden>Wznów</button>
+				<div class="para">
+					<button type="button" class="przycisk" data-akcja="pomin" hidden>Pomiń</button>
+					<button type="button" class="przycisk" data-akcja="przerwij" hidden>Przerwij</button>
+				</div>
+				<button type="button" class="przycisk glowny" data-akcja="koniec" hidden>Wróć do listy</button>
+			</div>
+		</main>
+
+		<dialog id="pytanie" aria-labelledby="pytanie-tytul">
+			<h2 id="pytanie-tytul">Przerwać sesję?</h2>
+			<div class="para">
+				<button type="button" class="przycisk" data-akcja="dalej" autofocus>Ćwiczę dalej</button>
+				<button type="button" class="przycisk wyjscie" data-akcja="przerwij-i-wyjdz">Przerwij</button>
+			</div>
+		</dialog>
+		<script type="module" src="/src/main.ts"></script>
+	</body>
+</html>

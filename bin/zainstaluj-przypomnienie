@@ -1,0 +1,10 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+label="com.md4ps.minutnik.remind"
+cel="$HOME/Library/LaunchAgents/$label.plist"
+mkdir -p "$HOME/Library/Logs/Minutnik"
+sed -e "s|__REPO__|$PWD|g" -e "s|__HOME__|$HOME|g" "bin/$label.plist" > "$cel"
+launchctl bootout "gui/$(id -u)/$label" 2>/dev/null || true
+launchctl bootstrap "gui/$(id -u)" "$cel"
+echo "$cel zainstalowany"

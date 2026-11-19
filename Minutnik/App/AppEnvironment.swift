@@ -1,0 +1,34 @@
+import Foundation
+
+@MainActor
+struct AppEnvironment {
+    let version: AppVersion
+    let clock: SessionClock
+    let signals: SignalPlayer
+    let notifier: PhaseNotifier
+    let audioEvents: AudioSessionEvents
+    let catalog: Result<ExerciseCatalog, Error>
+    let history: SessionHistory
+    let figures: FigureCatalog?
+
+    static var current: AppEnvironment {
+        #if targetEnvironment(simulator)
+        if let simulated = SimulatedEnvironment.fromLaunch() { return simulated }
+        #endif
+        return production
+    }
+
+    static var production: AppEnvironment {
+        AppEnvironment(
+            version: AppVersion(), clock: SystemClock(), signals: ToneSignalPlayer(), notifier: LocalPhaseNotifier(),
+            audioEvents: SystemAudioSessionEvents(),
+            catalog: Result { try ExerciseCatalog.bundled() },
+            history: SessionHistory(storage: FileHistoryStorage()),
+            figures: FigureCatalog.bundled()
+        )
+    }
+
+    func makeSession(_ set: ExerciseSet) -> SessionModel {
+        SessionModel(set: set, clock: clock, signals: signals, notifier: notifier, audioEvents: audioEvents, history: history, figures: figures)
+    }
+}

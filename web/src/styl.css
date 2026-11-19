@@ -1,0 +1,309 @@
+:root {
+	--tlo: #17181c;
+	--tor: #353841;
+	--tekst-drugi: #c1c3c8;
+	--akcent: hsl(190 80% 64%);
+	--akcent-napis: hsl(190 90% 84%);
+	--szalwia: #8fbfa3;
+	--przycisk-drugi: hsl(190 30% 22%);
+	color-scheme: dark;
+}
+* {
+	box-sizing: border-box;
+}
+html,
+body {
+	margin: 0;
+	background: var(--tlo);
+	color: #fff;
+	font: 17px/1.35 -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	-webkit-text-size-adjust: 100%;
+}
+[hidden] {
+	display: none !important;
+}
+.ekran {
+	min-height: 100dvh;
+	max-width: 40rem;
+	margin: 0 auto;
+	padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+}
+.zestawy {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 0.75rem;
+}
+.zestawy button {
+	width: 100%;
+	min-height: 3.5rem;
+	padding: 0.75rem 1rem;
+	border: 0;
+	border-radius: 1rem;
+	background: #24262c;
+	color: #fff;
+	font: inherit;
+	text-align: left;
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	cursor: pointer;
+}
+.zestawy .podsumowanie {
+	color: var(--tekst-drugi);
+}
+.sesja {
+	--kolor: var(--akcent);
+	--kolor-napisu: var(--akcent-napis);
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+.sesja[data-faza='rozluznienie'] {
+	--kolor: var(--szalwia);
+	--kolor-napisu: var(--szalwia);
+}
+.pasek {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	align-items: center;
+	min-height: 2.75rem;
+}
+.tytul {
+	grid-column: 2;
+	margin: 0;
+	font-size: 1.1rem;
+}
+.wroc {
+	grid-column: 1;
+	justify-self: start;
+	min-height: 2.75rem;
+	padding: 0 1.1rem;
+	border: 1px solid #3a3c43;
+	border-radius: 999px;
+	background: #26282e;
+	color: var(--akcent);
+	font: inherit;
+	cursor: pointer;
+}
+.naglowek {
+	text-align: center;
+}
+.licznik {
+	display: flex;
+	justify-content: center;
+	gap: 1.25rem;
+	margin: 0;
+	color: var(--tekst-drugi);
+	font-size: 0.95rem;
+	font-variant-numeric: tabular-nums;
+}
+.grupa {
+	margin: 0.3rem 0 0;
+	font-size: 1.9rem;
+	line-height: 1.15;
+}
+.pierscien {
+	position: relative;
+	width: min(70vw, 38dvh, 18rem);
+	aspect-ratio: 1;
+	margin: 0 auto;
+	flex-shrink: 0;
+}
+.pierscien svg {
+	width: 100%;
+	height: 100%;
+	transform: scale(var(--skala, 1));
+	transition: transform 0.25s linear;
+}
+.tor,
+.postep {
+	fill: none;
+	stroke-width: 12;
+}
+.tor {
+	stroke: var(--tor);
+}
+.postep {
+	stroke: var(--kolor);
+	stroke-linecap: round;
+}
+.srodek {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.4rem;
+}
+.cyfry {
+	font-size: clamp(3.5rem, 22vw, 6rem);
+	font-weight: 700;
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+}
+.faza {
+	max-width: 75%;
+	font-size: clamp(0.8rem, 4.2vw, 1.1rem);
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--kolor-napisu);
+}
+.sesja[data-stan='koniec'] .cyfry {
+	font-size: 2rem;
+}
+.opis {
+	display: grid;
+	gap: 0.5rem;
+	margin: 0;
+}
+.opis dt {
+	font-weight: 700;
+}
+.opis dt.wyroznione {
+	color: var(--kolor-napisu);
+}
+.opis dd {
+	margin: 0;
+	color: var(--tekst-drugi);
+}
+.sterowanie {
+	margin-top: auto;
+	display: grid;
+	gap: 0.75rem;
+}
+.para {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.75rem;
+}
+.przycisk {
+	min-height: 3.5rem;
+	border: 0;
+	border-radius: 999px;
+	background: var(--przycisk-drugi);
+	color: #fff;
+	font: inherit;
+	font-size: 1.3rem;
+	font-weight: 700;
+	cursor: pointer;
+}
+.przycisk.glowny {
+	background: var(--akcent);
+	color: #10252b;
+}
+.przycisk:focus-visible,
+.wroc:focus-visible,
+.zestawy button:focus-visible {
+	outline: 3px solid #fff;
+	outline-offset: 2px;
+}
+dialog {
+	width: min(20rem, 90vw);
+	border: 0;
+	border-radius: 1.25rem;
+	background: #26282e;
+	color: #fff;
+	text-align: center;
+}
+dialog::backdrop {
+	background: rgb(0 0 0 / 0.6);
+}
+dialog h2 {
+	font-size: 1.2rem;
+	margin: 0.5rem 0 1.25rem;
+}
+dialog .przycisk {
+	font-size: 1.05rem;
+	min-height: 3rem;
+}
+.przycisk.wyjscie {
+	background: #8a2f33;
+}
+@media (prefers-reduced-motion: reduce) {
+	.pierscien svg {
+		transform: none;
+		transition: none;
+	}
+	.rycina svg {
+		animation: none;
+	}
+}
+.rycina {
+	align-self: center;
+	width: min(32vw, 16dvh, 8rem);
+	aspect-ratio: 1;
+	flex-shrink: 0;
+	color: var(--kolor);
+}
+.rycina svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	animation: rycina-wejscie 0.4s ease-out;
+}
+@keyframes rycina-wejscie {
+	from {
+		opacity: 0;
+	}
+}
+.uwaga-ekran {
+	margin: 0;
+	text-align: center;
+	color: var(--tekst-drugi);
+	font-size: 0.85rem;
+}
+.historia {
+	margin-top: 2rem;
+}
+.historia-naglowek {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
+}
+.historia-naglowek h2 {
+	font-size: 1.1rem;
+	margin: 0;
+}
+.eksport {
+	min-height: 2.75rem;
+	padding: 0 1rem;
+	border: 0;
+	border-radius: 1rem;
+	background: #24262c;
+	color: var(--akcent-napis, #fff);
+	font: inherit;
+	cursor: pointer;
+}
+.wpisy {
+	list-style: none;
+	margin: 0.75rem 0 0;
+	padding: 0;
+	display: grid;
+	gap: 0.5rem;
+}
+.wpisy li {
+	display: grid;
+	gap: 0.15rem;
+	padding: 0.75rem 1rem;
+	border-radius: 1rem;
+	background: #1f2126;
+	color: var(--tekst-drugi);
+}
+.wpisy .nazwa {
+	color: #fff;
+}
+.instalacja,
+.wersja {
+	margin: 2rem 0 0;
+	color: var(--tekst-drugi);
+	font-size: 0.85rem;
+	text-align: center;
+}
+.wersja {
+	margin-top: 1rem;
+}

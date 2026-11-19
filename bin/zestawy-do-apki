@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+zrodlo="lokalne/zestawy.json"
+if [ ! -f "$zrodlo" ]; then
+  zrodlo="web/zestawy-publiczne.json"
+  echo "warning: brak lokalne/zestawy.json, apka dostaje wariant publiczny"
+fi
+cp "$zrodlo" "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/zestawy.json"

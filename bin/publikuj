@@ -1,0 +1,28 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+repo="mdeperas/minutnik"
+robocze="$(mktemp -d)"
+trap 'rm -rf "$robocze"' EXIT
+
+(cd web && npm test && npm run e2e)
+
+bin/przygotuj-publiczne "$robocze/kopia"
+git clone -q "https://github.com/$repo.git" "$robocze/publiczne"
+find "$robocze/publiczne" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+(cd "$robocze/kopia" && tar -c --exclude ./.git .) | tar -x -C "$robocze/publiczne"
+
+source lokalne/srodowisko.sh
+nazwa="${PUBLICZNY_AUTOR% <*}"
+email="${PUBLICZNY_AUTOR##*<}"
+email="${email%>}"
+git -C "$robocze/publiczne" add -A
+if git -C "$robocze/publiczne" diff --cached --quiet; then
+  echo "Publiczne repo już ma tę wersję."
+  exit 0
+fi
+GIT_AUTHOR_NAME="$nazwa" GIT_AUTHOR_EMAIL="$email" GIT_COMMITTER_NAME="$nazwa" GIT_COMMITTER_EMAIL="$email" \
+  git -C "$robocze/publiczne" -c commit.gpgsign=false commit -q -m "Minutnik: wersja $(git rev-parse --short HEAD)"
+DEVICE_ID="$DEVICE_ID" node --no-warnings bin/sprawdz-publiczne.ts "$robocze/publiczne"
+git -C "$robocze/publiczne" push -q origin master
+echo "Wypchnięte na $repo; deploy: gh run watch -R $repo"

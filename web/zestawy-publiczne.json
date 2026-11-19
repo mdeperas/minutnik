@@ -1,0 +1,455 @@
+{
+	"wersja": 1,
+	"zestawy": [
+		{
+			"nazwa": "12 grup",
+			"grupy": [
+				{
+					"nazwa": "Przedramiona",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Ręce leżą swobodnie, dłonie wolne.",
+								"napnij": "Zaciśnij pięści, poczuj napięcie w przedramionach.",
+								"uwaga": "Ramiona zostają luźne, pracują tylko dłonie."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Rozwiń palce i zostaw dłonie bez ruchu.",
+								"poczuj": "Dłonie robią się cięższe i cieplejsze."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Górne ramiona",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Ręce zgięte w łokciach, dłonie luźno.",
+								"napnij": "Dociśnij łokcie do boków, napnij mięśnie nad łokciem.",
+								"uwaga": "Dłonie nie zaciskają się w pięść."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Opuść ręce bezwładnie na uda.",
+								"poczuj": "Ramiona miękną od barku po łokieć."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Podudzia",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Stopy płasko na podłodze.",
+								"napnij": "Podciągnij palce stóp do siebie, poczuj łydki.",
+								"uwaga": "Gdy łapie skurcz, zmniejsz siłę."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Postaw stopy swobodnie, palce luźno.",
+								"poczuj": "Łydki rozgrzewają się i wiotczeją."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Uda",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Siedzisz stabilnie, nogi przed sobą.",
+								"napnij": "Wyprostuj nogi i unieś je lekko, napnij uda.",
+								"uwaga": "Plecy oparte, nie odrywaj ich od oparcia."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Opuść nogi i pozwól im opaść.",
+								"poczuj": "Uda stają się ciężkie i spokojne."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Brzuch",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Oddychaj spokojnie przez nos.",
+								"napnij": "Wciągnij brzuch i utwardź go jak przed ciosem.",
+								"uwaga": "Oddychaj dalej, nie zatrzymuj powietrza."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Zwolnij brzuch, niech się rozszerzy.",
+								"poczuj": "Oddech schodzi niżej i płynie sam."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Klatka piersiowa",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Usiądź prosto, ręce luźno.",
+								"napnij": "Weź głęboki wdech i przytrzymaj, klatka napięta.",
+								"uwaga": "Przy zawrotach głowy skróć wstrzymanie."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Oddaj powietrze długim, cichym wydechem.",
+								"poczuj": "Klatka opada, oddech się wyrównuje."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Barki",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Ręce zwisają swobodnie.",
+								"napnij": "Unieś barki w stronę uszu i zatrzymaj.",
+								"uwaga": "Kark zostaje długi, broda nie ucieka w dół."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Opuść barki jednym ruchem.",
+								"poczuj": "Ciężar spływa z karku na ramiona."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Szyja",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Głowa prosto, wzrok przed siebie.",
+								"napnij": "Przyciągnij brodę do mostka, poczuj tył szyi.",
+								"uwaga": "Ruch mały i powolny, bez szarpania."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Wróć głową do środka.",
+								"poczuj": "Kark się wydłuża i mięknie."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Usta i szczęka",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Zęby lekko rozchylone.",
+								"napnij": "Dociśnij zęby do siebie i poszerz uśmiech na siłę.",
+								"uwaga": "Nie zgrzytaj, wystarczy stały nacisk."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Rozluźnij żuchwę, usta lekko otwarte.",
+								"poczuj": "Policzki i szczęka robią się miękkie."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Oczy",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Powieki opuszczone.",
+								"napnij": "Zmruż oczy z całej siły, aż poczujesz policzki i skronie.",
+								"uwaga": "Soczewki kontaktowe? Ściskaj delikatniej."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Puść powieki, niech same się ułożą.",
+								"poczuj": "Okolice oczu wygładzają się i ciemnieją."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Dolne czoło",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Twarz spokojna, oczy zamknięte.",
+								"napnij": "Ściągnij brwi do środka, zmarszcz nos.",
+								"uwaga": "Usta i żuchwa bez udziału."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Zostaw brwi, niech odpłyną od siebie.",
+								"poczuj": "Między brwiami robi się szeroko i spokojnie."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Górne czoło",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Oczy zamknięte, głowa oparta.",
+								"napnij": "Podciągnij brwi w górę, jakbyś się dziwił.",
+								"uwaga": "Nie otwieraj przy tym oczu."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Brwi wracają na miejsce same.",
+								"poczuj": "Skóra czoła rozluźnia się aż po skronie."
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"nazwa": "8 grup",
+			"grupy": [
+				{
+					"nazwa": "Ramiona",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Ręce na udach, łokcie lekko zgięte.",
+								"napnij": "Zaciśnij pięści i dociśnij łokcie do boków.",
+								"uwaga": "Barki zostają nisko."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Rozwiń dłonie i opuść ręce.",
+								"poczuj": "Całe ręce cięższe, od palców po barki."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Nogi",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Stopy na podłodze, kolana luźno.",
+								"napnij": "Wyprostuj nogi, a palce stóp skieruj ku kolanom.",
+								"uwaga": "Przy skurczu odpuść część siły."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Opuść nogi swobodnie na podłogę.",
+								"poczuj": "Ciepło rozchodzi się od ud po stopy."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Brzuch",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Oddychaj spokojnie przez nos.",
+								"napnij": "Wciągnij brzuch i utwardź go jak przed ciosem.",
+								"uwaga": "Oddychaj dalej, nie zatrzymuj powietrza."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Zwolnij brzuch, niech się rozszerzy.",
+								"poczuj": "Oddech schodzi niżej i płynie sam."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Klatka piersiowa",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Usiądź prosto, ręce luźno.",
+								"napnij": "Weź głęboki wdech i przytrzymaj, klatka napięta.",
+								"uwaga": "Przy zawrotach głowy skróć wstrzymanie."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Oddaj powietrze długim, cichym wydechem.",
+								"poczuj": "Klatka opada, oddech się wyrównuje."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Barki",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Ręce zwisają swobodnie.",
+								"napnij": "Unieś barki w stronę uszu i zatrzymaj.",
+								"uwaga": "Kark zostaje długi, broda nie ucieka w dół."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Opuść barki jednym ruchem.",
+								"poczuj": "Ciężar spływa z karku na ramiona."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Szyja",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Głowa prosto, wzrok przed siebie.",
+								"napnij": "Przyciągnij brodę do mostka, poczuj tył szyi.",
+								"uwaga": "Ruch mały i powolny, bez szarpania."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Wróć głową do środka.",
+								"poczuj": "Kark się wydłuża i mięknie."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Oczy",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Powieki opuszczone.",
+								"napnij": "Zmruż oczy z całej siły, aż poczujesz policzki i skronie.",
+								"uwaga": "Soczewki kontaktowe? Ściskaj delikatniej."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Puść powieki, niech same się ułożą.",
+								"poczuj": "Okolice oczu wygładzają się i ciemnieją."
+							}
+						}
+					]
+				},
+				{
+					"nazwa": "Czoło",
+					"fazy": [
+						{
+							"nazwa": "Napinanie",
+							"czasS": 10,
+							"instrukcje": {
+								"jak": "Oczy zamknięte, twarz luźna.",
+								"napnij": "Unieś brwi, a potem ściągnij je do środka.",
+								"uwaga": "Szczęka zostaje swobodna."
+							}
+						},
+						{
+							"nazwa": "Rozluźnienie",
+							"czasS": 50,
+							"instrukcje": {
+								"pusc": "Wygładź całe czoło.",
+								"poczuj": "Twarz staje się gładka i spokojna."
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

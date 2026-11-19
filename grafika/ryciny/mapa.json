@@ -1,0 +1,62 @@
+{
+  "Przedramiona": {
+    "napiecie": "przedramiona-napiecie.svg",
+    "rozluznienie": "przedramiona-rozluznienie.svg"
+  },
+  "Górne ramiona": {
+    "napiecie": "gorne-ramiona-napiecie.svg",
+    "rozluznienie": "gorne-ramiona-rozluznienie.svg"
+  },
+  "Podudzia": {
+    "napiecie": "podudzia-napiecie.svg",
+    "rozluznienie": "podudzia-rozluznienie.svg"
+  },
+  "Uda": {
+    "napiecie": "uda-napiecie.svg",
+    "rozluznienie": "uda-rozluznienie.svg"
+  },
+  "Brzuch": {
+    "napiecie": "brzuch-napiecie.svg",
+    "rozluznienie": "brzuch-rozluznienie.svg"
+  },
+  "Klatka piersiowa": {
+    "napiecie": "klatka-piersiowa-napiecie.svg",
+    "rozluznienie": "klatka-piersiowa-rozluznienie.svg"
+  },
+  "Barki": {
+    "napiecie": "barki-napiecie.svg",
+    "rozluznienie": "barki-rozluznienie.svg"
+  },
+  "Szyja": {
+    "napiecie": "szyja-napiecie.svg",
+    "rozluznienie": "szyja-rozluznienie.svg"
+  },
+  "Usta i szczęka": {
+    "napiecie": "usta-i-szczeka-napiecie.svg",
+    "rozluznienie": "usta-i-szczeka-rozluznienie.svg"
+  },
+  "Oczy": {
+    "napiecie": "oczy-napiecie.svg",
+    "rozluznienie": "oczy-rozluznienie.svg"
+  },
+  "Dolne czoło": {
+    "napiecie": "dolne-czolo-napiecie.svg",
+    "rozluznienie": "dolne-czolo-rozluznienie.svg"
+  },
+  "Górne czoło": {
+    "napiecie": "gorne-czolo-napiecie.svg",
+    "rozluznienie": "gorne-czolo-rozluznienie.svg"
+  },
+  "Ramiona": {
+    "napiecie": "ramiona-napiecie.svg",
+    "rozluznienie": "ramiona-rozluznienie.svg"
+  },
+  "Nogi": {
+    "napiecie": "nogi-napiecie.svg",
+    "rozluznienie": "nogi-rozluznienie.svg"
+  },
+  "Czoło": {
+    "napiecie": "czolo-napiecie.svg",
+    "rozluznienie": "czolo-rozluznienie.svg"
+  }
+}
