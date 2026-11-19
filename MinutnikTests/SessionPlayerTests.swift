@@ -21,9 +21,11 @@ final class SessionPlayerTests: XCTestCase {
     func testBuildsStepsFromSetInOrder() throws {
         let set = try XCTUnwrap(ExerciseCatalog.bundled().sets.first)
         let player = SessionPlayer(set: set)
-        XCTAssertEqual(player.steps.count, 24)
-        XCTAssertEqual(player.steps[1], PlayerStep(groupIndex: 0, phaseIndex: 1, duration: 50))
-        XCTAssertEqual(player.steps[2], PlayerStep(groupIndex: 1, phaseIndex: 0, duration: 10))
+        XCTAssertEqual(player.steps.count, 27)
+        XCTAssertEqual(player.steps[0], PlayerStep(groupIndex: 0, phaseIndex: 0, duration: 30))
+        XCTAssertEqual(player.steps[2], PlayerStep(groupIndex: 1, phaseIndex: 1, duration: 50))
+        XCTAssertEqual(player.steps[3], PlayerStep(groupIndex: 2, phaseIndex: 0, duration: 10))
+        XCTAssertEqual(player.steps[25], PlayerStep(groupIndex: 13, phaseIndex: 0, duration: 120))
     }
 
     func testReadyStartsFirstPhase() {

@@ -1,0 +1,12 @@
+{
+	"wstep": "Usiądź wygodnie, zamknij oczy i weź kilka spokojnych oddechów.",
+	"relaks": "Posiedź w odprężeniu, oddychaj spokojnie brzuchem.",
+	"powrot": "Policz od pięciu do jednego i otwórz oczy.",
+	"grupy": [
+		{
+			"nazwa": "Przedramiona",
+			"napinanie": { "jak": "Zaciśnij pięści i przyciągnij je do ramion." },
+			"rozluznienie": { "pusc": "Otwórz dłonie, ręce opadają.", "poczuj": "Poczuj ciepło w dłoniach." }
+		}
+	]
+}

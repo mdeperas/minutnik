@@ -5,23 +5,33 @@
 			"nazwa": "12 grup",
 			"grupy": [
 				{
+					"nazwa": "Wstęp",
+					"fazy": [
+						{
+							"nazwa": "Wstęp",
+							"czasS": 30,
+							"instrukcje": {
+								"jak": "Zamknij oczy i się odpręż. Siedząc spokojnie i bez ruchu, kilka razy odetchnij głęboko torem brzusznym."
+							}
+						}
+					]
+				},
+				{
 					"nazwa": "Przedramiona",
 					"fazy": [
 						{
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Ręce leżą swobodnie, dłonie wolne.",
-								"napnij": "Zaciśnij pięści i poczuj napięcie w przedramionach.",
-								"uwaga": "Ramiona zostają luźne. Pracują tylko dłonie."
+								"jak": "Napnij mięśnie przedramion, zaciskając dłonie w pięść i przyciągając je do góry tak, aby prawie dotknęły ramion. Skup się na napinaniu."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Rozprostuj palce i pozwól dłoniom spocząć.",
-								"poczuj": "Dłonie robią się cięższe i cieplejsze."
+								"pusc": "Następnie uwolnij napięcie w przedramionach i dłoniach. Rozluźnij ramiona, opuszczające ręce. Skoncentruj się na uczuciu odprężenia i relaksuj mięśnie.",
+								"poczuj": "Nadal głęboko oddychaj i z każdym wydechem powtarzaj w myślach słowo „odprężenie”."
 							}
 						}
 					]
@@ -33,17 +43,15 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Zegnij ręce w łokciach, dłonie zostaw luźne.",
-								"napnij": "Dociśnij łokcie do boków i napnij ramiona.",
-								"uwaga": "Nie zaciskaj dłoni w pięść."
+								"jak": "Napnij mięśnie górnej części ramion, pochylając się do przodu, wyciągając ramiona do tyłu i próbując zetknąć łokcie za plecami. Skup się na napinaniu."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Opuść ręce swobodnie na uda.",
-								"poczuj": "Ramiona miękną od barków po łokcie."
+								"pusc": "Następnie rozluźnij ramiona i odpręż się, uwalniając całe napięcie. Poczuj różnicę między napięciem a odprężeniem.",
+								"poczuj": "Siedząc spokojnie, powtarzaj słowo „odprężenie”."
 							}
 						}
 					]
@@ -55,17 +63,15 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Postaw stopy płasko na podłodze.",
-								"napnij": "Zegnij stopy tak, by palce celowały w kolana, aż poczujesz łydki.",
-								"uwaga": "Jeśli złapie cię skurcz, napinaj słabiej."
+								"jak": "Napnij mięśnie podudzi, wypychając pięty i kierując palce u stóp w stronę ciała tak, jakby miały dotknąć kolan. Poczuj napięcie w stopach, kostkach, goleniach i łydkach. Skup się na napinaniu."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Rozluźnij stopy i palce.",
-								"poczuj": "Łydki robią się ciepłe i miękkie."
+								"pusc": "Następnie rozluźnij mięśnie i poczuj różnicę między napięciem a odprężeniem.",
+								"poczuj": "Siedząc spokojnie, z każdym głębokim, wychodzącym z brzucha wydechem powtarzaj w myślach słowo „odprężenie”."
 							}
 						}
 					]
@@ -77,17 +83,15 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Usiądź stabilnie, nogi wysuń przed siebie.",
-								"napnij": "Wyprostuj nogi, unieś je lekko i napnij uda.",
-								"uwaga": "Plecy trzymaj przy oparciu."
+								"jak": "Napnij mięśnie ud, łącząc kolana i unosząc nogi. Skup się na napinaniu tych mięśni."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Opuść nogi swobodnie.",
-								"poczuj": "Uda stają się ciężkie i spokojne."
+								"pusc": "Następnie rozluźnij je i poczuj różnicę między napięciem a odprężeniem. Skup się na uczuciu odprężenia.",
+								"poczuj": "Nadal siedząc spokojnie i głęboko oddychając, powtarzaj w myślach słowo „odprężenie”."
 							}
 						}
 					]
@@ -99,17 +103,15 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Oddychaj spokojnie przez nos.",
-								"napnij": "Wciągnij brzuch i napnij go jak przed ciosem.",
-								"uwaga": "Nie wstrzymuj oddechu."
+								"jak": "Napnij mięśnie brzucha, spinając je tak, jakby twój żołądek miał się przykleić od wewnątrz do kręgosłupa. Poczuj napięcie i ucisk; skup się na tej części ciała."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Puść brzuch, niech swobodnie się uniesie.",
-								"poczuj": "Oddech schodzi niżej i płynie sam."
+								"pusc": "Następnie rozluźnij mięśnie brzucha. Poczuj przyjemne odprężenie.",
+								"poczuj": "Siedząc spokojnie, z każdym wydechem powtarzaj w myślach słowo „odprężenie”."
 							}
 						}
 					]
@@ -121,17 +123,15 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Usiądź prosto, ręce opuść luźno.",
-								"napnij": "Weź głęboki wdech i zatrzymaj powietrze.",
-								"uwaga": "Jeśli kręci ci się w głowie, wydychaj wcześniej."
+								"jak": "Napnij mięśnie klatki piersiowej, biorąc głęboki wdech i wstrzymując oddech. Poczuj napięcie w klatce piersiowej i w plecach. Wytrzymaj bez oddychania przez 10 sekund."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Wypuść powietrze długim, spokojnym wydechem.",
-								"poczuj": "Klatka opada, oddech się wyrównuje."
+								"pusc": "Następnie rozluźnij mięśnie, powoli wypuszczając powietrze z płuc, i poczuj różnicę między napięciem a odprężeniem.",
+								"poczuj": "Siedząc spokojnie, nadal głęboko oddychaj, powtarzając w myślach słowo „odprężenie”."
 							}
 						}
 					]
@@ -143,17 +143,15 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Pozwól rękom swobodnie zwisać.",
-								"napnij": "Unieś barki do uszu i przytrzymaj.",
-								"uwaga": "Nie wciągaj głowy w ramiona, broda zostaje na miejscu."
+								"jak": "Napnij mięśnie barków, unosząc barki w kierunku uszu. Skup się na napięciu tej części ciała i szyi."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Opuść barki jednym ruchem.",
-								"poczuj": "Napięcie spływa z karku w dół."
+								"pusc": "Następnie opuść barki i pozwól im się rozluźnić. Skoncentruj się na uczuciu odprężenia.",
+								"poczuj": "Siedząc spokojnie, powtarzaj w myślach słowo „odprężenie”."
 							}
 						}
 					]
@@ -165,17 +163,15 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Trzymaj głowę prosto, patrz przed siebie.",
-								"napnij": "Przyciągnij brodę do mostka, aż poczujesz tył szyi.",
-								"uwaga": "Ruszaj się powoli, bez szarpania."
+								"jak": "Napnij mięśnie szyi, przyciągając brodę do klatki piersiowej i jednocześnie próbując docisnąć szyję do oparcia krzesła lub ściany za tobą. Skup się na napięciu odczuwanym w tylnej części szyi."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Unieś głowę i wróć do pozycji prostej.",
-								"poczuj": "Kark się wydłuża i mięknie."
+								"pusc": "Następnie rozluźnij mięśnie, skoncentruj się na uczuciu odprężenia i poczuj różnicę między napięciem a odprężeniem.",
+								"poczuj": "Siedząc spokojnie, z każdym głębokim wydechem powtarzaj w myślach słowo „odprężenie”."
 							}
 						}
 					]
@@ -187,17 +183,15 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Rozchyl lekko zęby.",
-								"napnij": "Zaciśnij zęby i rozciągnij usta w szerokim uśmiechu.",
-								"uwaga": "Nie zgrzytaj zębami, wystarczy stały nacisk."
+								"jak": "Napnij mięśnie wokół ust i szczęki, zaciskając zęby i odwodząc w tył kąciki ust. Poczuj napięcie w jamie ustnej i szczęce."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Rozluźnij szczękę i lekko rozchyl usta.",
-								"poczuj": "Policzki i szczęka robią się miękkie."
+								"pusc": "Następnie rozluźnij mięśnie, pozwól, aby usta się otworzyły. Skup się na różnicy między napięciem a odprężeniem.",
+								"poczuj": "Siedząc spokojnie, powtarzaj w myślach słowo „odprężenie”."
 							}
 						}
 					]
@@ -209,17 +203,15 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Zamknij oczy.",
-								"napnij": "Zaciśnij mocno powieki, aż poczujesz policzki i skronie.",
-								"uwaga": "Jeśli nosisz soczewki, zaciskaj delikatniej."
+								"jak": "Napnij mięśnie wokół oczu, zaciskając powieki na kilka sekund,"
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Puść powieki, niech same się ułożą.",
-								"poczuj": "Wokół oczu robi się gładko i ciemno."
+								"pusc": "a potem rozluźnij mięśnie tej okolicy. Poczuj różnicę między napięciem a odprężeniem.",
+								"poczuj": "Siedząc spokojnie, głęboko oddychaj brzuchem i powtarzaj w myślach słowo „odprężenie”."
 							}
 						}
 					]
@@ -231,17 +223,15 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Zamknij oczy, twarz zostaw spokojną.",
-								"napnij": "Ściągnij brwi i zmarszcz nos.",
-								"uwaga": "Usta i szczęka zostają luźne."
+								"jak": "Napnij mięśnie dolnej części czoła, ściągając brwi i marszcząc czoło. Skup się na napięciu odczuwanym w tej części czoła."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Puść brwi, niech same się rozsuną.",
-								"poczuj": "Między brwiami robi się gładko i spokojnie."
+								"pusc": "Następnie rozluźnij mięśnie i poczuj różnicę między napięciem a odprężeniem.",
+								"poczuj": "Z każdym wydechem powtarzaj w myślach słowo „odprężenie”."
 							}
 						}
 					]
@@ -253,198 +243,39 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Zamknij oczy i oprzyj głowę.",
-								"napnij": "Unieś brwi wysoko, jak w zdziwieniu.",
-								"uwaga": "Nie otwieraj przy tym oczu."
+								"jak": "Napnij mięśnie górnej części czoła, unosząc brwi. Skup się na doznaniach związanych z unoszeniem brwi i na napięciu odczuwanym w tej części czoła."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Brwi same wracają na miejsce.",
-								"poczuj": "Czoło rozluźnia się aż po skronie."
-							}
-						}
-					]
-				}
-			]
-		},
-		{
-			"nazwa": "8 grup",
-			"grupy": [
-				{
-					"nazwa": "Ramiona",
-					"fazy": [
-						{
-							"nazwa": "Napinanie",
-							"czasS": 10,
-							"instrukcje": {
-								"jak": "Połóż ręce na udach, łokcie lekko zegnij.",
-								"napnij": "Zaciśnij pięści i dociśnij łokcie do boków.",
-								"uwaga": "Barki trzymaj nisko."
-							}
-						},
-						{
-							"nazwa": "Rozluźnienie",
-							"czasS": 50,
-							"instrukcje": {
-								"pusc": "Rozprostuj dłonie i opuść ręce.",
-								"poczuj": "Ręce robią się ciężkie, od palców po barki."
+								"pusc": "Następnie rozluźnij mięśnie i poczuj różnicę między napięciem a odprężeniem.",
+								"poczuj": "Siedząc spokojnie, powtarzaj w myślach słowo „odprężenie”."
 							}
 						}
 					]
 				},
 				{
-					"nazwa": "Nogi",
+					"nazwa": "Pełny relaks",
 					"fazy": [
 						{
-							"nazwa": "Napinanie",
-							"czasS": 10,
+							"nazwa": "Relaks",
+							"czasS": 120,
 							"instrukcje": {
-								"jak": "Postaw stopy na podłodze, kolana zostaw luźne.",
-								"napnij": "Wyprostuj nogi i zegnij stopy palcami w swoją stronę.",
-								"uwaga": "Jeśli złapie cię skurcz, napinaj słabiej."
-							}
-						},
-						{
-							"nazwa": "Rozluźnienie",
-							"czasS": 50,
-							"instrukcje": {
-								"pusc": "Opuść nogi swobodnie na podłogę.",
-								"poczuj": "Ciepło rozchodzi się od ud po stopy."
+								"jak": "Tak oto udało ci się wejść w stan pełnego relaksu. Nadal siedź spokojnie z zamkniętymi oczami i oddychaj głęboko torem brzusznym. Policz w myślach od jeden do pięciu, czując jeszcze głębsze odprężenie. Jeden: pozwól, by zeszło z ciebie całe napięcie. Dwa: poczuj, jak bardziej i bardziej zapadasz się w stan odprężenia. Trzy: doświadczasz coraz głębszego relaksu. Cztery: czujesz duże odprężenie. Pięć: jesteś w stanie całkowitego relaksu. Będąc właśnie w tym stanie, skup się na tym, że czujesz błogość i brak napięcia w mięśniach. Oddychaj głęboko i z każdym wydechem powtarzaj w myślach słowo „odprężenie”."
 							}
 						}
 					]
 				},
 				{
-					"nazwa": "Brzuch",
+					"nazwa": "Powrót",
 					"fazy": [
 						{
-							"nazwa": "Napinanie",
-							"czasS": 10,
+							"nazwa": "Powrót",
+							"czasS": 30,
 							"instrukcje": {
-								"jak": "Oddychaj spokojnie przez nos.",
-								"napnij": "Wciągnij brzuch i napnij go jak przed ciosem.",
-								"uwaga": "Nie wstrzymuj oddechu."
-							}
-						},
-						{
-							"nazwa": "Rozluźnienie",
-							"czasS": 50,
-							"instrukcje": {
-								"pusc": "Puść brzuch, niech swobodnie się uniesie.",
-								"poczuj": "Oddech schodzi niżej i płynie sam."
-							}
-						}
-					]
-				},
-				{
-					"nazwa": "Klatka piersiowa",
-					"fazy": [
-						{
-							"nazwa": "Napinanie",
-							"czasS": 10,
-							"instrukcje": {
-								"jak": "Usiądź prosto, ręce opuść luźno.",
-								"napnij": "Weź głęboki wdech i zatrzymaj powietrze.",
-								"uwaga": "Jeśli kręci ci się w głowie, wydychaj wcześniej."
-							}
-						},
-						{
-							"nazwa": "Rozluźnienie",
-							"czasS": 50,
-							"instrukcje": {
-								"pusc": "Wypuść powietrze długim, spokojnym wydechem.",
-								"poczuj": "Klatka opada, oddech się wyrównuje."
-							}
-						}
-					]
-				},
-				{
-					"nazwa": "Barki",
-					"fazy": [
-						{
-							"nazwa": "Napinanie",
-							"czasS": 10,
-							"instrukcje": {
-								"jak": "Pozwól rękom swobodnie zwisać.",
-								"napnij": "Unieś barki do uszu i przytrzymaj.",
-								"uwaga": "Nie wciągaj głowy w ramiona, broda zostaje na miejscu."
-							}
-						},
-						{
-							"nazwa": "Rozluźnienie",
-							"czasS": 50,
-							"instrukcje": {
-								"pusc": "Opuść barki jednym ruchem.",
-								"poczuj": "Napięcie spływa z karku w dół."
-							}
-						}
-					]
-				},
-				{
-					"nazwa": "Szyja",
-					"fazy": [
-						{
-							"nazwa": "Napinanie",
-							"czasS": 10,
-							"instrukcje": {
-								"jak": "Trzymaj głowę prosto, patrz przed siebie.",
-								"napnij": "Przyciągnij brodę do mostka, aż poczujesz tył szyi.",
-								"uwaga": "Ruszaj się powoli, bez szarpania."
-							}
-						},
-						{
-							"nazwa": "Rozluźnienie",
-							"czasS": 50,
-							"instrukcje": {
-								"pusc": "Unieś głowę i wróć do pozycji prostej.",
-								"poczuj": "Kark się wydłuża i mięknie."
-							}
-						}
-					]
-				},
-				{
-					"nazwa": "Oczy",
-					"fazy": [
-						{
-							"nazwa": "Napinanie",
-							"czasS": 10,
-							"instrukcje": {
-								"jak": "Zamknij oczy.",
-								"napnij": "Zaciśnij mocno powieki, aż poczujesz policzki i skronie.",
-								"uwaga": "Jeśli nosisz soczewki, zaciskaj delikatniej."
-							}
-						},
-						{
-							"nazwa": "Rozluźnienie",
-							"czasS": 50,
-							"instrukcje": {
-								"pusc": "Puść powieki, niech same się ułożą.",
-								"poczuj": "Wokół oczu robi się gładko i ciemno."
-							}
-						}
-					]
-				},
-				{
-					"nazwa": "Czoło",
-					"fazy": [
-						{
-							"nazwa": "Napinanie",
-							"czasS": 10,
-							"instrukcje": {
-								"jak": "Zamknij oczy, twarz zostaw luźną.",
-								"napnij": "Unieś brwi, a potem ściągnij je do środka.",
-								"uwaga": "Szczęka zostaje luźna."
-							}
-						},
-						{
-							"nazwa": "Rozluźnienie",
-							"czasS": 50,
-							"instrukcje": {
-								"pusc": "Zostaw brwi w spokoju, czoło samo zrobi się gładkie.",
-								"poczuj": "Twarz robi się gładka i spokojna."
+								"jak": "Teraz skup się na liczeniu od pięciu do jeden i na powracaniu do stanu czujności. Pięć: twoja czujność stopniowo rośnie. Cztery: czujesz, że wychodzisz ze stanu relaksacji. Trzy: doświadczasz większego pobudzenia. Dwa: otwierasz oczy. Jeden: siedzisz w stanie pełnej świadomości i przytomności."
 							}
 						}
 					]

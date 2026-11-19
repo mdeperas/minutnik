@@ -21,10 +21,15 @@ enum PhaseText {
         }
     }
 
-    static func groupPosition(_ index: Int, of count: Int) -> String { "Grupa \(index + 1) z \(count)" }
+    static func groupPosition(_ index: Int, in set: ExerciseSet) -> String? {
+        guard set.groups[index].isMuscleGroup else { return nil }
+        let muscleGroups = set.groups.filter(\.isMuscleGroup).count
+        let number = set.groups[...index].filter(\.isMuscleGroup).count
+        return "Grupa \(number) z \(muscleGroups)"
+    }
 
     static func summary(of set: ExerciseSet) -> String {
-        "\(groupCount(set.groups.count)) · \(minutes(of: set))"
+        "\(groupCount(set.groups.filter(\.isMuscleGroup).count)) · \(minutes(of: set))"
     }
 
     static func minutes(of set: ExerciseSet) -> String {

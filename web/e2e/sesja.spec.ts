@@ -14,9 +14,11 @@ async function otworz(page: Page, tempo: number) {
 
 test('sesja: Start, Pauza, Pomiń, Wznów, sama kolejna faza i koniec', async ({ page }) => {
 	await otworz(page, 1);
-	const pierwszaGrupa = await grupa(page).textContent();
-	await expect(faza(page)).toHaveText('Napinanie');
+	await expect(faza(page)).toHaveText('Wstęp');
 	await przycisk(page, 'Start').click();
+	await przycisk(page, 'Pomiń').click();
+	await expect(faza(page)).toHaveText('Napinanie');
+	const pierwszaGrupa = await grupa(page).textContent();
 	await przycisk(page, 'Pauza').click();
 	const zamrozone = await page.locator('#sesja .cyfry').textContent();
 	await page.waitForTimeout(1200);
@@ -98,10 +100,12 @@ test('z prefers-reduced-motion pierścień nie zmienia skali', async ({ page }) 
 test('rycina grupy zmienia stan razem z fazą', async ({ page }) => {
 	await otworz(page, 1);
 	const rycina = page.locator('#sesja .rycina');
+	await przycisk(page, 'Start').click();
+	await przycisk(page, 'Pomiń').click();
+	await expect(faza(page)).toHaveText('Napinanie');
 	await expect(rycina).toHaveAttribute('data-plik', /-napiecie\.svg$/);
 	await expect(rycina.locator('.wyroznienie').first()).toBeVisible();
 	const pierwsza = (await rycina.getAttribute('data-plik'))!;
-	await przycisk(page, 'Start').click();
 	await przycisk(page, 'Pomiń').click();
 	await expect(faza(page)).toHaveText('Rozluźnienie');
 	await expect(rycina).toHaveAttribute('data-plik', pierwsza.replace('-napiecie', '-rozluznienie'));
@@ -113,7 +117,8 @@ test('rycina grupy zmienia stan razem z fazą', async ({ page }) => {
 test('ostatnie 3 sekundy fazy tykają: trzy tiki przed rozluźnieniem', async ({ page }) => {
 	await otworz(page, 4);
 	await przycisk(page, 'Start').click();
+	await przycisk(page, 'Pomiń').click();
 	await expect(faza(page)).toHaveText('Rozluźnienie');
 	const { sygnaly } = await page.evaluate(() => (window as unknown as { __nagranie: { sygnaly: string[] } }).__nagranie);
-	expect(sygnaly.slice(0, 5)).toEqual(['napinanie', 'odliczanie', 'odliczanie', 'odliczanie', 'rozluznienie']);
+	expect(sygnaly.slice(1, 6)).toEqual(['napinanie', 'odliczanie', 'odliczanie', 'odliczanie', 'rozluznienie']);
 });

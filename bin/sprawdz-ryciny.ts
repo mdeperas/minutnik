@@ -8,11 +8,13 @@ const zestawy = pliki.length ? pliki : domyslne;
 const STANY = ['napiecie', 'rozluznienie'] as const;
 const mapa: Record<string, Record<(typeof STANY)[number], string>> = JSON.parse(readFileSync(join(katalogRycin, 'mapa.json'), 'utf8'));
 
-type Katalog = { zestawy: { nazwa: string; grupy: { nazwa: string }[] }[] };
+type Katalog = { zestawy: { nazwa: string; grupy: { nazwa: string; fazy: { nazwa: string }[] }[] }[] };
+const grupaMiesni = (g: { fazy: { nazwa: string }[] }) => g.fazy.some((f) => f.nazwa.toLowerCase().startsWith('napin'));
 
 const braki = zestawy.flatMap((plik) =>
 	(JSON.parse(readFileSync(plik, 'utf8')) as Katalog).zestawy.flatMap((z) =>
 		z.grupy
+			.filter(grupaMiesni)
 			.flatMap((g) => STANY.filter((stan) => !mapa[g.nazwa]?.[stan] || !existsSync(join(katalogRycin, mapa[g.nazwa][stan]))).map((stan) => `${plik}: ${z.nazwa} / ${g.nazwa} (${stan})`))
 	)
 );

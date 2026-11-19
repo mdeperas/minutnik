@@ -61,7 +61,9 @@ export function otworzSesje(zestaw: Zestaw, sciezka: Sciezka, ekran: HTMLElement
 			})
 		);
 		grupa.textContent = zestaw.grupy[k.grupa].nazwa;
-		pozycja.textContent = pozycjaGrupy(k.grupa, zestaw.grupy.length);
+		const numerGrupy = pozycjaGrupy(zestaw, k.grupa);
+		pozycja.textContent = numerGrupy ?? '';
+		pozycja.hidden = numerGrupy === undefined;
 		faza.textContent = k.nazwa;
 		const obraz = svgRyciny(zestaw.grupy[k.grupa].nazwa, rodzaj);
 		rycina.hidden = !obraz;

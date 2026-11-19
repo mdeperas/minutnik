@@ -2,25 +2,33 @@ import XCTest
 @testable import Minutnik
 
 final class ExerciseCatalogTests: XCTestCase {
-    func testBundledCatalogHasPrmSetsWithTwelveAndEightGroups() throws {
+    func testBundledCatalogHasOnePrmSetWithIntroTwelveGroupsRelaxAndReturn() throws {
         let catalog = try ExerciseCatalog.bundled()
-        XCTAssertEqual(catalog.sets.map(\.name), ["12 grup", "8 grup"])
-        XCTAssertEqual(catalog.sets.map(\.groups.count), [12, 8])
+        XCTAssertEqual(catalog.sets.map(\.name), ["12 grup"])
+        let groups = try XCTUnwrap(catalog.sets.first).groups
+        XCTAssertEqual(groups.count, 15)
+        XCTAssertEqual(groups.filter(\.isMuscleGroup).count, 12)
+        XCTAssertEqual(groups.first?.phases.map(\.name), ["Wstęp"])
+        XCTAssertEqual(groups.suffix(2).map { $0.phases.map(\.name) }, [["Relaks"], ["Powrót"]])
     }
 
-    func testEveryBundledGroupTensesTenAndRelaxesFiftySeconds() throws {
-        let catalog = try ExerciseCatalog.bundled()
-        let phases = catalog.sets.flatMap(\.groups).map { $0.phases.map(\.durationSeconds) }
-        XCTAssertEqual(Set(phases), [[10, 50]])
+    func testBundledTimesAreIntroThirtyGroupsTenAndFiftyRelaxTwoMinutesReturnThirty() throws {
+        let groups = try XCTUnwrap(ExerciseCatalog.bundled().sets.first).groups
+        let times = groups.map { $0.phases.map(\.durationSeconds) }
+        XCTAssertEqual(times.first, [30])
+        XCTAssertEqual(Set(times.dropFirst().dropLast(2)), [[10, 50]])
+        XCTAssertEqual(Array(times.suffix(2)), [[120], [30]])
     }
 
     func testBundledPhasesCarryPrmInstructions() throws {
-        let catalog = try ExerciseCatalog.bundled()
-        let first = try XCTUnwrap(catalog.sets.first?.groups.first)
+        let groups = try XCTUnwrap(ExerciseCatalog.bundled().sets.first).groups
+        XCTAssertFalse(try XCTUnwrap(groups[0].phases[0].instructions?.how).isEmpty)
+        let first = groups[1]
         XCTAssertEqual(first.name, "Przedramiona")
         XCTAssertFalse(try XCTUnwrap(first.phases[0].instructions?.how).isEmpty)
         XCTAssertNotNil(first.phases[1].instructions?.feel)
         XCTAssertNil(first.phases[1].instructions?.tense)
+        XCTAssertFalse(try XCTUnwrap(groups[14].phases[0].instructions?.how).isEmpty)
     }
 
     func testUnknownVersionGivesReadableError() {

@@ -1,8 +1,5 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-[ -f lokalne/srodowisko.sh ] && source lokalne/srodowisko.sh
-: "${ZRODLO_PRM:?Brak ZRODLO_PRM (ścieżka do grupy-prm.ts) w lokalne/srodowisko.sh}"
-mkdir -p lokalne
-export ZRODLO_PRM
+[ -f lokalne/prm-ksiazka.json ] || { echo "Brak lokalne/prm-ksiazka.json (teksty PRM z książki)" >&2; exit 1; }
 exec node --no-warnings bin/generuj-zestawy.ts

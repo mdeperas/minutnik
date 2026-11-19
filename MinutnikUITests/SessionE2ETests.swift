@@ -15,8 +15,8 @@ final class SessionE2ETests: XCTestCase {
     func testListShowsSetsWithSummary() {
         let first = app.buttons["start.set.0"]
         XCTAssertTrue(first.waitForExistence(timeout: 5))
-        XCTAssertTrue(first.label.contains("12 grup · 12 min"), first.label)
-        XCTAssertTrue(app.buttons["start.set.1"].label.contains("8 grup · 8 min"))
+        XCTAssertTrue(first.label.contains("12 grup · 15 min"), first.label)
+        XCTAssertFalse(app.buttons["start.set.1"].exists)
     }
 
     @MainActor
@@ -26,6 +26,9 @@ final class SessionE2ETests: XCTestCase {
         let remaining = app.staticTexts["session.remainingPhase"]
         XCTAssertTrue(remaining.waitForExistence(timeout: 5))
         XCTAssertTrue(remaining.label.hasPrefix("Zostało "))
+        XCTAssertEqual(app.staticTexts["session.group"].label, "Wstęp")
+        XCTAssertFalse(app.staticTexts["session.groupPosition"].exists)
+        app.buttons["session.skip"].tap()
         XCTAssertEqual(app.staticTexts["session.groupPosition"].label, "Grupa 1 z 12")
         XCTAssertEqual(app.staticTexts["session.group"].label, "Przedramiona")
         app.buttons["session.pause"].tap()
@@ -42,7 +45,7 @@ final class SessionE2ETests: XCTestCase {
 
     @MainActor
     func testNoBackDuringSessionAndPauseLeadsBackToList() {
-        app.buttons["start.set.1"].tap()
+        app.buttons["start.set.0"].tap()
         app.buttons["session.start"].tap()
         XCTAssertEqual(app.navigationBars.buttons.count, 0)
         app.buttons["session.pause"].tap()
@@ -50,18 +53,25 @@ final class SessionE2ETests: XCTestCase {
         XCTAssertEqual(app.navigationBars.buttons.count, 0)
         app.buttons["session.stop"].tap()
         app.buttons["session.done"].tap()
-        XCTAssertTrue(app.buttons["start.set.1"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["start.set.0"].waitForExistence(timeout: 5))
     }
 
     @MainActor
-    func testSkippingAllPhasesEndsSession() {
-        app.buttons["start.set.1"].tap()
+    func testSkippingAllPhasesEndsSessionAfterRelaxAndReturn() {
+        app.buttons["start.set.0"].tap()
         app.buttons["session.start"].tap()
-        for _ in 0..<16 { app.buttons["session.skip"].tap() }
+        for _ in 0..<25 { app.buttons["session.skip"].tap() }
+        XCTAssertEqual(app.staticTexts["session.group"].label, "Pełny relaks")
+        XCTAssertEqual(app.staticTexts["session.phase"].label, "Relaks")
+        XCTAssertTrue(app.descendants(matching: .any)["session.breath"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.staticTexts["session.groupPosition"].exists)
+        app.buttons["session.skip"].tap()
+        XCTAssertEqual(app.staticTexts["session.group"].label, "Powrót")
+        app.buttons["session.skip"].tap()
         XCTAssertTrue(app.buttons["session.done"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["session.phase"].label, "Koniec sesji")
         app.buttons["session.done"].tap()
-        XCTAssertTrue(app.buttons["start.set.1"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["start.set.0"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.descendants(matching: .any)["history.row.0"].exists)
         XCTAssertFalse(app.staticTexts["Historia"].exists)
     }
@@ -70,6 +80,7 @@ final class SessionE2ETests: XCTestCase {
     func testFigureFollowsPhase() throws {
         app.buttons["start.set.0"].tap()
         app.buttons["session.start"].tap()
+        app.buttons["session.skip"].tap()
         app.buttons["session.pause"].tap()
         XCTAssertTrue(app.buttons["session.resume"].waitForExistence(timeout: 5))
         let figure = app.images["session.figure"]
@@ -87,6 +98,7 @@ final class SessionE2ETests: XCTestCase {
     func testRelaxationShowsBoxBreathAndFigureZooms() {
         app.buttons["start.set.0"].tap()
         app.buttons["session.start"].tap()
+        app.buttons["session.skip"].tap()
         XCTAssertFalse(app.descendants(matching: .any)["session.breath"].exists)
         app.buttons["session.skip"].tap()
         let breath = app.descendants(matching: .any)["session.breath"]
@@ -104,6 +116,7 @@ final class SessionE2ETests: XCTestCase {
     func testSessionFitsWithPwaSizedRing() throws {
         app.buttons["start.set.0"].tap()
         app.buttons["session.start"].tap()
+        app.buttons["session.skip"].tap()
         let ring = app.descendants(matching: .any)["session.ring"]
         let instructions = app.descendants(matching: .any)["session.instructions"]
         for name in ["napinanie", "rozluznienie"] {

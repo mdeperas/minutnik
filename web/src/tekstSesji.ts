@@ -1,4 +1,5 @@
-import type { Instrukcje, Zestaw } from './katalog';
+import type { Grupa, Instrukcje, Zestaw } from './katalog';
+import { rodzajFazy } from './wyglad';
 
 export interface LiniaInstrukcji {
 	etykieta: string;
@@ -17,8 +18,14 @@ export function linieInstrukcji(instrukcje: Instrukcje | undefined): LiniaInstru
 	return kandydaci.flatMap(([etykieta, tekst]) => (tekst ? [{ etykieta, tekst }] : []));
 }
 
-export function pozycjaGrupy(indeks: number, ile: number): string {
-	return `Grupa ${indeks + 1} z ${ile}`;
+export function grupaMiesni(grupa: Grupa): boolean {
+	return grupa.fazy.some((f) => rodzajFazy(f.nazwa) === 'napinanie');
+}
+
+export function pozycjaGrupy(zestaw: Zestaw, indeks: number): string | undefined {
+	if (!grupaMiesni(zestaw.grupy[indeks])) return undefined;
+	const numer = zestaw.grupy.slice(0, indeks + 1).filter(grupaMiesni).length;
+	return `Grupa ${numer} z ${zestaw.grupy.filter(grupaMiesni).length}`;
 }
 
 export function liczbaGrup(ile: number): string {

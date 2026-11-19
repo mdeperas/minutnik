@@ -54,6 +54,8 @@ struct ExerciseGroup: Decodable, Equatable {
     let name: String
     let phases: [ExercisePhase]
 
+    var isMuscleGroup: Bool { phases.contains { PhaseKind(phaseName: $0.name) == .tension } }
+
     enum CodingKeys: String, CodingKey {
         case name = "nazwa"
         case phases = "fazy"

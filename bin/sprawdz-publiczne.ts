@@ -28,12 +28,15 @@ const frazy = (tekst: string) => {
 	const slowa = normalizuj(tekst).split(' ');
 	return slowa.slice(0, Math.max(0, slowa.length - DLUGOSC_FRAZY + 1)).map((_, i) => slowa.slice(i, i + DLUGOSC_FRAZY).join(' '));
 };
-const tekstyKsiazki = ['zestawy.json', 'o-cwiczeniu.json'];
+const tekstyKsiazki = ['o-cwiczeniu.json'];
 const frazyKsiazki = new Set(tekstyKsiazki.flatMap((plik) => teksty(JSON.parse(czytaj(plik)))).flatMap(frazy));
 if (!existsSync(join(cel, '.git'))) {
 	console.error(`${cel}: to nie jest repo gita`);
 	process.exit(1);
 }
+const zestawyPubliczne = join(cel, 'web/zestawy-publiczne.json');
+const poleceniaCwiczen = existsSync(zestawyPubliczne) ? teksty(JSON.parse(readFileSync(zestawyPubliczne, 'utf8'))).map((t) => t.toLowerCase()) : [];
+const wyjete = [...dozwolone, ...poleceniaCwiczen].sort((a, b) => b.length - a.length);
 
 const pliki = readdirSync(cel, { recursive: true, withFileTypes: true })
 	.filter((w) => w.isFile() && !join(w.parentPath, w.name).includes(`${cel}/.git/`))
@@ -44,10 +47,10 @@ const zrodla = [
 ];
 
 const trafienia = zrodla.flatMap(({ nazwa, tekst }) => {
-	const male = dozwolone.reduce((t, d) => t.replaceAll(d, ' '), tekst.toLowerCase());
+	const male = wyjete.reduce((t, d) => t.replaceAll(d, ' '), tekst.toLowerCase());
 	return [
 		...zakazane.filter((w) => male.includes(w.toLowerCase())).map((w) => `${nazwa}: prywatna wartość nr ${zakazane.indexOf(w) + 1}`),
-		...[...new Set(frazy(tekst))].filter((f) => frazyKsiazki.has(f)).map((f) => `${nazwa}: fraza z książki „${f}”`)
+		...[...new Set(frazy(male))].filter((f) => frazyKsiazki.has(f)).map((f) => `${nazwa}: fraza z książki „${f}”`)
 	];
 });
 

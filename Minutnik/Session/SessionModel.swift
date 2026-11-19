@@ -60,7 +60,7 @@ final class SessionModel {
     var shownPhaseName: String? { shownStep.map { phaseNames[$0] } }
 
     var currentGroupPosition: String? {
-        shownStep.map { PhaseText.groupPosition(player.steps[$0].groupIndex, of: set.groups.count) }
+        shownStep.flatMap { PhaseText.groupPosition(player.steps[$0].groupIndex, in: set) }
     }
 
     var currentPhaseDuration: TimeInterval? { currentStep.map { player.steps[$0].duration } }

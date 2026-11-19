@@ -8,6 +8,7 @@ test('rozluźnienie: oddychające kółko 4-3-2-1, pierścień i duży zegar faz
 	await page.goto('');
 	await page.getByRole('button', { name: /^12 grup/ }).click();
 	await przycisk(page, 'Start').click();
+	await przycisk(page, 'Pomiń').click();
 	await expect(page.locator('#sesja .oddech')).toBeHidden();
 	await przycisk(page, 'Pomiń').click();
 	const oddech = page.locator('#sesja .oddech');
@@ -32,6 +33,7 @@ test('stuknięcie w rycinę powiększa ją, drugie zwija', async ({ page }) => {
 	await page.goto('');
 	await page.getByRole('button', { name: /^12 grup/ }).click();
 	await przycisk(page, 'Start').click();
+	await przycisk(page, 'Pomiń').click();
 	const rycina = page.locator('#sesja .rycina');
 	await rycina.click();
 	await expect(rycina).toHaveClass(/powiekszona/);

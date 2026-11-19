@@ -15,12 +15,13 @@ test('ukrycie strony na 3 fazy: po powrocie właściwa faza, jeden sygnał i pon
 	await otworz(page, 50);
 	await page.evaluate(() => {
 		document.querySelector<HTMLButtonElement>('#sesja [data-akcja="start"]')!.click();
+		document.querySelector<HTMLButtonElement>('#sesja [data-akcja="pomin"]')!.click();
 		(window as unknown as { __widocznosc: { widoczna: boolean } }).__widocznosc.widoczna = false;
 		document.dispatchEvent(new Event('visibilitychange'));
 	});
 	await page.waitForTimeout(1800);
 	const wTle = await nagranie(page);
-	expect(wTle.sygnaly).toEqual(['napinanie']);
+	expect(wTle.sygnaly).toEqual(['rozluznienie', 'napinanie']);
 	expect(wTle.odblokowania).toBe(1);
 	expect(wTle.trzymania).toBe(1);
 	await expect(sesja(page).locator('.pozycja')).toHaveText('Grupa 1 z 12');
@@ -28,7 +29,7 @@ test('ukrycie strony na 3 fazy: po powrocie właściwa faza, jeden sygnał i pon
 	await expect(sesja(page).locator('.faza')).toHaveText('Rozluźnienie');
 	await expect(sesja(page).locator('.pozycja')).toHaveText('Grupa 2 z 12');
 	const poPowrocie = await nagranie(page);
-	expect(poPowrocie.sygnaly).toEqual(['napinanie', 'rozluznienie']);
+	expect(poPowrocie.sygnaly).toEqual(['rozluznienie', 'napinanie', 'rozluznienie']);
 	expect(poPowrocie.trzymania).toBe(2);
 	await expect(sesja(page).locator('.uwaga-ekran')).toBeHidden();
 });
@@ -38,9 +39,9 @@ test('ekran trzymany od Startu do Przerwij, Pomiń gra sygnał, koniec gra sygna
 	await przycisk(page, 'Start').click();
 	await przycisk(page, 'Pauza').click();
 	await przycisk(page, 'Pomiń').click();
-	expect(await nagranie(page)).toMatchObject({ sygnaly: ['napinanie', 'rozluznienie'], trzymania: 1, puszczenia: 0 });
+	expect(await nagranie(page)).toMatchObject({ sygnaly: ['rozluznienie', 'napinanie'], trzymania: 1, puszczenia: 0 });
 	await przycisk(page, 'Przerwij').click();
-	expect(await nagranie(page)).toMatchObject({ sygnaly: ['napinanie', 'rozluznienie'], puszczenia: 1 });
+	expect(await nagranie(page)).toMatchObject({ sygnaly: ['rozluznienie', 'napinanie'], puszczenia: 1 });
 });
 
 test('naturalny koniec sesji: sygnał końca i ekran puszczony', async ({ page }) => {

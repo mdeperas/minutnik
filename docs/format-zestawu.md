@@ -16,13 +16,16 @@ Struktura: plik → zestawy → grupy → fazy. Fazy wykonuje się po kolei, ka�
 | `fazy[].czasS` | liczba | Domyślny czas fazy w sekundach. |
 | `fazy[].instrukcje` | obiekt, opcjonalny | Teksty: `jak`, `napnij`, `uwaga`, `pusc`, `poczuj` — każdy opcjonalny. |
 
-PRM: każda grupa ma dwie fazy — „Napinanie” 10 s (`jak`, `napnij`, `uwaga`) i „Rozluźnienie” 50 s (`pusc`, `poczuj`).
+PRM: jeden zestaw „12 grup” = krok „Wstęp” (faza „Wstęp” 30 s), 12 grup mięśni z dwiema fazami — „Napinanie” 10 s (`jak`, `napnij`, `uwaga`) i „Rozluźnienie” 50 s (`pusc`, `poczuj`), potem „Pełny relaks” (faza „Relaks” 2 min) i „Powrót” (faza „Powrót” 30 s); kroki bez napinania mają tekst w `jak`.
+
+Grupa mięśni = grupa z fazą, której nazwa zaczyna się od „Napin”. Tylko takie liczą się do „Grupa N z M” i liczby grup na karcie zestawu i tylko one mają ryciny. Każda inna faza wygląda jak rozluźnienie (szałwia, oddech pudełkowy).
 
 Dwa pliki o tej samej strukturze i czasach:
 
-- `web/zestawy-publiczne.json` (w repo): instrukcje własnymi słowami. Bierze go zawsze PWA i apka iOS, gdy nie ma pliku lokalnego.
+- `web/zestawy-publiczne.json` (w repo): te same teksty co w apce iOS (kopia 1:1 `lokalne/zestawy.json`). Bierze go zawsze PWA i apka iOS, gdy nie ma pliku lokalnego.
 - `lokalne/zestawy.json` (poza gitem, `.gitignore`): teksty z książki, tylko do apki iOS na własnym telefonie.
-  Generuje go `bin/generuj-zestawy` (Node ≥ 22.18, bez pakietów) ze źródła `ZRODLO_PRM` w `lokalne/srodowisko.sh`.
+  Generuje go `bin/generuj-zestawy` (Node ≥ 22.18, bez pakietów) z `lokalne/prm-ksiazka.json` (teksty z książki: `wstep`, `relaks`, `powrot`, `grupy[]` z instrukcjami napinania i rozluźnienia; wzór w `lokalne.example/`); czasy i nazwy faz dokłada generator.
+  Źródłem nie jest `grupy-prm.ts` z kursu, bo ten plik jest wspólny ze stronami kursu i nie może mieć tekstów książki.
   Build iOS kopiuje go do apki (`bin/zestawy-do-apki`, faza „Zestawy” w `project.yml`); bez niego kopiuje wariant publiczny.
 
 Po regeneracji `bin/sprawdz-wariant-zestawow` pilnuje, że struktura wariantu publicznego zgadza się z plikiem lokalnym (bez pliku lokalnego sprawdza tylko niepuste teksty).

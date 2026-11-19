@@ -10,8 +10,14 @@ describe('tekst sesji', () => {
 
 	it('odmiana grup, pozycja, czas zestawu i zegar', () => {
 		expect([1, 2, 5, 12, 22, 112].map(liczbaGrup)).toEqual(['1 grupa', '2 grupy', '5 grup', '12 grup', '22 grupy', '112 grup']);
-		expect(pozycjaGrupy(0, 12)).toBe('Grupa 1 z 12');
 		expect(minutyZestawu({ nazwa: 'x', grupy: [{ nazwa: 'a', fazy: [{ nazwa: 'Napinanie', czasS: 121 }] }] })).toBe('3 min');
 		expect([minutySekundy(0), minutySekundy(714_001), minutySekundy(-5)]).toEqual(['0:00', '11:55', '0:00']);
+	});
+
+	it('pozycja liczy tylko grupy z napinaniem, wstęp i powrót bez numeru', () => {
+		const krok = (nazwa: string) => ({ nazwa, fazy: [{ nazwa, czasS: 30 }] });
+		const miesnie = { nazwa: 'g', fazy: [{ nazwa: 'Napinanie', czasS: 10 }, { nazwa: 'Rozluźnienie', czasS: 50 }] };
+		const zestaw = { nazwa: 'x', grupy: [krok('Wstęp'), miesnie, miesnie, krok('Powrót')] };
+		expect([0, 1, 2, 3].map((i) => pozycjaGrupy(zestaw, i))).toEqual([undefined, 'Grupa 1 z 2', 'Grupa 2 z 2', undefined]);
 	});
 });

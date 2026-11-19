@@ -23,6 +23,6 @@ final class ReadingE2ETests: XCTestCase {
         app.navigationBars.buttons.firstMatch.tap()
         XCTAssertTrue(app.staticTexts["start.title"].waitForExistence(timeout: 5))
         XCTAssertTrue(about.isHittable)
-        XCTAssertTrue(app.buttons["start.set.1"].isHittable)
+        XCTAssertTrue(app.buttons["start.set.0"].isHittable)
     }
 }

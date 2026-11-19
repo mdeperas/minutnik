@@ -3,12 +3,12 @@ import surowe from 'virtual:zestawy';
 import { BladKatalogu, dekodujKatalog } from './katalog';
 
 describe('dekodujKatalog', () => {
-	it('czyta wbudowany PRM: 12 i 8 grup, fazy 10 i 50 s z instrukcjami', () => {
+	it('czyta wbudowany PRM: wstęp, 12 grup z fazami 10 i 50 s, relaks i powrót', () => {
 		const zestawy = dekodujKatalog(surowe);
-		expect(zestawy.map((z) => [z.nazwa, z.grupy.length])).toEqual([['12 grup', 12], ['8 grup', 8]]);
-		const [napinanie, rozluznienie] = zestawy[0].grupy[0].fazy;
+		expect(zestawy.map((z) => [z.nazwa, z.grupy.length])).toEqual([['12 grup', 15]]);
+		const [napinanie, rozluznienie] = zestawy[0].grupy[1].fazy;
 		expect([napinanie.nazwa, napinanie.czasS, rozluznienie.nazwa, rozluznienie.czasS]).toEqual(['Napinanie', 10, 'Rozluźnienie', 50]);
-		expect(napinanie.instrukcje?.napnij).toBeTruthy();
+		expect(napinanie.instrukcje?.jak).toBeTruthy();
 		expect(rozluznienie.instrukcje?.pusc).toBeTruthy();
 	});
 

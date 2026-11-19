@@ -15,13 +15,16 @@ final class PhaseTextTests: XCTestCase {
         XCTAssertEqual(PhaseText.lines(nil), [])
     }
 
-    func testGroupPositionAndSetSummary() {
-        XCTAssertEqual(PhaseText.groupPosition(0, of: 12), "Grupa 1 z 12")
+    func testGroupPositionAndSetSummaryCountOnlyMuscleGroups() {
+        let step = { (name: String, seconds: Int) in ExerciseGroup(name: name, phases: [ExercisePhase(name: name, durationSeconds: seconds, instructions: nil)]) }
+        let muscle = ExerciseGroup(name: "g", phases: [ExercisePhase(name: "Napinanie", durationSeconds: 10, instructions: nil),
+                                                       ExercisePhase(name: "Rozluźnienie", durationSeconds: 50, instructions: nil)])
+        let set = ExerciseSet(name: "x", groups: [step("Wstęp", 30)] + Array(repeating: muscle, count: 8) + [step("Relaks", 120), step("Powrót", 31)])
+        XCTAssertNil(PhaseText.groupPosition(0, in: set))
+        XCTAssertEqual(PhaseText.groupPosition(1, in: set), "Grupa 1 z 8")
+        XCTAssertEqual(PhaseText.groupPosition(8, in: set), "Grupa 8 z 8")
+        XCTAssertNil(PhaseText.groupPosition(10, in: set))
+        XCTAssertEqual(PhaseText.summary(of: set), "8 grup · 12 min")
         XCTAssertEqual([1, 2, 5, 12, 22].map(PhaseText.groupCount), ["1 grupa", "2 grupy", "5 grup", "12 grup", "22 grupy"])
-        let set = ExerciseSet(name: "x", groups: (1...8).map { _ in
-            ExerciseGroup(name: "g", phases: [ExercisePhase(name: "a", durationSeconds: 10, instructions: nil),
-                                              ExercisePhase(name: "b", durationSeconds: 50, instructions: nil)])
-        } + [ExerciseGroup(name: "g", phases: [ExercisePhase(name: "a", durationSeconds: 1, instructions: nil)])])
-        XCTAssertEqual(PhaseText.summary(of: set), "9 grup · 9 min")
     }
 }

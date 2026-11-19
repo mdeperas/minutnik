@@ -40,6 +40,6 @@ for (const rozmiar of ekrany) {
 test('393×852: zrzut ekranu startowego', async ({ page }) => {
 	await page.setViewportSize(ekrany[1]);
 	await page.goto('');
-	await expect(page.getByRole('list', { name: 'Zestawy' }).getByRole('button')).toHaveCount(2);
+	await expect(page.getByRole('list', { name: 'Zestawy' }).getByRole('button')).toHaveCount(1);
 	await page.screenshot({ path: process.env.MINUTNIK_ZRZUT ?? 'test-results/minutnik-start.png' });
 });
