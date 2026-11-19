@@ -10,7 +10,6 @@ const srodowisko = srodowiskoPrzegladarki(window.__minutnikPodrobki);
 const listaEkran = document.querySelector<HTMLElement>('#lista-ekran')!;
 const lista = document.querySelector<HTMLUListElement>('#zestawy')!;
 const sesja = document.querySelector<HTMLElement>('#sesja')!;
-const pytanie = document.querySelector<HTMLDialogElement>('#pytanie')!;
 const historia = new Historia(srodowisko.magazynHistorii);
 
 listaEkran.querySelector<HTMLElement>('.wersja')!.textContent = `Wersja ${__WERSJA__} · ${__DATA_WYDANIA__}`;
@@ -44,7 +43,7 @@ try {
 		przycisk.addEventListener('click', () => {
 			listaEkran.hidden = true;
 			aktualizacja.poczatekSesji();
-			otworzSesje(zestaw, sesja, pytanie, srodowisko, historia, () => {
+			otworzSesje(zestaw, sesja, srodowisko, historia, () => {
 				aktualizacja.koniecSesji();
 				listaEkran.hidden = false;
 				przycisk.focus();

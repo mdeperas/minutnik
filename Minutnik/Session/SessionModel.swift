@@ -15,11 +15,13 @@ final class SessionModel {
     private let signals: SignalPlayer
     private let notifier: PhaseNotifier
     private let history: SessionHistory
+    private let haptics: HapticPlayer
+    private var lastBeat: HapticBeat?
     private let figures: FigureCatalog?
     private var pausedByInterruption = false
     private var startedAt: Date?
 
-    init(set: ExerciseSet, clock: SessionClock, signals: SignalPlayer, notifier: PhaseNotifier, audioEvents: AudioSessionEvents, history: SessionHistory, figures: FigureCatalog? = nil) {
+    init(set: ExerciseSet, clock: SessionClock, signals: SignalPlayer, notifier: PhaseNotifier, audioEvents: AudioSessionEvents, history: SessionHistory, haptics: HapticPlayer, figures: FigureCatalog? = nil) {
         self.player = SessionPlayer(set: set)
         self.setName = set.name
         self.set = set
@@ -28,6 +30,7 @@ final class SessionModel {
         self.signals = signals
         self.notifier = notifier
         self.history = history
+        self.haptics = haptics
         self.figures = figures
         self.now = clock.now
         audioEvents.onEvent { [weak self] event in self?.handle(event) }
@@ -54,7 +57,7 @@ final class SessionModel {
     }
 
     var hapticBeat: HapticBeat? {
-        guard let step = currentStep, case .running = player.state, let duration = currentPhaseDuration else { return nil }
+        guard let step = currentStep, let duration = currentPhaseDuration else { return nil }
         return HapticBeat.at(step: step, kind: PhaseKind(phaseName: phaseNames[step]), remaining: remainingInPhase, duration: duration)
     }
 
@@ -97,6 +100,7 @@ final class SessionModel {
         let before = player.state
         now = clock.now
         let events = action(&player, now)
+        playHaptics(after: before)
         guard player.state != before else { return }
         pausedByInterruption = false
         switch player.state {
@@ -120,6 +124,13 @@ final class SessionModel {
             clock.stopTicking()
         }
         Log.session.notice("stan: \(String(describing: self.player.state), privacy: .public)")
+    }
+
+    private func playHaptics(after before: PlayerState) {
+        let beat = hapticBeat
+        defer { lastBeat = beat }
+        if player.state == .finished, before != .finished { return haptics.play(.sessionFinished) }
+        if let cue = HapticBeat.cue(from: lastBeat, to: beat) { haptics.play(cue) }
     }
 
     private func endSession(phasesDone: Int) {

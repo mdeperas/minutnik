@@ -39,22 +39,17 @@
 			<div class="scena">
 			<div class="pierscien">
 				<svg viewBox="0 0 200 200" aria-hidden="true">
+					<circle class="pluca" cx="100" cy="100" r="74"></circle>
 					<circle class="tor" cx="100" cy="100" r="88"></circle>
 					<circle class="postep" cx="100" cy="100" r="88" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0" transform="rotate(-90 100 100)"></circle>
 				</svg>
 				<div class="srodek">
 					<span class="cyfry" role="timer"></span>
 					<span class="faza" aria-live="polite"></span>
+					<span class="oddech-etap" aria-live="polite"></span>
 				</div>
 			</div>
-			<div class="oddech" hidden>
-				<svg viewBox="0 0 40 40" aria-hidden="true">
-					<rect class="oddech-tor" x="4" y="4" width="32" height="32" rx="3"></rect>
-					<rect class="oddech-obrys" x="4" y="4" width="32" height="32" rx="3" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></rect>
-					<rect class="oddech-pluca" x="12" y="12" width="16" height="16" rx="2"></rect>
-				</svg>
-				<p class="oddech-napis"><span class="oddech-etap" aria-live="polite"></span> <span class="oddech-sekunda"></span></p>
-			</div>
+			<p class="oddech" hidden><span class="oddech-faza"></span> <span class="oddech-zostalo"></span></p>
 			<div class="rycina" data-akcja="rycina" aria-hidden="true" hidden></div>
 			</div>
 			<div class="zaslona" data-akcja="rycina" hidden></div>
@@ -72,13 +67,6 @@
 			</div>
 		</main>
 
-		<dialog id="pytanie" aria-labelledby="pytanie-tytul">
-			<h2 id="pytanie-tytul">Przerwać sesję?</h2>
-			<div class="para">
-				<button type="button" class="przycisk" data-akcja="dalej" autofocus>Ćwiczę dalej</button>
-				<button type="button" class="przycisk wyjscie" data-akcja="przerwij-i-wyjdz">Przerwij</button>
-			</div>
-		</dialog>
 		<script type="module" src="/src/main.ts"></script>
 	</body>
 </html>

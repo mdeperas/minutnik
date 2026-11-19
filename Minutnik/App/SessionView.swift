@@ -4,7 +4,6 @@ struct SessionView: View {
     let model: SessionModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var confirmsLeaving = false
     @State private var figureZoomed = false
     @State private var zoomToken = 0
     @State private var ringSpin = 0.0
@@ -19,9 +18,6 @@ struct SessionView: View {
             .layoutPriority(1)
             ring
                 .frame(minHeight: 96, maxHeight: .infinity)
-            if let breath = model.currentBreath, model.isInProgress {
-                BreathIndicator(breath: breath, color: Color(PhaseKind.relaxation.ringColor), reduceMotion: reduceMotion)
-            }
             instructions
                 .layoutPriority(1)
         }
@@ -33,28 +29,11 @@ struct SessionView: View {
         .navigationTitle(model.setName)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(model.isInProgress)
-        .toolbar {
-            if model.isInProgress {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Wróć") { confirmsLeaving = true }.accessibilityIdentifier("session.back")
-                }
-            }
-        }
-        .alert("Przerwać sesję?", isPresented: $confirmsLeaving) {
-            Button("Przerwij", role: .destructive) {
-                model.stop()
-                dismiss()
-            }
-            Button("Ćwiczę dalej", role: .cancel) {}
-        }
-        .sensoryFeedback(.impact, trigger: model.currentStep) { _, step in step != nil }
-        .sensoryFeedback(.impact(weight: .light), trigger: model.hapticBeat) { old, new in HapticBeat.shouldTap(from: old, to: new) }
         .onChange(of: model.currentStep) { old, new in
             guard old != nil, new != nil, !reduceMotion else { return }
             withAnimation(.timingCurve(0.2, 0.8, 0.2, 1, duration: 0.9)) { ringSpin += 360 }
         }
         .onChange(of: model.currentFigureName) { closeFigure() }
-        .sensoryFeedback(.success, trigger: model.player.state == .finished) { _, finished in finished }
         .onDisappear { model.stop() }
         .loggedScreen("sesja")
     }
@@ -82,7 +61,26 @@ struct SessionView: View {
 
     @ViewBuilder
     private var ring: some View {
-        if let step = model.currentStep, let phase = model.currentPhaseName, let duration = model.currentPhaseDuration {
+        if let step = model.currentStep, let phase = model.currentPhaseName, let breath = model.currentBreath {
+            VStack(spacing: 8) {
+                BreathRing(breath: breath, color: Color(PhaseKind.relaxation.ringColor), reduceMotion: reduceMotion)
+                    .layoutPriority(1)
+                HStack(spacing: 12) {
+                    Text(phase)
+                        .foregroundStyle(Color(PhaseKind.relaxation.labelColor))
+                        .accessibilityIdentifier("session.phase")
+                    Text(ClockText.minutesSeconds(model.remainingInPhase))
+                        .monospacedDigit()
+                        .foregroundStyle(Color(PhaseLook.secondaryText))
+                        .accessibilityLabel("Zostało \(ClockText.minutesSeconds(model.remainingInPhase))")
+                        .accessibilityIdentifier("session.remainingPhase")
+                }
+                .font(.title3.weight(.semibold))
+            }
+            .id(step)
+            .transition(.opacity)
+            .animation(.easeInOut(duration: 0.6), value: step)
+        } else if let step = model.currentStep, let phase = model.currentPhaseName, let duration = model.currentPhaseDuration {
             PhaseRing(
                 look: PhaseLook(phaseName: phase, remaining: model.remainingInPhase, duration: duration, reduceMotion: reduceMotion),
                 phaseName: phase,

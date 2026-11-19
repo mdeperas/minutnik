@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { oddech, skalaPluc, zmianaEtapuPomiedzy } from './oddech';
+import { oddech, pierscienOddechu, skalaPluc, zmianaEtapuPomiedzy } from './oddech';
 
 describe('oddech pudełkowy', () => {
 	it('od początku fazy: wdech 4-3-2-1, potem trzymaj, wydech, trzymaj', () => {
@@ -38,5 +38,11 @@ describe('oddech pudełkowy', () => {
 		expect(skalaPluc(0, false)).toBe(0.4);
 		expect(skalaPluc(1, false)).toBe(1);
 		expect(skalaPluc(0, true)).toBe(1);
+	});
+
+	it('pierścień rozluźnienia: cyfry 4-3-2-1 etapu, obwód ubywa przez 4 s, płuca rosną przy wdechu', () => {
+		expect(pierscienOddechu(1_000, false)).toEqual({ cyfry: '3', napis: 'Wdech', zostaloObwodu: 0.75, pluca: 0.4 + 0.6 * 0.25 });
+		expect(pierscienOddechu(6_000, false)).toMatchObject({ cyfry: '2', napis: 'Trzymaj', zostaloObwodu: 0.5, pluca: 1 });
+		expect(pierscienOddechu(13_000, true)).toMatchObject({ napis: 'Trzymaj', pluca: 1 });
 	});
 });

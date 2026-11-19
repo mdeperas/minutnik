@@ -41,6 +41,14 @@ final class RecordingPhaseNotifier: PhaseNotifier {
         cancelCount += 1
     }
 }
+
+@MainActor
+final class RecordingHapticPlayer: HapticPlayer {
+    private(set) var played: [HapticCue] = []
+
+    func play(_ cue: HapticCue) { played.append(cue) }
+}
+
 final class InMemoryHistoryStorage: HistoryStorage {
     private(set) var data: Data?
 

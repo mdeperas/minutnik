@@ -41,15 +41,15 @@ final class SessionE2ETests: XCTestCase {
     }
 
     @MainActor
-    func testBackDuringSessionAsksBeforeStopping() {
+    func testNoBackDuringSessionAndPauseLeadsBackToList() {
         app.buttons["start.set.1"].tap()
         app.buttons["session.start"].tap()
-        XCTAssertEqual(app.navigationBars.buttons.count, 1)
-        app.buttons["session.back"].tap()
-        app.alerts.buttons["Ćwiczę dalej"].firstMatch.tap()
-        XCTAssertTrue(app.buttons["session.pause"].waitForExistence(timeout: 5))
-        app.buttons["session.back"].tap()
-        app.alerts.buttons["Przerwij"].firstMatch.tap()
+        XCTAssertEqual(app.navigationBars.buttons.count, 0)
+        app.buttons["session.pause"].tap()
+        XCTAssertTrue(app.buttons["session.resume"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.navigationBars.buttons.count, 0)
+        app.buttons["session.stop"].tap()
+        app.buttons["session.done"].tap()
         XCTAssertTrue(app.buttons["start.set.1"].waitForExistence(timeout: 5))
     }
 
@@ -92,6 +92,8 @@ final class SessionE2ETests: XCTestCase {
         let breath = app.descendants(matching: .any)["session.breath"]
         XCTAssertTrue(breath.waitForExistence(timeout: 5))
         XCTAssertTrue(breath.label.hasPrefix("Oddech: Wdech"), breath.label)
+        XCTAssertTrue(app.staticTexts["session.remainingPhase"].exists)
+        XCTAssertTrue(app.staticTexts["session.phase"].label.hasPrefix("Rozluźni"), app.staticTexts["session.phase"].label)
         app.images["session.figure"].tap()
         XCTAssertTrue(app.images["session.figureZoomed"].waitForExistence(timeout: 5))
         app.images["session.figureZoomed"].tap()

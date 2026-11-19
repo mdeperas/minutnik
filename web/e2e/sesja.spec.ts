@@ -58,17 +58,14 @@ test('Wróć przed startem wraca do listy bez pytania', async ({ page }) => {
 	await expect(page.getByRole('dialog')).toBeHidden();
 });
 
-test('Wróć pyta „Przerwać sesję?”: Ćwiczę dalej zostaje, Przerwij wraca do listy', async ({ page }) => {
+test('w sesji nie ma Wróć: z pauzy Przerwij i Wróć do listy wracają do startu', async ({ page }) => {
 	await otworz(page, 1);
 	await przycisk(page, 'Start').click();
-	await page.getByRole('button', { name: 'Wróć', exact: true }).click();
-	const pytanie = page.getByRole('dialog', { name: 'Przerwać sesję?' });
-	await expect(pytanie).toBeVisible();
-	await pytanie.getByRole('button', { name: 'Ćwiczę dalej' }).click();
-	await expect(pytanie).toBeHidden();
-	await expect(przycisk(page, 'Pauza')).toBeVisible();
-	await page.getByRole('button', { name: 'Wróć', exact: true }).click();
-	await pytanie.getByRole('button', { name: 'Przerwij' }).click();
+	await expect(page.getByRole('button', { name: 'Wróć', exact: true })).toBeHidden();
+	await przycisk(page, 'Pauza').click();
+	await expect(page.getByRole('button', { name: 'Wróć', exact: true })).toBeHidden();
+	await przycisk(page, 'Przerwij').click();
+	await przycisk(page, 'Wróć do listy').click();
 	await expect(page.getByRole('list', { name: 'Zestawy' })).toBeVisible();
 	await expect(page.locator('#sesja')).toBeHidden();
 });

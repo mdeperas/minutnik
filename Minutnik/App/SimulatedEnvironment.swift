@@ -31,6 +31,7 @@ enum SimulatedEnvironment {
             audioEvents: RecordingAudioEvents(),
             catalog: Result { try ExerciseCatalog.bundled() },
             history: SessionHistory(storage: InMemoryHistoryStorage()),
+            haptics: RecordingHapticPlayer(),
             figures: FigureCatalog.bundled()
         )
     }

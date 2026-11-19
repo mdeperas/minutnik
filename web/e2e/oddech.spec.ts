@@ -3,7 +3,7 @@ import { nagranie, podrobGranice } from './podrobki';
 
 const przycisk = (page: Page, nazwa: string) => page.locator('#sesja').getByRole('button', { name: nazwa, exact: true });
 
-test('rozluźnienie: oddech pudełkowy obok timera i wibracje co 4 s', async ({ page }) => {
+test('rozluźnienie: duży pierścień oddechu 4-3-2-1, mały licznik fazy i wibracje co 4 s', async ({ page }) => {
 	await podrobGranice(page, 4);
 	await page.goto('');
 	await page.getByRole('button', { name: /^12 grup/ }).click();
@@ -12,6 +12,10 @@ test('rozluźnienie: oddech pudełkowy obok timera i wibracje co 4 s', async ({ 
 	await przycisk(page, 'Pomiń').click();
 	const oddech = page.locator('#sesja .oddech');
 	await expect(oddech).toBeVisible();
+	await expect(page.locator('#sesja .oddech-faza')).toHaveText('Rozluźnienie');
+	await expect(page.locator('#sesja .oddech-zostalo')).toHaveText(/^0:\d\d$/);
+	await expect(page.locator('#sesja .faza')).toBeHidden();
+	await expect(page.locator('#sesja .cyfry')).toHaveText(/^[1-4]$/);
 	await expect(page.locator('#sesja .oddech-etap')).toHaveText('Wdech');
 	await expect(page.locator('#sesja .oddech-etap')).toHaveText('Trzymaj');
 	await expect(page.locator('#sesja .oddech-etap')).toHaveText('Wydech');

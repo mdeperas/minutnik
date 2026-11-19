@@ -4,7 +4,6 @@ export interface WidokSesji {
 	przyciski: { start: boolean; pauza: boolean; wznow: boolean; pomin: boolean; przerwij: boolean; koniec: boolean; wroc: boolean };
 	krok: number | undefined;
 	napisKonca: string | undefined;
-	wrocPyta: boolean;
 }
 
 export function widokSesji(stan: Stan): WidokSesji {
@@ -19,10 +18,9 @@ export function widokSesji(stan: Stan): WidokSesji {
 			pomin: wTrakcie,
 			przerwij: wTrakcie,
 			koniec: napisKonca !== undefined,
-			wroc: gotowy || wTrakcie
+			wroc: gotowy
 		},
 		krok: wTrakcie ? stan.krok : gotowy ? 0 : undefined,
-		napisKonca,
-		wrocPyta: wTrakcie
+		napisKonca
 	};
 }

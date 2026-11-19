@@ -55,8 +55,10 @@ struct HapticBeat: Equatable {
         return HapticBeat(step: step, mark: BoxBreath(elapsed: duration - remaining).index)
     }
 
-    static func shouldTap(from old: HapticBeat?, to new: HapticBeat?) -> Bool {
-        guard let old, let new else { return false }
-        return old.step == new.step && old.mark != new.mark
+    static func cue(from old: HapticBeat?, to new: HapticBeat?) -> HapticCue? {
+        guard let new else { return nil }
+        guard let old, old.step == new.step else { return .phaseStarted }
+        guard old.mark != new.mark else { return nil }
+        return new.mark < 0 ? .countdown : .breath
     }
 }

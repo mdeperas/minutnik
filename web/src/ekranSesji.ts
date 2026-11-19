@@ -3,15 +3,15 @@ import type { Zestaw } from './katalog';
 import { Odtwarzacz, krokiZestawu, type Zdarzenie } from './odtwarzacz';
 import type { Srodowisko } from './srodowisko';
 import { odliczaniePomiedzy, sygnalPoZmianie, type Chwila } from './sygnaly';
-import { oddech, skalaPluc, zmianaEtapuPomiedzy } from './oddech';
+import { pierscienOddechu, zmianaEtapuPomiedzy } from './oddech';
 import { linieInstrukcji, minutySekundy, pozycjaGrupy } from './tekstSesji';
 import { svgRyciny } from './ryciny';
 import { widokSesji } from './widokSesji';
 import { rodzajFazy, wygladFazy, wyroznia } from './wyglad';
 
-type Akcja = 'rycina' | 'start' | 'pauza' | 'wznow' | 'pomin' | 'przerwij' | 'koniec' | 'wroc' | 'dalej' | 'przerwij-i-wyjdz';
+type Akcja = 'rycina' | 'start' | 'pauza' | 'wznow' | 'pomin' | 'przerwij' | 'koniec' | 'wroc';
 
-export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, pytanie: HTMLDialogElement, srodowisko: Srodowisko, historia: Historia, zamknij: () => void): void {
+export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, srodowisko: Srodowisko, historia: Historia, zamknij: () => void): void {
 	const odtwarzacz = new Odtwarzacz(krokiZestawu(zestaw));
 	const el = <T extends Element>(selektor: string) => ekran.querySelector<T>(selektor)!;
 	const przycisk = (akcja: Akcja) => el<HTMLButtonElement>(`[data-akcja="${akcja}"]`);
@@ -28,10 +28,10 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, pytanie: HTMLDia
 	const zaslona = el<HTMLElement>('.zaslona');
 	let zwinRycine: ReturnType<typeof setTimeout> | undefined;
 	const blokOddechu = el<HTMLElement>('.oddech');
-	const obrysOddechu = el<SVGRectElement>('.oddech-obrys');
-	const plucaOddechu = el<SVGRectElement>('.oddech-pluca');
+	const plucaOddechu = el<SVGCircleElement>('.pluca');
 	const etapOddechu = el<HTMLElement>('.oddech-etap');
-	const sekundaOddechu = el<HTMLElement>('.oddech-sekunda');
+	const fazaOddechu = el<HTMLElement>('.oddech-faza');
+	const zostaloOddechu = el<HTMLElement>('.oddech-zostalo');
 	let pokazanyKrok = -1;
 	let otwarta = true;
 	let ekranTrzymany = false;
@@ -81,6 +81,7 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, pytanie: HTMLDia
 			faza.textContent = '';
 			rycina.hidden = true;
 			blokOddechu.hidden = true;
+			ekran.dataset.oddech = 'false';
 			cyfry.removeAttribute('aria-label');
 			postep.style.strokeDashoffset = '1';
 			svg.style.removeProperty('--skala');
@@ -99,7 +100,7 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, pytanie: HTMLDia
 		cyfry.setAttribute('aria-label', `Zostało ${minutySekundy(zostalo)}`);
 		postep.style.strokeDashoffset = String(1 - wyglad.zostaloObwodu);
 		svg.style.setProperty('--skala', String(wyglad.skala));
-		rysujOddech(wyglad.rodzaj === 'rozluznienie' && stan.rodzaj !== 'gotowy', k.czasMs - zostalo);
+		rysujOddech(wyglad.rodzaj === 'rozluznienie' && stan.rodzaj !== 'gotowy', k.czasMs - zostalo, k.nazwa, zostalo);
 	};
 
 	const obrocPierscien = () => {
@@ -129,15 +130,21 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, pytanie: HTMLDia
 		zwinRycine = setTimeout(schowajRycine, 2_500);
 	};
 
-	const rysujOddech = (widac: boolean, mineloMs: number) => {
+	const rysujOddech = (widac: boolean, mineloMs: number, nazwaFazy: string, zostaloMs: number) => {
 		blokOddechu.hidden = !widac;
+		ekran.dataset.oddech = String(widac);
 		if (!widac) return;
-		const o = oddech(mineloMs);
-		blokOddechu.dataset.etap = o.etap;
+		const o = pierscienOddechu(mineloMs, srodowisko.ograniczRuch());
+		cyfry.textContent = o.cyfry;
+		cyfry.setAttribute('aria-label', `${o.napis} ${o.cyfry}`);
 		if (etapOddechu.textContent !== o.napis) etapOddechu.textContent = o.napis;
-		sekundaOddechu.textContent = String(o.sekunda);
-		obrysOddechu.style.strokeDashoffset = String(1 - o.postepCyklu);
-		plucaOddechu.style.setProperty('--oddech', String(skalaPluc(o.pelnosc, srodowisko.ograniczRuch())));
+		fazaOddechu.textContent = nazwaFazy;
+		const zegar = minutySekundy(zostaloMs);
+		zostaloOddechu.textContent = zegar;
+		zostaloOddechu.setAttribute('aria-label', `Zostało ${zegar}`);
+		postep.style.strokeDashoffset = String(1 - o.zostaloObwodu);
+		svg.style.setProperty('--skala', '1');
+		plucaOddechu.style.setProperty('--oddech', String(o.pluca));
 	};
 
 	const wSesji = () => odtwarzacz.stan.rodzaj === 'trwa' || odtwarzacz.stan.rodzaj === 'pauza';
@@ -234,8 +241,6 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, pytanie: HTMLDia
 		przestanSluchac();
 		if (ekranTrzymany) srodowisko.ekran.pusc();
 		ekran.removeEventListener('click', klik);
-		pytanie.removeEventListener('click', klik);
-		if (pytanie.open) pytanie.close();
 		ekran.hidden = true;
 		zamknij();
 	};
@@ -252,12 +257,7 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, pytanie: HTMLDia
 		pomin: () => dzialaj((t) => odtwarzacz.pomin(t)),
 		przerwij: () => dzialaj((t) => odtwarzacz.przerwij(t)),
 		koniec: wyjdz,
-		wroc: () => (widokSesji(odtwarzacz.stan).wrocPyta ? pytanie.showModal() : wyjdz()),
-		dalej: () => pytanie.close(),
-		'przerwij-i-wyjdz': () => {
-			dzialaj((t) => odtwarzacz.przerwij(t));
-			wyjdz();
-		}
+		wroc: wyjdz
 	};
 
 	function klik(zdarzenie: Event) {
@@ -269,7 +269,6 @@ export function otworzSesje(zestaw: Zestaw, ekran: HTMLElement, pytanie: HTMLDia
 
 	const przestanSluchac = srodowisko.poZmianieWidocznosci(poPowrocie);
 	ekran.addEventListener('click', klik);
-	pytanie.addEventListener('click', klik);
 	uwagaEkranu.hidden = true;
 	ekran.hidden = false;
 	rysuj();

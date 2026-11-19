@@ -121,8 +121,10 @@ Jedna lista do zbiorczej próby, po kolei; przy każdym punkcie odpisz ✅/❌. 
   - e) słuchawki w trakcie sesji, potem wyjęcie → pauza bez samoczynnego wznowienia; „Wznów” → sygnały wracają;
   - f) „Pauza”, potem blokada ekranu na dłużej niż faza → cisza, żadnego sygnału ani banera; „Wznów” → sygnały
     i banery wracają od bieżącej fazy; „Przerwij” → żadnych kolejnych banerów.
-- M3 Odtwarzacz: przy każdej nowej fazie (też po „Pomiń”) krótkie stuknięcie wibracji, na końcu sesji wibracja „sukces”;
-  gest od lewej krawędzi nic nie robi; „Wróć” → „Przerwać sesję?” → „Ćwiczę dalej” zostawia sesję, „Przerwij” wraca do listy;
+- M3 Odtwarzacz: przy każdej nowej fazie (też po „Pomiń”) podwójne stuknięcie wibracji, w rozluźnieniu stuknięcie co 4 s,
+  przy 3-2-1 mocne stuknięcia, na końcu sesji trzy; wszystko przy grających sygnałach (Core Haptics `playsHapticsOnly`);
+  w sesji nie ma „Wróć”, gest od lewej krawędzi nic nie robi; „Pauza” → „Przerwij” → „Wróć do listy” wraca do listy;
+  w rozluźnieniu duży pierścień oddechu (Wdech/Trzymaj/Wydech/Trzymaj, 4-3-2-1), pod nim mały licznik fazy;
   instrukcje fazy czytelne bez przewijania przy domyślnej czcionce.
 - M4 Historia: po sesji do końca i drugiej przerwanej na liście sekcja „Historia”: najnowsza na górze,
   „Ukończona · N min” i „Przerwana po K z N faz”; po zabiciu apki i ponownym starcie wpisy są dalej;

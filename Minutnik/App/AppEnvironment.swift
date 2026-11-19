@@ -9,6 +9,7 @@ struct AppEnvironment {
     let audioEvents: AudioSessionEvents
     let catalog: Result<ExerciseCatalog, Error>
     let history: SessionHistory
+    let haptics: HapticPlayer
     let figures: FigureCatalog?
 
     static var current: AppEnvironment {
@@ -24,11 +25,12 @@ struct AppEnvironment {
             audioEvents: SystemAudioSessionEvents(),
             catalog: Result { try ExerciseCatalog.bundled() },
             history: SessionHistory(storage: FileHistoryStorage()),
+            haptics: CoreHapticPlayer(),
             figures: FigureCatalog.bundled()
         )
     }
 
     func makeSession(_ set: ExerciseSet) -> SessionModel {
-        SessionModel(set: set, clock: clock, signals: signals, notifier: notifier, audioEvents: audioEvents, history: history, figures: figures)
+        SessionModel(set: set, clock: clock, signals: signals, notifier: notifier, audioEvents: audioEvents, history: history, haptics: haptics, figures: figures)
     }
 }

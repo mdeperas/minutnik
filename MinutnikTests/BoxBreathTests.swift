@@ -17,17 +17,20 @@ final class BoxBreathTests: XCTestCase {
         XCTAssertEqual(last.index, 12)
     }
 
-    func testTapsEveryBreathStageAndOnCountdownButNotAcrossPhases() {
+    func testCueOnPhaseStartEveryBreathStageAndCountdownOnly() {
         let beat = { (step: Int, remaining: TimeInterval) in
             HapticBeat.at(step: step, kind: .relaxation, remaining: remaining, duration: 50)
         }
-        XCTAssertTrue(HapticBeat.shouldTap(from: beat(1, 46.1), to: beat(1, 45.9)))
-        XCTAssertFalse(HapticBeat.shouldTap(from: beat(1, 46.9), to: beat(1, 46.1)))
-        XCTAssertTrue(HapticBeat.shouldTap(from: beat(1, 3.1), to: beat(1, 2.9)))
-        XCTAssertFalse(HapticBeat.shouldTap(from: beat(0, 0.1), to: beat(1, 49.9)))
+        XCTAssertEqual(HapticBeat.cue(from: beat(1, 46.1), to: beat(1, 45.9)), .breath)
+        XCTAssertNil(HapticBeat.cue(from: beat(1, 46.9), to: beat(1, 46.1)))
+        XCTAssertEqual(HapticBeat.cue(from: beat(1, 3.1), to: beat(1, 2.9)), .countdown)
+        XCTAssertEqual(HapticBeat.cue(from: beat(0, 0.1), to: beat(1, 49.9)), .phaseStarted)
+        XCTAssertEqual(HapticBeat.cue(from: nil, to: beat(0, 50)), .phaseStarted)
+        XCTAssertNil(HapticBeat.cue(from: beat(1, 20), to: nil))
+        XCTAssertNil(HapticBeat.cue(from: beat(1, 20), to: beat(1, 20)))
         let tension = { (remaining: TimeInterval) in HapticBeat.at(step: 0, kind: .tension, remaining: remaining, duration: 10) }
-        XCTAssertFalse(HapticBeat.shouldTap(from: tension(6), to: tension(5)))
-        XCTAssertTrue(HapticBeat.shouldTap(from: tension(3.1), to: tension(2.9)))
-        XCTAssertTrue(HapticBeat.shouldTap(from: tension(1.1), to: tension(0.9)))
+        XCTAssertNil(HapticBeat.cue(from: tension(6), to: tension(5)))
+        XCTAssertEqual(HapticBeat.cue(from: tension(3.1), to: tension(2.9)), .countdown)
+        XCTAssertEqual(HapticBeat.cue(from: tension(1.1), to: tension(0.9)), .countdown)
     }
 }

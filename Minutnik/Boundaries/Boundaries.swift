@@ -16,6 +16,13 @@ struct PhaseAlert: Equatable {
     let title: String
 }
 
+enum HapticCue: Equatable {
+    case phaseStarted
+    case breath
+    case countdown
+    case sessionFinished
+}
+
 enum AudioSessionEvent: Equatable {
     case interruptionBegan
     case interruptionEnded(shouldResume: Bool)
@@ -34,6 +41,11 @@ protocol SignalPlayer: AnyObject {
     func plan(_ signals: [ScheduledSignal])
     func cancelPlan()
     func endSession()
+}
+
+@MainActor
+protocol HapticPlayer: AnyObject {
+    func play(_ cue: HapticCue)
 }
 
 @MainActor

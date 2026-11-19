@@ -197,28 +197,6 @@ body {
 	outline: 3px solid #fff;
 	outline-offset: 2px;
 }
-dialog {
-	width: min(20rem, 90vw);
-	border: 0;
-	border-radius: 1.25rem;
-	background: #26282e;
-	color: #fff;
-	text-align: center;
-}
-dialog::backdrop {
-	background: rgb(0 0 0 / 0.6);
-}
-dialog h2 {
-	font-size: 1.2rem;
-	margin: 0.5rem 0 1.25rem;
-}
-dialog .przycisk {
-	font-size: 1.05rem;
-	min-height: 3rem;
-}
-.przycisk.wyjscie {
-	background: #8a2f33;
-}
 @media (prefers-reduced-motion: reduce) {
 	.pierscien svg {
 		transform: none;
@@ -253,41 +231,44 @@ dialog .przycisk {
 	font-size: 0.85rem;
 }
 .oddech {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 0.6rem;
-	flex-shrink: 0;
-	color: var(--kolor);
-}
-.oddech svg {
-	width: 2.25rem;
-	height: 2.25rem;
-}
-.oddech-tor,
-.oddech-obrys {
-	fill: none;
-	stroke-width: 3;
-}
-.oddech-tor {
-	stroke: var(--tor, #353841);
-}
-.oddech-obrys {
-	stroke: currentColor;
-	stroke-linecap: round;
-}
-.oddech-pluca {
-	fill: currentColor;
-	opacity: 0.55;
-	transform-origin: 20px 20px;
-	transform: scale(var(--oddech, 1));
-}
-.oddech-napis {
 	margin: 0;
-	min-width: 7.5rem;
-	font-size: 1.25rem;
-	font-weight: 700;
+	flex-shrink: 0;
+	display: flex;
+	gap: 0.6rem;
+	color: var(--tekst-drugi);
+	font-size: 1.15rem;
+	font-weight: 600;
 	font-variant-numeric: tabular-nums;
+}
+.oddech-faza {
+	color: var(--kolor-napisu);
+}
+.pluca {
+	fill: var(--kolor);
+	opacity: 0;
+	transform-origin: 100px 100px;
+	transform: scale(var(--oddech, 1));
+	transition: transform 0.25s linear;
+}
+.sesja[data-oddech='true'] .pluca {
+	opacity: 0.22;
+}
+.oddech-etap {
+	display: none;
+	font-size: max(0.8rem, 8cqw);
+	font-weight: 700;
+	color: var(--kolor-napisu);
+}
+.sesja[data-oddech='true'] .oddech-etap {
+	display: block;
+}
+.sesja[data-oddech='true'] .faza {
+	display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+	.pluca {
+		transition: none;
+	}
 }
 .postep {
 	transition: stroke 0.6s ease;

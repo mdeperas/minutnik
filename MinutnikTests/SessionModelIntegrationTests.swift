@@ -29,6 +29,7 @@ final class SessionModelIntegrationTests: XCTestCase {
     private var model: SessionModel!
     private var storage: InMemoryHistoryStorage!
     private var history: SessionHistory!
+    private var haptics: RecordingHapticPlayer!
 
     override func setUp() async throws {
         clock = ManualClock(now: t0)
@@ -37,6 +38,7 @@ final class SessionModelIntegrationTests: XCTestCase {
         audio = RecordingAudioEvents()
         storage = InMemoryHistoryStorage()
         history = SessionHistory(storage: storage)
+        haptics = RecordingHapticPlayer()
         let set = ExerciseSet(name: "Test", groups: (1...3).map { group in
             ExerciseGroup(name: "Grupa \(group)", phases: [
                 ExercisePhase(name: "Napinanie \(group)", durationSeconds: 10, instructions: nil),
@@ -44,7 +46,7 @@ final class SessionModelIntegrationTests: XCTestCase {
             ])
         })
         model = AppEnvironment(version: AppVersion(info: [:]), clock: clock, signals: signals, notifier: notifier,
-            audioEvents: audio, catalog: .failure(ExerciseCatalogError.missingFile), history: history,
+            audioEvents: audio, catalog: .failure(ExerciseCatalogError.missingFile), history: history, haptics: haptics,
             figures: try! FigureCatalog(json: Data(#"{"Grupa 1": {"napiecie": "g1-n.svg", "rozluznienie": "g1-r.svg"}}"#.utf8))
         ).makeSession(set)
     }
@@ -75,6 +77,31 @@ final class SessionModelIntegrationTests: XCTestCase {
         model.pause()
         model.resume()
         XCTAssertEqual(signals.pending.first, ScheduledSignal(at: at(9), signal: .countdown))
+    }
+
+    func testHapticsTapOnPhaseStartEveryBreathStageAndCountdownButNotOnPauseOrStop() {
+        model.start()
+        for _ in 0..<60 { clock.advance(by: 1) }
+        let breaths = Array(repeating: HapticCue.breath, count: 11)
+        let countdown = Array(repeating: HapticCue.countdown, count: 3)
+        XCTAssertEqual(haptics.played, [.phaseStarted] + countdown + [.phaseStarted] + breaths + countdown + [.phaseStarted])
+        let before = haptics.played.count
+        model.pause()
+        model.resume()
+        XCTAssertEqual(haptics.played.count, before)
+        model.pause()
+        model.skip()
+        XCTAssertEqual(haptics.played.last, .phaseStarted)
+        XCTAssertEqual(haptics.played.count, before + 1)
+        model.stop()
+        XCTAssertEqual(haptics.played.count, before + 1)
+    }
+
+    func testSessionEndTapsSuccessOnce() {
+        model.start()
+        for _ in 0..<185 { clock.advance(by: 1) }
+        XCTAssertEqual(haptics.played.last, .sessionFinished)
+        XCTAssertEqual(haptics.played.filter { $0 == .sessionFinished }.count, 1)
     }
 
     func testFigureFollowsPhaseAndDisappearsForUnmappedGroup() {

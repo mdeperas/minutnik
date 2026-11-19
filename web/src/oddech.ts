@@ -42,6 +42,18 @@ export function skalaPluc(pelnosc: number, ograniczRuch: boolean): number {
 	return ograniczRuch ? 1 : najmniejszePluca + (1 - najmniejszePluca) * pelnosc;
 }
 
+export interface PierscienOddechu {
+	cyfry: string;
+	napis: string;
+	zostaloObwodu: number;
+	pluca: number;
+}
+
+export function pierscienOddechu(mineloMs: number, ograniczRuch: boolean): PierscienOddechu {
+	const o = oddech(mineloMs);
+	return { cyfry: String(o.sekunda), napis: o.napis, zostaloObwodu: 1 - o.postepEtapu, pluca: skalaPluc(o.pelnosc, ograniczRuch) };
+}
+
 export function zmianaEtapuPomiedzy(przed: Chwila | undefined, teraz: Chwila | undefined, czasMs: number, rodzaj: RodzajFazy): boolean {
 	if (rodzaj !== 'rozluznienie' || !przed || !teraz || przed.krok !== teraz.krok || teraz.zostalo <= 0) return false;
 	return oddech(czasMs - teraz.zostalo).numer !== oddech(czasMs - przed.zostalo).numer;
