@@ -83,4 +83,19 @@ final class SessionE2ETests: XCTestCase {
         app.buttons["session.skip"].tap()
         XCTAssertEqual(figure.value as? String, tensed.replacingOccurrences(of: "-napiecie", with: "-rozluznienie"))
     }
+
+    @MainActor
+    func testRelaxationShowsBoxBreathAndFigureZooms() {
+        app.buttons["start.set.0"].tap()
+        app.buttons["session.start"].tap()
+        XCTAssertFalse(app.descendants(matching: .any)["session.breath"].exists)
+        app.buttons["session.skip"].tap()
+        let breath = app.descendants(matching: .any)["session.breath"]
+        XCTAssertTrue(breath.waitForExistence(timeout: 5))
+        XCTAssertTrue(breath.label.hasPrefix("Oddech: Wdech"), breath.label)
+        app.images["session.figure"].tap()
+        XCTAssertTrue(app.images["session.figureZoomed"].waitForExistence(timeout: 5))
+        app.images["session.figureZoomed"].tap()
+        XCTAssertTrue(app.images["session.figureZoomed"].waitForNonExistence(timeout: 5))
+    }
 }

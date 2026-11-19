@@ -58,8 +58,23 @@ final class SessionModelIntegrationTests: XCTestCase {
         entries.map { ScheduledSignal(at: at($0.0), signal: $0.1) }
     }
 
+    private var phaseSignals: [ScheduledSignal] {
+        signals.pending.filter { $0.signal != .countdown }
+    }
+
     private var fullPlanFromStart: [ScheduledSignal] {
         planned([(0, tense), (10, release), (60, tense), (70, release), (120, tense), (130, release), (180, .sessionFinished)])
+    }
+
+    func testLastThreeSecondsOfEveryPhaseAreCountedDown() {
+        model.start()
+        let countdown = signals.pending.filter { $0.signal == .countdown }.map(\.at)
+        XCTAssertEqual(countdown.prefix(6), [at(7), at(8), at(9), at(57), at(58), at(59)][...])
+        XCTAssertEqual(countdown.count, 18)
+        clock.advance(by: 8.5)
+        model.pause()
+        model.resume()
+        XCTAssertEqual(signals.pending.first, ScheduledSignal(at: at(9), signal: .countdown))
     }
 
     func testFigureFollowsPhaseAndDisappearsForUnmappedGroup() {
@@ -74,7 +89,7 @@ final class SessionModelIntegrationTests: XCTestCase {
 
     func testStartPlansWholeSessionOnAudioTimelineAndTicks() {
         model.start()
-        XCTAssertEqual(signals.pending, fullPlanFromStart)
+        XCTAssertEqual(phaseSignals, fullPlanFromStart)
         XCTAssertEqual(notifier.pending.map(\.at), [10, 60, 70, 120, 130, 180].map(at))
         XCTAssertEqual(notifier.pending.first?.title, "Rozluźnij 1")
         XCTAssertEqual(notifier.pending.last?.title, SessionModel.finishedTitle)
@@ -87,7 +102,7 @@ final class SessionModelIntegrationTests: XCTestCase {
         clock.advance(by: 5.2)
         clock.advance(by: 75)
         XCTAssertEqual(signals.plans.count, 1)
-        XCTAssertEqual(signals.pending, fullPlanFromStart)
+        XCTAssertEqual(phaseSignals, fullPlanFromStart)
         XCTAssertEqual(model.player.state, .running(step: 3, startedAt: at(70)))
         XCTAssertEqual(model.remainingInPhase, 34.8, accuracy: 0.001)
     }
@@ -106,13 +121,13 @@ final class SessionModelIntegrationTests: XCTestCase {
         model.start()
         clock.advance(by: 4)
         model.pause()
-        XCTAssertEqual(signals.pending, [])
+        XCTAssertEqual(phaseSignals, [])
         XCTAssertEqual(notifier.pending, [])
         XCTAssertFalse(clock.isTicking)
         clock.advance(by: 100)
         XCTAssertEqual(model.remainingInPhase, 6, accuracy: 0.001)
         model.resume()
-        XCTAssertEqual(signals.pending, planned([(110, release), (160, tense), (170, release), (220, tense), (230, release), (280, .sessionFinished)]))
+        XCTAssertEqual(phaseSignals, planned([(110, release), (160, tense), (170, release), (220, tense), (230, release), (280, .sessionFinished)]))
         XCTAssertEqual(notifier.pending.first?.at, at(110))
         XCTAssertTrue(clock.isTicking)
         XCTAssertEqual(signals.endedCount, 0)
@@ -122,8 +137,8 @@ final class SessionModelIntegrationTests: XCTestCase {
         model.start()
         clock.advance(by: 3)
         model.skip()
-        XCTAssertEqual(signals.pending.prefix(2), planned([(3, release), (53, tense)])[...])
-        XCTAssertEqual(signals.pending.count, 6)
+        XCTAssertEqual(phaseSignals.prefix(2), planned([(3, release), (53, tense)])[...])
+        XCTAssertEqual(phaseSignals.count, 6)
         XCTAssertEqual(notifier.pending.count, 5)
     }
 
@@ -132,7 +147,7 @@ final class SessionModelIntegrationTests: XCTestCase {
         model.pause()
         model.skip()
         XCTAssertEqual(model.player.state, .running(step: 1, startedAt: at(0)))
-        XCTAssertEqual(signals.pending.first, ScheduledSignal(at: at(0), signal: release))
+        XCTAssertEqual(phaseSignals.first, ScheduledSignal(at: at(0), signal: release))
         XCTAssertEqual(notifier.pending.count, 5)
         XCTAssertTrue(clock.isTicking)
     }
@@ -142,7 +157,7 @@ final class SessionModelIntegrationTests: XCTestCase {
         for _ in 0..<5 { model.skip() }
         model.skip()
         XCTAssertEqual(model.player.state, .finished)
-        XCTAssertEqual(signals.pending, [ScheduledSignal(at: at(0), signal: .sessionFinished)])
+        XCTAssertEqual(phaseSignals, [ScheduledSignal(at: at(0), signal: .sessionFinished)])
         XCTAssertEqual(signals.endedCount, 1)
     }
 
@@ -151,7 +166,7 @@ final class SessionModelIntegrationTests: XCTestCase {
         clock.advance(by: 2)
         model.stop()
         XCTAssertEqual(model.player.state, .stopped)
-        XCTAssertEqual(signals.pending, [])
+        XCTAssertEqual(phaseSignals, [])
         XCTAssertEqual(signals.endedCount, 1)
         XCTAssertEqual(notifier.pending, [])
         XCTAssertFalse(clock.isTicking)
@@ -162,11 +177,11 @@ final class SessionModelIntegrationTests: XCTestCase {
         clock.advance(by: 4)
         audio.emit(.interruptionBegan)
         XCTAssertEqual(model.player.state, .paused(step: 0, elapsed: 4))
-        XCTAssertEqual(signals.pending, [])
+        XCTAssertEqual(phaseSignals, [])
         clock.advance(by: 30)
         audio.emit(.interruptionEnded(shouldResume: true))
         XCTAssertEqual(model.player.state, .running(step: 0, startedAt: at(30)))
-        XCTAssertEqual(signals.pending.first, ScheduledSignal(at: at(40), signal: release))
+        XCTAssertEqual(phaseSignals.first, ScheduledSignal(at: at(40), signal: release))
     }
 
     func testInterruptionEndWithoutShouldResumeStaysPaused() {
@@ -200,7 +215,7 @@ final class SessionModelIntegrationTests: XCTestCase {
         clock.advance(by: 3)
         audio.emit(.outputLost)
         XCTAssertEqual(model.player.state, .paused(step: 0, elapsed: 3))
-        XCTAssertEqual(signals.pending, [])
+        XCTAssertEqual(phaseSignals, [])
         XCTAssertFalse(clock.isTicking)
     }
 

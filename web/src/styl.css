@@ -336,3 +336,84 @@ dialog .przycisk {
 .wersja {
 	margin-top: 1rem;
 }
+.oddech {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6rem;
+	flex-shrink: 0;
+	color: var(--kolor);
+}
+.oddech svg {
+	width: 2.25rem;
+	height: 2.25rem;
+}
+.oddech-tor,
+.oddech-obrys {
+	fill: none;
+	stroke-width: 3;
+}
+.oddech-tor {
+	stroke: var(--tor, #353841);
+}
+.oddech-obrys {
+	stroke: currentColor;
+	stroke-linecap: round;
+}
+.oddech-pluca {
+	fill: currentColor;
+	opacity: 0.55;
+	transform-origin: 20px 20px;
+	transform: scale(var(--oddech, 1));
+}
+.oddech-napis {
+	margin: 0;
+	min-width: 7.5rem;
+	font-size: 1.25rem;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+}
+.postep {
+	transition: stroke 0.6s ease;
+}
+.rycina {
+	position: relative;
+	cursor: zoom-in;
+	transition: transform 0.55s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.rycina.powiekszona {
+	z-index: 11;
+	cursor: zoom-out;
+}
+.zaslona {
+	position: fixed;
+	inset: 0;
+	z-index: 10;
+	background: rgb(0 0 0 / 0.75);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.4s ease;
+}
+.zaslona.widac {
+	opacity: 1;
+	pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+	.rycina {
+		transition: opacity 0.3s ease;
+	}
+	.rycina.powiekszona {
+		animation: rycina-wejscie 0.3s ease;
+	}
+}
+.scena:has(.powiekszona) {
+	position: relative;
+	z-index: 11;
+}
+.pierscien,
+.oddech {
+	transition: opacity 0.4s ease;
+}
+.scena:has(.powiekszona) :is(.pierscien, .oddech) {
+	opacity: 0.2;
+}

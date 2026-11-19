@@ -1,0 +1,48 @@
+import type { Chwila } from './sygnaly';
+import type { RodzajFazy } from './wyglad';
+
+export type EtapOddechu = 'wdech' | 'pelne' | 'wydech' | 'puste';
+
+export const etapMs = 4_000;
+
+const etapy: readonly EtapOddechu[] = ['wdech', 'pelne', 'wydech', 'puste'];
+
+const napisy: Record<EtapOddechu, string> = { wdech: 'Wdech', pelne: 'Trzymaj', wydech: 'Wydech', puste: 'Trzymaj' };
+
+export interface Oddech {
+	etap: EtapOddechu;
+	napis: string;
+	sekunda: number;
+	numer: number;
+	postepEtapu: number;
+	postepCyklu: number;
+	pelnosc: number;
+}
+
+export function oddech(mineloMs: number): Oddech {
+	const ms = Math.max(0, mineloMs);
+	const numer = Math.floor(ms / etapMs);
+	const wEtapie = ms - numer * etapMs;
+	const etap = etapy[numer % etapy.length];
+	const postepEtapu = wEtapie / etapMs;
+	return {
+		etap,
+		napis: napisy[etap],
+		sekunda: etapMs / 1000 - Math.floor(wEtapie / 1000),
+		numer,
+		postepEtapu,
+		postepCyklu: ((numer % etapy.length) + postepEtapu) / etapy.length,
+		pelnosc: etap === 'wdech' ? postepEtapu : etap === 'wydech' ? 1 - postepEtapu : etap === 'pelne' ? 1 : 0
+	};
+}
+
+export const najmniejszePluca = 0.4;
+
+export function skalaPluc(pelnosc: number, ograniczRuch: boolean): number {
+	return ograniczRuch ? 1 : najmniejszePluca + (1 - najmniejszePluca) * pelnosc;
+}
+
+export function zmianaEtapuPomiedzy(przed: Chwila | undefined, teraz: Chwila | undefined, czasMs: number, rodzaj: RodzajFazy): boolean {
+	if (rodzaj !== 'rozluznienie' || !przed || !teraz || przed.krok !== teraz.krok || teraz.zostalo <= 0) return false;
+	return oddech(czasMs - teraz.zostalo).numer !== oddech(czasMs - przed.zostalo).numer;
+}

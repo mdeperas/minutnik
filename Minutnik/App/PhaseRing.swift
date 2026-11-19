@@ -10,6 +10,7 @@ struct PhaseRing: View {
     let look: PhaseLook
     let phaseName: String
     let remainingLabel: String
+    var spin: Double = 0
 
     var body: some View {
         GeometryReader { geometry in
@@ -24,6 +25,7 @@ struct PhaseRing: View {
                         .rotationEffect(.degrees(-90))
                 }
                 .padding(line / 2)
+                .rotationEffect(.degrees(spin))
                 .scaleEffect(look.scale)
                 .animation(.linear(duration: 0.25), value: look)
                 VStack(spacing: side * 0.03) {

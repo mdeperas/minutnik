@@ -12,15 +12,15 @@
 							"czasS": 10,
 							"instrukcje": {
 								"jak": "Ręce leżą swobodnie, dłonie wolne.",
-								"napnij": "Zaciśnij pięści, poczuj napięcie w przedramionach.",
-								"uwaga": "Ramiona zostają luźne, pracują tylko dłonie."
+								"napnij": "Zaciśnij pięści i poczuj napięcie w przedramionach.",
+								"uwaga": "Ramiona zostają luźne. Pracują tylko dłonie."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Rozwiń palce i zostaw dłonie bez ruchu.",
+								"pusc": "Rozprostuj palce i pozwól dłoniom spocząć.",
 								"poczuj": "Dłonie robią się cięższe i cieplejsze."
 							}
 						}
@@ -33,17 +33,17 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Ręce zgięte w łokciach, dłonie luźno.",
-								"napnij": "Dociśnij łokcie do boków, napnij mięśnie nad łokciem.",
-								"uwaga": "Dłonie nie zaciskają się w pięść."
+								"jak": "Zegnij ręce w łokciach, dłonie zostaw luźne.",
+								"napnij": "Dociśnij łokcie do boków i napnij ramiona.",
+								"uwaga": "Nie zaciskaj dłoni w pięść."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Opuść ręce bezwładnie na uda.",
-								"poczuj": "Ramiona miękną od barku po łokieć."
+								"pusc": "Opuść ręce swobodnie na uda.",
+								"poczuj": "Ramiona miękną od barków po łokcie."
 							}
 						}
 					]
@@ -55,17 +55,17 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Stopy płasko na podłodze.",
-								"napnij": "Podciągnij palce stóp do siebie, poczuj łydki.",
-								"uwaga": "Gdy łapie skurcz, zmniejsz siłę."
+								"jak": "Postaw stopy płasko na podłodze.",
+								"napnij": "Zegnij stopy tak, by palce celowały w kolana, aż poczujesz łydki.",
+								"uwaga": "Jeśli złapie cię skurcz, napinaj słabiej."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Postaw stopy swobodnie, palce luźno.",
-								"poczuj": "Łydki rozgrzewają się i wiotczeją."
+								"pusc": "Rozluźnij stopy i palce.",
+								"poczuj": "Łydki robią się ciepłe i miękkie."
 							}
 						}
 					]
@@ -77,16 +77,16 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Siedzisz stabilnie, nogi przed sobą.",
-								"napnij": "Wyprostuj nogi i unieś je lekko, napnij uda.",
-								"uwaga": "Plecy oparte, nie odrywaj ich od oparcia."
+								"jak": "Usiądź stabilnie, nogi wysuń przed siebie.",
+								"napnij": "Wyprostuj nogi, unieś je lekko i napnij uda.",
+								"uwaga": "Plecy trzymaj przy oparciu."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Opuść nogi i pozwól im opaść.",
+								"pusc": "Opuść nogi swobodnie.",
 								"poczuj": "Uda stają się ciężkie i spokojne."
 							}
 						}
@@ -100,15 +100,15 @@
 							"czasS": 10,
 							"instrukcje": {
 								"jak": "Oddychaj spokojnie przez nos.",
-								"napnij": "Wciągnij brzuch i utwardź go jak przed ciosem.",
-								"uwaga": "Oddychaj dalej, nie zatrzymuj powietrza."
+								"napnij": "Wciągnij brzuch i napnij go jak przed ciosem.",
+								"uwaga": "Nie wstrzymuj oddechu."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Zwolnij brzuch, niech się rozszerzy.",
+								"pusc": "Puść brzuch, niech swobodnie się uniesie.",
 								"poczuj": "Oddech schodzi niżej i płynie sam."
 							}
 						}
@@ -121,16 +121,16 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Usiądź prosto, ręce luźno.",
-								"napnij": "Weź głęboki wdech i przytrzymaj, klatka napięta.",
-								"uwaga": "Przy zawrotach głowy skróć wstrzymanie."
+								"jak": "Usiądź prosto, ręce opuść luźno.",
+								"napnij": "Weź głęboki wdech i zatrzymaj powietrze.",
+								"uwaga": "Jeśli kręci ci się w głowie, wydychaj wcześniej."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Oddaj powietrze długim, cichym wydechem.",
+								"pusc": "Wypuść powietrze długim, spokojnym wydechem.",
 								"poczuj": "Klatka opada, oddech się wyrównuje."
 							}
 						}
@@ -143,9 +143,9 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Ręce zwisają swobodnie.",
-								"napnij": "Unieś barki w stronę uszu i zatrzymaj.",
-								"uwaga": "Kark zostaje długi, broda nie ucieka w dół."
+								"jak": "Pozwól rękom swobodnie zwisać.",
+								"napnij": "Unieś barki do uszu i przytrzymaj.",
+								"uwaga": "Nie wciągaj głowy w ramiona, broda zostaje na miejscu."
 							}
 						},
 						{
@@ -153,7 +153,7 @@
 							"czasS": 50,
 							"instrukcje": {
 								"pusc": "Opuść barki jednym ruchem.",
-								"poczuj": "Ciężar spływa z karku na ramiona."
+								"poczuj": "Napięcie spływa z karku w dół."
 							}
 						}
 					]
@@ -165,16 +165,16 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Głowa prosto, wzrok przed siebie.",
-								"napnij": "Przyciągnij brodę do mostka, poczuj tył szyi.",
-								"uwaga": "Ruch mały i powolny, bez szarpania."
+								"jak": "Trzymaj głowę prosto, patrz przed siebie.",
+								"napnij": "Przyciągnij brodę do mostka, aż poczujesz tył szyi.",
+								"uwaga": "Ruszaj się powoli, bez szarpania."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Wróć głową do środka.",
+								"pusc": "Unieś głowę i wróć do pozycji prostej.",
 								"poczuj": "Kark się wydłuża i mięknie."
 							}
 						}
@@ -187,16 +187,16 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Zęby lekko rozchylone.",
-								"napnij": "Dociśnij zęby do siebie i poszerz uśmiech na siłę.",
-								"uwaga": "Nie zgrzytaj, wystarczy stały nacisk."
+								"jak": "Rozchyl lekko zęby.",
+								"napnij": "Zaciśnij zęby i rozciągnij usta w szerokim uśmiechu.",
+								"uwaga": "Nie zgrzytaj zębami, wystarczy stały nacisk."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Rozluźnij żuchwę, usta lekko otwarte.",
+								"pusc": "Rozluźnij szczękę i lekko rozchyl usta.",
 								"poczuj": "Policzki i szczęka robią się miękkie."
 							}
 						}
@@ -209,9 +209,9 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Powieki opuszczone.",
-								"napnij": "Zmruż oczy z całej siły, aż poczujesz policzki i skronie.",
-								"uwaga": "Soczewki kontaktowe? Ściskaj delikatniej."
+								"jak": "Zamknij oczy.",
+								"napnij": "Zaciśnij mocno powieki, aż poczujesz policzki i skronie.",
+								"uwaga": "Jeśli nosisz soczewki, zaciskaj delikatniej."
 							}
 						},
 						{
@@ -219,7 +219,7 @@
 							"czasS": 50,
 							"instrukcje": {
 								"pusc": "Puść powieki, niech same się ułożą.",
-								"poczuj": "Okolice oczu wygładzają się i ciemnieją."
+								"poczuj": "Wokół oczu robi się gładko i ciemno."
 							}
 						}
 					]
@@ -231,17 +231,17 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Twarz spokojna, oczy zamknięte.",
-								"napnij": "Ściągnij brwi do środka, zmarszcz nos.",
-								"uwaga": "Usta i żuchwa bez udziału."
+								"jak": "Zamknij oczy, twarz zostaw spokojną.",
+								"napnij": "Ściągnij brwi i zmarszcz nos.",
+								"uwaga": "Usta i szczęka zostają luźne."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Zostaw brwi, niech odpłyną od siebie.",
-								"poczuj": "Między brwiami robi się szeroko i spokojnie."
+								"pusc": "Puść brwi, niech same się rozsuną.",
+								"poczuj": "Między brwiami robi się gładko i spokojnie."
 							}
 						}
 					]
@@ -253,8 +253,8 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Oczy zamknięte, głowa oparta.",
-								"napnij": "Podciągnij brwi w górę, jakbyś się dziwił.",
+								"jak": "Zamknij oczy i oprzyj głowę.",
+								"napnij": "Unieś brwi wysoko, jak w zdziwieniu.",
 								"uwaga": "Nie otwieraj przy tym oczu."
 							}
 						},
@@ -262,8 +262,8 @@
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Brwi wracają na miejsce same.",
-								"poczuj": "Skóra czoła rozluźnia się aż po skronie."
+								"pusc": "Brwi same wracają na miejsce.",
+								"poczuj": "Czoło rozluźnia się aż po skronie."
 							}
 						}
 					]
@@ -280,17 +280,17 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Ręce na udach, łokcie lekko zgięte.",
+								"jak": "Połóż ręce na udach, łokcie lekko zegnij.",
 								"napnij": "Zaciśnij pięści i dociśnij łokcie do boków.",
-								"uwaga": "Barki zostają nisko."
+								"uwaga": "Barki trzymaj nisko."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Rozwiń dłonie i opuść ręce.",
-								"poczuj": "Całe ręce cięższe, od palców po barki."
+								"pusc": "Rozprostuj dłonie i opuść ręce.",
+								"poczuj": "Ręce robią się ciężkie, od palców po barki."
 							}
 						}
 					]
@@ -302,9 +302,9 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Stopy na podłodze, kolana luźno.",
-								"napnij": "Wyprostuj nogi, a palce stóp skieruj ku kolanom.",
-								"uwaga": "Przy skurczu odpuść część siły."
+								"jak": "Postaw stopy na podłodze, kolana zostaw luźne.",
+								"napnij": "Wyprostuj nogi i zegnij stopy palcami w swoją stronę.",
+								"uwaga": "Jeśli złapie cię skurcz, napinaj słabiej."
 							}
 						},
 						{
@@ -325,15 +325,15 @@
 							"czasS": 10,
 							"instrukcje": {
 								"jak": "Oddychaj spokojnie przez nos.",
-								"napnij": "Wciągnij brzuch i utwardź go jak przed ciosem.",
-								"uwaga": "Oddychaj dalej, nie zatrzymuj powietrza."
+								"napnij": "Wciągnij brzuch i napnij go jak przed ciosem.",
+								"uwaga": "Nie wstrzymuj oddechu."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Zwolnij brzuch, niech się rozszerzy.",
+								"pusc": "Puść brzuch, niech swobodnie się uniesie.",
 								"poczuj": "Oddech schodzi niżej i płynie sam."
 							}
 						}
@@ -346,16 +346,16 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Usiądź prosto, ręce luźno.",
-								"napnij": "Weź głęboki wdech i przytrzymaj, klatka napięta.",
-								"uwaga": "Przy zawrotach głowy skróć wstrzymanie."
+								"jak": "Usiądź prosto, ręce opuść luźno.",
+								"napnij": "Weź głęboki wdech i zatrzymaj powietrze.",
+								"uwaga": "Jeśli kręci ci się w głowie, wydychaj wcześniej."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Oddaj powietrze długim, cichym wydechem.",
+								"pusc": "Wypuść powietrze długim, spokojnym wydechem.",
 								"poczuj": "Klatka opada, oddech się wyrównuje."
 							}
 						}
@@ -368,9 +368,9 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Ręce zwisają swobodnie.",
-								"napnij": "Unieś barki w stronę uszu i zatrzymaj.",
-								"uwaga": "Kark zostaje długi, broda nie ucieka w dół."
+								"jak": "Pozwól rękom swobodnie zwisać.",
+								"napnij": "Unieś barki do uszu i przytrzymaj.",
+								"uwaga": "Nie wciągaj głowy w ramiona, broda zostaje na miejscu."
 							}
 						},
 						{
@@ -378,7 +378,7 @@
 							"czasS": 50,
 							"instrukcje": {
 								"pusc": "Opuść barki jednym ruchem.",
-								"poczuj": "Ciężar spływa z karku na ramiona."
+								"poczuj": "Napięcie spływa z karku w dół."
 							}
 						}
 					]
@@ -390,16 +390,16 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Głowa prosto, wzrok przed siebie.",
-								"napnij": "Przyciągnij brodę do mostka, poczuj tył szyi.",
-								"uwaga": "Ruch mały i powolny, bez szarpania."
+								"jak": "Trzymaj głowę prosto, patrz przed siebie.",
+								"napnij": "Przyciągnij brodę do mostka, aż poczujesz tył szyi.",
+								"uwaga": "Ruszaj się powoli, bez szarpania."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Wróć głową do środka.",
+								"pusc": "Unieś głowę i wróć do pozycji prostej.",
 								"poczuj": "Kark się wydłuża i mięknie."
 							}
 						}
@@ -412,9 +412,9 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Powieki opuszczone.",
-								"napnij": "Zmruż oczy z całej siły, aż poczujesz policzki i skronie.",
-								"uwaga": "Soczewki kontaktowe? Ściskaj delikatniej."
+								"jak": "Zamknij oczy.",
+								"napnij": "Zaciśnij mocno powieki, aż poczujesz policzki i skronie.",
+								"uwaga": "Jeśli nosisz soczewki, zaciskaj delikatniej."
 							}
 						},
 						{
@@ -422,7 +422,7 @@
 							"czasS": 50,
 							"instrukcje": {
 								"pusc": "Puść powieki, niech same się ułożą.",
-								"poczuj": "Okolice oczu wygładzają się i ciemnieją."
+								"poczuj": "Wokół oczu robi się gładko i ciemno."
 							}
 						}
 					]
@@ -434,17 +434,17 @@
 							"nazwa": "Napinanie",
 							"czasS": 10,
 							"instrukcje": {
-								"jak": "Oczy zamknięte, twarz luźna.",
+								"jak": "Zamknij oczy, twarz zostaw luźną.",
 								"napnij": "Unieś brwi, a potem ściągnij je do środka.",
-								"uwaga": "Szczęka zostaje swobodna."
+								"uwaga": "Szczęka zostaje luźna."
 							}
 						},
 						{
 							"nazwa": "Rozluźnienie",
 							"czasS": 50,
 							"instrukcje": {
-								"pusc": "Wygładź całe czoło.",
-								"poczuj": "Twarz staje się gładka i spokojna."
+								"pusc": "Zostaw brwi w spokoju, czoło samo zrobi się gładkie.",
+								"poczuj": "Twarz robi się gładka i spokojna."
 							}
 						}
 					]

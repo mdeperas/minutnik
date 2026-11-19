@@ -6,6 +6,12 @@ export interface Dzwiek {
 	zagraj(sygnal: Sygnal): void;
 }
 
+export type Wibracja = 'tik' | 'zmiana';
+
+export interface Wibracje {
+	wibruj(rodzaj: Wibracja): void;
+}
+
 export interface BlokadaEkranu {
 	trzymaj(): Promise<boolean>;
 	pusc(): void;
@@ -19,6 +25,7 @@ export interface Srodowisko {
 	poZmianieWidocznosci(akcja: () => void): () => void;
 	dzwiek: Dzwiek;
 	ekran: BlokadaEkranu;
+	wibracje: Wibracje;
 	data(): Date;
 	magazynHistorii: Magazyn;
 	udostepnij(plik: File): Promise<void>;
@@ -30,6 +37,7 @@ export interface Podrobki {
 	tempo?: number;
 	dzwiek?: Dzwiek;
 	ekran?: BlokadaEkranu;
+	wibracje?: Wibracje;
 	widoczna?: () => boolean;
 }
 
@@ -80,6 +88,14 @@ function dzwiekWebAudio(): Dzwiek {
 		}
 	};
 }
+
+const wzoryWibracji: Record<Wibracja, number | number[]> = { tik: 40, zmiana: [80, 60, 80] };
+
+const wibracjeNavigatora: Wibracje = {
+	wibruj(rodzaj) {
+		if (typeof navigator.vibrate === 'function') navigator.vibrate(wzoryWibracji[rodzaj]);
+	}
+};
 
 function blokadaWakeLock(): BlokadaEkranu {
 	let blokada: WakeLockSentinel | undefined;
@@ -166,6 +182,7 @@ export function srodowiskoPrzegladarki(podrobki: Podrobki = {}): Srodowisko {
 		},
 		dzwiek: podrobki.dzwiek ?? dzwiekWebAudio(),
 		ekran: podrobki.ekran ?? blokadaWakeLock(),
+		wibracje: podrobki.wibracje ?? wibracjeNavigatora,
 		data: () => new Date(),
 		magazynHistorii: magazynLocalStorage,
 		udostepnij: udostepnijLubPobierz,

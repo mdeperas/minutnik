@@ -10,6 +10,8 @@ enum Tone {
         switch signal {
         case .phaseStarted(let phaseIndex):
             [Beep(frequency: phaseIndex == 0 ? 880 : 660, duration: 0.25)]
+        case .countdown:
+            [Beep(frequency: 990, duration: 0.12)]
         case .sessionFinished:
             [Beep(frequency: 660, duration: 0.2), Beep(frequency: 880, duration: 0.2), Beep(frequency: 1_100, duration: 0.4)]
         }

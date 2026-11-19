@@ -5,20 +5,29 @@ struct SessionView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var confirmsLeaving = false
+    @State private var figureZoomed = false
+    @State private var zoomToken = 0
+    @State private var ringSpin = 0.0
+    @Namespace private var figureSpace
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                HStack(spacing: 8) {
-                    header.frame(maxWidth: .infinity)
-                    figure
-                }
-                ring
-                instructions
+        VStack(spacing: 16) {
+            HStack(spacing: 8) {
+                header.frame(maxWidth: .infinity)
+                figure
             }
-            .padding()
+            .layoutPriority(1)
+            ring
+                .frame(minHeight: 96, maxHeight: .infinity)
+            if let breath = model.currentBreath, model.isInProgress {
+                BreathIndicator(breath: breath, color: Color(PhaseKind.relaxation.ringColor), reduceMotion: reduceMotion)
+            }
+            instructions
+                .layoutPriority(1)
         }
+        .padding()
         .safeAreaInset(edge: .bottom) { controls.padding() }
+        .overlay { zoomedFigure }
         .background(Color(PhaseLook.background).ignoresSafeArea())
         .foregroundStyle(.white)
         .navigationTitle(model.setName)
@@ -39,6 +48,12 @@ struct SessionView: View {
             Button("Ćwiczę dalej", role: .cancel) {}
         }
         .sensoryFeedback(.impact, trigger: model.currentStep) { _, step in step != nil }
+        .sensoryFeedback(.impact(weight: .light), trigger: model.hapticBeat) { old, new in HapticBeat.shouldTap(from: old, to: new) }
+        .onChange(of: model.currentStep) { old, new in
+            guard old != nil, new != nil, !reduceMotion else { return }
+            withAnimation(.timingCurve(0.2, 0.8, 0.2, 1, duration: 0.9)) { ringSpin += 360 }
+        }
+        .onChange(of: model.currentFigureName) { closeFigure() }
         .sensoryFeedback(.success, trigger: model.player.state == .finished) { _, finished in finished }
         .onDisappear { model.stop() }
         .loggedScreen("sesja")
@@ -71,9 +86,12 @@ struct SessionView: View {
             PhaseRing(
                 look: PhaseLook(phaseName: phase, remaining: model.remainingInPhase, duration: duration, reduceMotion: reduceMotion),
                 phaseName: phase,
-                remainingLabel: "Zostało \(ClockText.minutesSeconds(model.remainingInPhase))"
+                remainingLabel: "Zostało \(ClockText.minutesSeconds(model.remainingInPhase))",
+                spin: ringSpin
             )
             .id(step)
+            .transition(.opacity)
+            .animation(.easeInOut(duration: 0.6), value: step)
         } else {
             Text(stateLabel)
                 .font(.largeTitle.bold())
@@ -88,13 +106,58 @@ struct SessionView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 84, height: 84)
+                .modifier(FigureMatch(id: name, space: figureSpace, isSource: !figureZoomed, enabled: !reduceMotion))
+                .opacity(figureZoomed ? 0 : 1)
                 .id(name)
                 .transition(reduceMotion ? .identity : .opacity)
+                .onTapGesture { toggleFigure() }
+                .accessibilityRemoveTraits(.isButton)
+                .accessibilityAddTraits(.isImage)
+                .accessibilityAction { toggleFigure() }
                 .animation(reduceMotion ? nil : .easeOut(duration: 0.4), value: name)
                 .accessibilityLabel(PhaseKind(phaseName: model.currentPhaseName ?? "") == .tension ? "Rycina: napięcie" : "Rycina: rozluźnienie")
                 .accessibilityValue(name)
                 .accessibilityIdentifier("session.figure")
         }
+    }
+
+    @ViewBuilder
+    private var zoomedFigure: some View {
+        if figureZoomed, let name = model.currentFigureName {
+            ZStack {
+                Color.black.opacity(0.75).ignoresSafeArea()
+                    .transition(.opacity)
+                Image(name)
+                    .resizable()
+                    .scaledToFit()
+                    .modifier(FigureMatch(id: name, space: figureSpace, isSource: true, enabled: !reduceMotion))
+                    .padding(24)
+                    .transition(reduceMotion ? .opacity : .identity)
+                    .accessibilityIdentifier("session.figureZoomed")
+            }
+            .onTapGesture { closeFigure() }
+        }
+    }
+
+    private var figureAnimation: Animation {
+        reduceMotion ? .easeInOut(duration: 0.3) : .spring(response: 0.5, dampingFraction: 0.72)
+    }
+
+    private func toggleFigure() {
+        guard !figureZoomed else { return closeFigure() }
+        withAnimation(figureAnimation) { figureZoomed = true }
+        zoomToken += 1
+        let token = zoomToken
+        Task {
+            try? await Task.sleep(for: .seconds(2.5))
+            if token == zoomToken { closeFigure() }
+        }
+    }
+
+    private func closeFigure() {
+        guard figureZoomed else { return }
+        zoomToken += 1
+        withAnimation(figureAnimation) { figureZoomed = false }
     }
 
     private var instructions: some View {
@@ -109,6 +172,7 @@ struct SessionView: View {
             }
         }
         .font(.body)
+        .minimumScaleFactor(0.8)
     }
 
     private func labelColor(_ label: String) -> Color {
@@ -152,6 +216,21 @@ struct SessionView: View {
         case .finished: SessionModel.finishedTitle
         case .stopped: "Przerwano"
         default: "Gotowe"
+        }
+    }
+}
+
+private struct FigureMatch: ViewModifier {
+    let id: String
+    let space: Namespace.ID
+    let isSource: Bool
+    let enabled: Bool
+
+    func body(content: Content) -> some View {
+        if enabled {
+            content.matchedGeometryEffect(id: id, in: space, isSource: isSource)
+        } else {
+            content
         }
     }
 }

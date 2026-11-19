@@ -48,6 +48,16 @@ final class SessionModel {
 
     var currentPhaseDuration: TimeInterval? { currentStep.map { player.steps[$0].duration } }
 
+    var currentBreath: BoxBreath? {
+        guard let duration = currentPhaseDuration, PhaseKind(phaseName: currentPhaseName ?? "") == .relaxation else { return nil }
+        return BoxBreath(elapsed: duration - remainingInPhase)
+    }
+
+    var hapticBeat: HapticBeat? {
+        guard let step = currentStep, case .running = player.state, let duration = currentPhaseDuration else { return nil }
+        return HapticBeat.at(step: step, kind: PhaseKind(phaseName: phaseNames[step]), remaining: remainingInPhase, duration: duration)
+    }
+
     var currentGroupName: String? { currentStep.map { set.groups[player.steps[$0].groupIndex].name } }
 
     var currentFigureName: String? {
@@ -140,8 +150,17 @@ final class SessionModel {
         return [ScheduledSignal(at: now, signal: signal(enteringStep: step))]
     }
 
+    static let countdownSeconds: [TimeInterval] = [3, 2, 1]
+
     private func upcomingSignals() -> [ScheduledSignal] {
-        player.upcomingPhaseEnds().map { ScheduledSignal(at: $0.at, signal: signal(enteringStep: $0.step + 1)) }
+        player.upcomingPhaseEnds().flatMap { end in
+            let countdown = Self.countdownSeconds
+                .filter { $0 < player.steps[end.step].duration }
+                .map { end.at.addingTimeInterval(-$0) }
+                .filter { $0 > now }
+                .map { ScheduledSignal(at: $0, signal: .countdown) }
+            return countdown + [ScheduledSignal(at: end.at, signal: signal(enteringStep: end.step + 1))]
+        }
     }
 
     private func signal(enteringStep step: Int) -> Signal {

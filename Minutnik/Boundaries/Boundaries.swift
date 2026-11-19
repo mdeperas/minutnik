@@ -3,6 +3,7 @@ import Foundation
 enum Signal: Hashable {
     case phaseStarted(phaseIndex: Int)
     case sessionFinished
+    case countdown
 }
 
 struct ScheduledSignal: Equatable {
