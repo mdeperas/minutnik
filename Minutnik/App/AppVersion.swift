@@ -7,6 +7,7 @@ struct AppVersion {
         let version = info["CFBundleShortVersionString"] as? String ?? "?"
         let build = info["CFBundleVersion"] as? String ?? "?"
         let commit = info["MinutnikGitCommit"] as? String ?? "?"
-        label = "Wersja \(version) (\(build)) · \(commit)"
+        let released = info["MinutnikReleaseDate"] as? String ?? "?"
+        label = "Wersja \(version) (\(build)) · \(commit) · \(released)"
     }
 }

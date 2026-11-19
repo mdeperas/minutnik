@@ -31,31 +31,6 @@ body {
 	margin: 0 auto;
 	padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
 }
-.zestawy {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	display: grid;
-	gap: 0.75rem;
-}
-.zestawy button {
-	width: 100%;
-	min-height: 3.5rem;
-	padding: 0.75rem 1rem;
-	border: 0;
-	border-radius: 1rem;
-	background: #24262c;
-	color: #fff;
-	font: inherit;
-	text-align: left;
-	display: flex;
-	justify-content: space-between;
-	gap: 1rem;
-	cursor: pointer;
-}
-.zestawy .podsumowanie {
-	color: var(--tekst-drugi);
-}
 .sesja {
 	--kolor: var(--akcent);
 	--kolor-napisu: var(--akcent-napis);
@@ -218,7 +193,7 @@ body {
 }
 .przycisk:focus-visible,
 .wroc:focus-visible,
-.zestawy button:focus-visible {
+.karta:focus-visible {
 	outline: 3px solid #fff;
 	outline-offset: 2px;
 }
@@ -276,65 +251,6 @@ dialog .przycisk {
 	text-align: center;
 	color: var(--tekst-drugi);
 	font-size: 0.85rem;
-}
-.historia {
-	margin-top: 2rem;
-	flex: 1 1 0;
-	min-height: 6rem;
-	display: flex;
-	flex-direction: column;
-}
-.historia .wpisy {
-	overflow-y: auto;
-	min-height: 0;
-}
-.historia-naglowek {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 1rem;
-}
-.historia-naglowek h2 {
-	font-size: 1.1rem;
-	margin: 0;
-}
-.eksport {
-	min-height: 2.75rem;
-	padding: 0 1rem;
-	border: 0;
-	border-radius: 1rem;
-	background: #24262c;
-	color: var(--akcent-napis, #fff);
-	font: inherit;
-	cursor: pointer;
-}
-.wpisy {
-	list-style: none;
-	margin: 0.75rem 0 0;
-	padding: 0;
-	display: grid;
-	gap: 0.5rem;
-}
-.wpisy li {
-	display: grid;
-	gap: 0.15rem;
-	padding: 0.75rem 1rem;
-	border-radius: 1rem;
-	background: #1f2126;
-	color: var(--tekst-drugi);
-}
-.wpisy .nazwa {
-	color: #fff;
-}
-.instalacja,
-.wersja {
-	margin: 2rem 0 0;
-	color: var(--tekst-drugi);
-	font-size: 0.85rem;
-	text-align: center;
-}
-.wersja {
-	margin-top: 1rem;
 }
 .oddech {
 	display: flex;
@@ -416,4 +332,138 @@ dialog .przycisk {
 }
 .scena:has(.powiekszona) :is(.pierscien, .oddech) {
 	opacity: 0.2;
+}
+.start {
+	background: radial-gradient(120% 60% at 0% 0%, hsl(190 70% 30% / 0.45), transparent 60%), radial-gradient(90% 50% at 100% 100%, hsl(146 30% 40% / 0.35), transparent 60%), #000;
+	max-width: none;
+	gap: clamp(0.75rem, 2.5dvh, 1.5rem);
+}
+.start > * {
+	width: 100%;
+	max-width: 36rem;
+	margin-inline: auto;
+}
+.start-naglowek {
+	padding-top: clamp(0.5rem, 3dvh, 2rem);
+}
+.start-nadtytul {
+	margin: 0;
+	color: var(--akcent-napis);
+	font-size: 0.95rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+.start h1 {
+	margin: 0.2rem 0 0.5rem;
+	font-size: clamp(2.6rem, 7dvh, 3.4rem);
+	line-height: 1.05;
+	font-weight: 800;
+	background: linear-gradient(90deg, var(--akcent-napis), var(--szalwia));
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+.start-legenda {
+	margin: 0;
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	color: #e4e6ea;
+	font-size: 1rem;
+}
+.kropka {
+	width: 0.75rem;
+	height: 0.75rem;
+	border-radius: 50%;
+	background: var(--akcent);
+}
+.kropka.rozluznienie {
+	margin-left: 0.6rem;
+	background: var(--szalwia);
+}
+.start-sekcja {
+	margin: 0;
+	color: #fff;
+	font-size: 1.25rem;
+	font-weight: 700;
+}
+.zestawy {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: clamp(0.75rem, 2dvh, 1.1rem);
+}
+.karta {
+	--kolor-karty: var(--akcent);
+	--napis-karty: var(--akcent-napis);
+	width: 100%;
+	min-height: 7rem;
+	padding: clamp(0.9rem, 2.5dvh, 1.4rem) 1.25rem;
+	border: 2px solid var(--kolor-karty);
+	border-radius: 1.5rem;
+	background: linear-gradient(135deg, color-mix(in srgb, var(--kolor-karty) 26%, #000), #0d0e10 70%);
+	box-shadow: 0 6px 0 color-mix(in srgb, var(--kolor-karty) 45%, #000);
+	color: #fff;
+	font: inherit;
+	text-align: left;
+	display: grid;
+	grid-template-columns: 1fr auto;
+	grid-template-areas: 'nazwa start' 'fakty start';
+	align-items: center;
+	gap: 0.6rem 1rem;
+	cursor: pointer;
+	transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.karta.rozluznienie {
+	--kolor-karty: var(--szalwia);
+	--napis-karty: #c9e6d4;
+}
+.karta:active {
+	transform: translateY(4px);
+	box-shadow: 0 2px 0 color-mix(in srgb, var(--kolor-karty) 45%, #000);
+}
+.karta-nazwa {
+	grid-area: nazwa;
+	font-size: clamp(1.7rem, 4.5dvh, 2.1rem);
+	font-weight: 800;
+	line-height: 1.1;
+}
+.karta-fakty {
+	grid-area: fakty;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+.pigulka {
+	padding: 0.2rem 0.75rem;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--kolor-karty) 22%, #000);
+	color: var(--napis-karty);
+	font-size: 1.05rem;
+	font-weight: 700;
+}
+.karta-start {
+	grid-area: start;
+	min-height: 2.75rem;
+	padding: 0 1.1rem;
+	display: flex;
+	align-items: center;
+	border-radius: 999px;
+	background: var(--kolor-karty);
+	color: #0b1a1e;
+	font-size: 1.15rem;
+	font-weight: 800;
+}
+.start-stopka {
+	margin-top: auto;
+	display: grid;
+	gap: 0.5rem;
+	color: #d4d6db;
+	font-size: 0.9rem;
+	text-align: center;
+}
+.start-stopka p {
+	margin: 0;
 }

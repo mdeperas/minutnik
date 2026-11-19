@@ -9,7 +9,7 @@ enum PhaseText {
     static func lines(_ instructions: PhaseInstructions?) -> [PhaseLine] {
         guard let instructions else { return [] }
         let candidates: [(String, String?)] = [
-            ("Jak", instructions.tense == nil ? instructions.how : nil),
+            ("Jak", instructions.how),
             ("Napnij", instructions.tense),
             ("Uwaga", instructions.caution),
             ("Puść", instructions.release),
@@ -24,8 +24,12 @@ enum PhaseText {
     static func groupPosition(_ index: Int, of count: Int) -> String { "Grupa \(index + 1) z \(count)" }
 
     static func summary(of set: ExerciseSet) -> String {
+        "\(groupCount(set.groups.count)) · \(minutes(of: set))"
+    }
+
+    static func minutes(of set: ExerciseSet) -> String {
         let seconds = set.groups.flatMap(\.phases).reduce(0) { $0 + $1.durationSeconds }
-        return "\(groupCount(set.groups.count)) · \(Int((Double(seconds) / 60).rounded(.up))) min"
+        return "\(Int((Double(seconds) / 60).rounded(.up))) min"
     }
 
     static func groupCount(_ count: Int) -> String {

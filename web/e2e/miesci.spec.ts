@@ -10,7 +10,7 @@ const bezPrzewijania = (page: Page) =>
 	page.evaluate(() => ({ wysokosc: document.scrollingElement!.scrollHeight, okno: window.innerHeight }));
 
 for (const rozmiar of ekrany) {
-	test(`${rozmiar.width}×${rozmiar.height}: lista i sesja mieszczą się bez przewijania`, async ({ page }) => {
+	test(`${rozmiar.width}×${rozmiar.height}: ekran startowy i sesja mieszczą się bez przewijania`, async ({ page }) => {
 		await page.setViewportSize(rozmiar);
 		await podrobGranice(page, 1);
 		await page.goto('');
@@ -18,6 +18,7 @@ for (const rozmiar of ekrany) {
 		expect(wymiary.wysokosc).toBeLessThanOrEqual(wymiary.okno);
 		await page.getByRole('button', { name: /^12 grup/ }).click();
 		const sesja = page.locator('#sesja');
+		await expect(sesja.locator('.opis dt').first()).toHaveText('Jak');
 		for (const akcja of ['Start', 'Pomiń', 'Pomiń']) {
 			await sesja.getByRole('button', { name: akcja, exact: true }).click();
 			wymiary = await bezPrzewijania(page);
@@ -30,17 +31,9 @@ for (const rozmiar of ekrany) {
 	});
 }
 
-test('375×667: sesja z historią po powrocie na listę też się mieści', async ({ page }) => {
-	await page.setViewportSize(ekrany[0]);
-	await podrobGranice(page, 1);
+test('393×852: zrzut ekranu startowego', async ({ page }) => {
+	await page.setViewportSize(ekrany[1]);
 	await page.goto('');
-	for (let i = 0; i < 6; i++) {
-		await page.getByRole('button', { name: /^12 grup/ }).click();
-		await page.locator('#sesja').getByRole('button', { name: 'Start', exact: true }).click();
-		await page.locator('#sesja').getByRole('button', { name: 'Przerwij', exact: true }).click();
-		await page.locator('#sesja').getByRole('button', { name: 'Wróć do listy', exact: true }).click();
-	}
-	await expect(page.locator('#historia')).toBeVisible();
-	const wymiary = await bezPrzewijania(page);
-	expect(wymiary.wysokosc).toBeLessThanOrEqual(wymiary.okno);
+	await expect(page.getByRole('list', { name: 'Zestawy' }).getByRole('button')).toHaveCount(2);
+	await page.screenshot({ path: process.env.MINUTNIK_ZRZUT ?? 'test-results/minutnik-start.png' });
 });

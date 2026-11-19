@@ -13,18 +13,18 @@
 		<link rel="stylesheet" href="/src/styl.css" />
 	</head>
 	<body>
-		<main id="lista-ekran" class="ekran">
-			<h1>Minutnik</h1>
+		<main id="lista-ekran" class="ekran start">
+			<header class="start-naglowek">
+				<p class="start-nadtytul">Trening rozluźniania</p>
+				<h1>Minutnik</h1>
+				<p class="start-legenda"><span class="kropka napinanie"></span>napinanie <span class="kropka rozluznienie"></span>rozluźnienie</p>
+			</header>
+			<h2 class="start-sekcja" id="zestawy-tytul">Wybierz zestaw</h2>
 			<ul id="zestawy" class="zestawy" aria-label="Zestawy"></ul>
-			<section id="historia" class="historia" aria-labelledby="historia-tytul" hidden>
-				<div class="historia-naglowek">
-					<h2 id="historia-tytul">Historia</h2>
-					<button type="button" class="eksport">Eksportuj</button>
-				</div>
-				<ul class="wpisy" aria-label="Historia"></ul>
-			</section>
-			<p class="instalacja" hidden>Żeby historia nie znikła, dodaj Minutnik do ekranu: Udostępnij → Dodaj do ekranu początkowego.</p>
-			<p class="wersja"></p>
+			<footer class="start-stopka">
+				<p class="instalacja" hidden>Dodaj Minutnik do ekranu: Udostępnij → Dodaj do ekranu początkowego.</p>
+				<p class="wersja"></p>
+			</footer>
 		</main>
 
 		<main id="sesja" class="ekran sesja" hidden data-faza="napinanie">

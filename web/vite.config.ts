@@ -18,6 +18,16 @@ function wersjaZGita() {
 
 const wersja = process.env.MINUTNIK_WERSJA ?? wersjaZGita();
 
+function dataZGita() {
+	try {
+		return execSync("git log -1 --format=%cd --date=format-local:'%d.%m.%Y %H:%M'", { stdio: ['ignore', 'pipe', 'ignore'], env: { ...process.env, TZ: 'Europe/Warsaw' } }).toString().trim();
+	} catch {
+		return 'dev';
+	}
+}
+
+const dataWydania = process.env.MINUTNIK_DATA_WYDANIA ?? dataZGita();
+
 function serviceWorker(): Plugin {
 	let katalog = '';
 	return {
@@ -35,7 +45,7 @@ function serviceWorker(): Plugin {
 
 export default defineConfig({
 	base,
-	define: { __WERSJA__: JSON.stringify(wersja) },
+	define: { __WERSJA__: JSON.stringify(wersja), __DATA_WYDANIA__: JSON.stringify(dataWydania) },
 	plugins: [serviceWorker()],
 	resolve: {
 		alias: { 'virtual:zestawy': process.env.MINUTNIK_ZESTAWY ?? domyslneZestawy }

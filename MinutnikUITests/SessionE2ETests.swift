@@ -61,10 +61,9 @@ final class SessionE2ETests: XCTestCase {
         XCTAssertTrue(app.buttons["session.done"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["session.phase"].label, "Koniec sesji")
         app.buttons["session.done"].tap()
-        let row = app.descendants(matching: .any)["history.row.0"]
-        XCTAssertTrue(row.waitForExistence(timeout: 5))
-        XCTAssertTrue(row.label.contains("Ukończona"), row.label)
-        XCTAssertTrue(app.buttons["history.export"].exists)
+        XCTAssertTrue(app.buttons["start.set.1"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.descendants(matching: .any)["history.row.0"].exists)
+        XCTAssertFalse(app.staticTexts["Historia"].exists)
     }
 
     @MainActor

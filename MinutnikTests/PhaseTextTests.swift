@@ -4,7 +4,7 @@ import XCTest
 final class PhaseTextTests: XCTestCase {
     func testTensePhaseShowsTenseAndCaution() {
         let lines = PhaseText.lines(PhaseInstructions(how: "krótko", tense: "napnij", caution: "uważaj", release: nil, feel: nil))
-        XCTAssertEqual(lines, [PhaseLine(label: "Napnij", text: "napnij"), PhaseLine(label: "Uwaga", text: "uważaj")])
+        XCTAssertEqual(lines, [PhaseLine(label: "Jak", text: "krótko"), PhaseLine(label: "Napnij", text: "napnij"), PhaseLine(label: "Uwaga", text: "uważaj")])
     }
 
     func testReleasePhaseShowsReleaseAndFeelAndFallsBackToHow() {

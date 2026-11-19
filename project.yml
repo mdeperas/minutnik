@@ -22,6 +22,7 @@ targets:
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         MinutnikGitCommit: $(MINUTNIK_GIT_COMMIT)
+        MinutnikReleaseDate: $(MINUTNIK_RELEASE_DATE)
         UIBackgroundModes: [audio]
     postCompileScripts:
       - name: Zestawy
@@ -32,6 +33,7 @@ targets:
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
         MINUTNIK_GIT_COMMIT: dev
+        MINUTNIK_RELEASE_DATE: dev
         ENABLE_USER_SCRIPT_SANDBOXING: NO
         PRODUCT_BUNDLE_IDENTIFIER: com.md4ps.minutnik
         GENERATE_INFOPLIST_FILE: YES

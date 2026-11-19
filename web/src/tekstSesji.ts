@@ -8,7 +8,7 @@ export interface LiniaInstrukcji {
 export function linieInstrukcji(instrukcje: Instrukcje | undefined): LiniaInstrukcji[] {
 	if (!instrukcje) return [];
 	const kandydaci: [string, string | undefined][] = [
-		['Jak', instrukcje.napnij === undefined ? instrukcje.jak : undefined],
+		['Jak', instrukcje.jak],
 		['Napnij', instrukcje.napnij],
 		['Uwaga', instrukcje.uwaga],
 		['Puść', instrukcje.pusc],
@@ -27,9 +27,9 @@ export function liczbaGrup(ile: number): string {
 	return `${ile} ${slowo}`;
 }
 
-export function podsumowanie(zestaw: Zestaw): string {
+export function minutyZestawu(zestaw: Zestaw): string {
 	const sekundy = zestaw.grupy.flatMap((g) => g.fazy).reduce((suma, f) => suma + f.czasS, 0);
-	return `${liczbaGrup(zestaw.grupy.length)} · ${Math.ceil(sekundy / 60)} min`;
+	return `${Math.ceil(sekundy / 60)} min`;
 }
 
 export function minutySekundy(ms: number): string {

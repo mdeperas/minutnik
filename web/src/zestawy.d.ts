@@ -4,3 +4,4 @@ declare module 'virtual:zestawy' {
 }
 
 declare const __WERSJA__: string;
+declare const __DATA_WYDANIA__: string;
