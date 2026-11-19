@@ -6,6 +6,7 @@ const trwa = { rodzaj: 'trwa', krok: 0, poczatek: 0 } as const;
 describe('muzyka', () => {
 	it('zapamiętany wybór wraca, a nieznany albo brak to bez muzyki', () => {
 		expect(odczytajSciezke('kosmos')).toBe('kosmos');
+		expect(odczytajSciezke('las')).toBe('las');
 		expect(odczytajSciezke('synthwave')).toBe('synthwave');
 		expect(odczytajSciezke(null)).toBe('bez');
 		expect(odczytajSciezke('disco')).toBe('bez');
@@ -13,6 +14,7 @@ describe('muzyka', () => {
 
 	it('plik tylko dla wybranej ścieżki', () => {
 		expect(plikSciezki('kosmos')).toBe('muzyka/kosmos.m4a');
+		expect(plikSciezki('las')).toBe('muzyka/las.m4a');
 		expect(plikSciezki('bez')).toBeUndefined();
 	});
 

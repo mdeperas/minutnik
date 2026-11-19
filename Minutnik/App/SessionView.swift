@@ -7,22 +7,34 @@ struct SessionView: View {
     @State private var figureZoomed = false
     @State private var zoomToken = 0
     @State private var ringSpin = 0.0
+    @State private var instructionsExpanded = false
     @Namespace private var figureSpace
 
     var body: some View {
         VStack(spacing: 16) {
             header
                 .frame(maxWidth: .infinity)
-                .layoutPriority(1)
+                .layoutPriority(3)
             ring
-                .frame(minHeight: 96, maxHeight: .infinity)
-            figure
+                .frame(minHeight: 120, maxHeight: model.currentBreath == nil ? 192 : 320)
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier("session.ring")
+                .layoutPriority(2)
+            HStack(spacing: 16) {
+                figure
+                relaxationClock
+            }
+            .layoutPriority(2)
             instructions
-                .layoutPriority(1)
+                .accessibilityElement(children: .contain)
+                .accessibilityIdentifier("session.instructions")
+                .frame(maxHeight: .infinity, alignment: .top)
         }
         .padding()
         .safeAreaInset(edge: .bottom) { controls.padding() }
+        .overlay { expandedInstructions }
         .overlay { zoomedFigure }
+        .onChange(of: model.currentStep) { instructionsExpanded = false }
         .background(Color(PhaseLook.background).ignoresSafeArea())
         .foregroundStyle(.white)
         .navigationTitle(model.setName)
@@ -61,32 +73,11 @@ struct SessionView: View {
 
     @ViewBuilder
     private var ring: some View {
-        if let step = model.currentStep, let phase = model.currentPhaseName, let breath = model.currentBreath, let duration = model.currentPhaseDuration {
-            VStack(spacing: 8) {
-                BreathRing(
-                    breath: breath,
-                    phaseRemainingFraction: PhaseLook(phaseName: phase, remaining: model.remainingInPhase, duration: duration, reduceMotion: true).remainingFraction,
-                    color: Color(PhaseKind.relaxation.ringColor),
-                    reduceMotion: reduceMotion
-                )
-                    .layoutPriority(1)
-                HStack(alignment: .firstTextBaseline, spacing: 12) {
-                    Text(phase.uppercased())
-                        .font(.title3.bold())
-                        .tracking(1)
-                        .accessibilityLabel(phase)
-                        .foregroundStyle(Color(PhaseKind.relaxation.labelColor))
-                        .accessibilityIdentifier("session.phase")
-                    Text(ClockText.minutesSeconds(model.remainingInPhase))
-                        .font(.largeTitle.bold())
-                        .monospacedDigit()
-                        .accessibilityLabel("Zostało \(ClockText.minutesSeconds(model.remainingInPhase))")
-                        .accessibilityIdentifier("session.remainingPhase")
-                }
-            }
-            .id(step)
-            .transition(.opacity)
-            .animation(.easeInOut(duration: 0.6), value: step)
+        if let step = model.currentStep, let breath = model.currentBreath {
+            BreathRing(breath: breath, color: Color(PhaseKind.relaxation.ringColor), reduceMotion: reduceMotion)
+                .id(step)
+                .transition(.opacity)
+                .animation(.easeInOut(duration: 0.6), value: step)
         } else if let step = model.currentStep, let phase = model.currentPhaseName, let duration = model.currentPhaseDuration {
             PhaseRing(
                 look: PhaseLook(phaseName: phase, remaining: model.remainingInPhase, duration: duration, reduceMotion: reduceMotion),
@@ -107,6 +98,34 @@ struct SessionView: View {
                     .accessibilityIdentifier("session.phase")
             }
             .aspectRatio(1, contentMode: .fit)
+            .frame(maxWidth: .infinity)
+        }
+    }
+
+    @ViewBuilder
+    private var relaxationClock: some View {
+        if model.currentBreath != nil, let phase = model.currentPhaseName, let duration = model.currentPhaseDuration {
+            VStack(spacing: 8) {
+                Text(phase.uppercased())
+                    .font(.headline.bold())
+                    .tracking(1)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                    .accessibilityLabel(phase)
+                    .foregroundStyle(Color(PhaseKind.relaxation.labelColor))
+                    .accessibilityIdentifier("session.phase")
+                ZStack {
+                    SmallPhaseRing(
+                        remainingFraction: PhaseLook(phaseName: phase, remaining: model.remainingInPhase, duration: duration, reduceMotion: true).remainingFraction,
+                        color: Color(PhaseKind.relaxation.ringColor)
+                    )
+                    Text(ClockText.minutesSeconds(model.remainingInPhase))
+                        .font(.title2.bold())
+                        .monospacedDigit()
+                        .accessibilityLabel("Zostało \(ClockText.minutesSeconds(model.remainingInPhase))")
+                        .accessibilityIdentifier("session.remainingPhase")
+                }
+            }
             .frame(maxWidth: .infinity)
         }
     }
@@ -174,18 +193,60 @@ struct SessionView: View {
     }
 
     private var instructions: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        ViewThatFits(in: .vertical) {
+            instructionLines(font: .body)
+            instructionLines(font: .system(size: 15))
+            collapsedInstructions
+        }
+    }
+
+    private func instructionLines(font: Font) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
             ForEach(model.currentInstructions, id: \.label) { line in
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text(line.label).bold().foregroundStyle(labelColor(line.label))
                     Text(line.text).foregroundStyle(Color(PhaseLook.secondaryText))
                 }
+                .fixedSize(horizontal: false, vertical: true)
                 .accessibilityElement(children: .combine)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .font(.body)
-        .minimumScaleFactor(0.8)
+        .font(font)
+    }
+
+    private var collapsedInstructions: some View {
+        Button { instructionsExpanded = true } label: {
+            VStack(alignment: .leading, spacing: 6) {
+                ForEach(model.currentInstructions, id: \.label) { line in
+                    (Text(line.label + "  ").bold().foregroundColor(labelColor(line.label))
+                        + Text(line.text).foregroundColor(Color(PhaseLook.secondaryText)))
+                        .lineLimit(1)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                Text("Więcej").bold().foregroundStyle(Color(PhaseLook.secondaryText))
+            }
+            .font(.system(size: 15))
+            .multilineTextAlignment(.leading)
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("session.instructionsMore")
+    }
+
+    @ViewBuilder
+    private var expandedInstructions: some View {
+        if instructionsExpanded {
+            ZStack(alignment: .bottom) {
+                Color.black.opacity(0.75).ignoresSafeArea()
+                instructionLines(font: .system(size: 15))
+                    .padding(20)
+                    .background(Color(PhaseLook.background), in: RoundedRectangle(cornerRadius: 16))
+                    .padding()
+                    .accessibilityIdentifier("session.instructionsExpanded")
+            }
+            .onTapGesture { instructionsExpanded = false }
+            .accessibilityAction(.escape) { instructionsExpanded = false }
+        }
     }
 
     private func labelColor(_ label: String) -> Color {
@@ -256,11 +317,48 @@ extension SessionView {
         if model.hasMusic {
             ToolbarItem(placement: .topBarTrailing) {
                 Button { model.toggleMusic() } label: {
-                    Image(systemName: model.musicMuted ? "speaker.slash" : "music.note")
+                    MusicNote(muted: model.musicMuted)
+                        .foregroundStyle(model.musicMuted ? AnyShapeStyle(Color(LookColor(hex: 0x6B6E76))) : AnyShapeStyle(.tint))
+                        .frame(width: 44, height: 44)
                 }
                 .accessibilityLabel(model.musicMuted ? "Włącz muzykę" : "Wycisz muzykę")
                 .accessibilityIdentifier("session.music")
             }
         }
+    }
+}
+
+private struct MusicNote: View {
+    let muted: Bool
+
+    var body: some View {
+        ZStack {
+            NoteShape().fill()
+            if muted { SlashShape().stroke(style: StrokeStyle(lineWidth: 2.2 * 22 / 24, lineCap: .round)) }
+        }
+        .frame(width: 22, height: 22)
+    }
+}
+
+private struct NoteShape: Shape {
+    func path(in box: CGRect) -> Path {
+        let unit = box.width / 24
+        func point(_ x: Double, _ y: Double) -> CGPoint { CGPoint(x: x * unit, y: y * unit) }
+        var note = Path()
+        note.addEllipse(in: CGRect(x: 4.6 * unit, y: 14.5 * unit, width: 7.6 * unit, height: 6.2 * unit))
+        note.addRect(CGRect(x: 10.4 * unit, y: 3.5 * unit, width: 1.9 * unit, height: 14.1 * unit))
+        note.addLines([point(12.3, 3.5), point(19.5, 2), point(19.5, 6.2), point(12.3, 7.9)])
+        note.closeSubpath()
+        return note
+    }
+}
+
+private struct SlashShape: Shape {
+    func path(in box: CGRect) -> Path {
+        let unit = box.width / 24
+        var slash = Path()
+        slash.move(to: CGPoint(x: 3 * unit, y: 3 * unit))
+        slash.addLine(to: CGPoint(x: 21 * unit, y: 21 * unit))
+        return slash
     }
 }

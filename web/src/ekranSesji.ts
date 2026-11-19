@@ -33,6 +33,7 @@ export function otworzSesje(zestaw: Zestaw, sciezka: Sciezka, ekran: HTMLElement
 	const etapOddechu = el<HTMLElement>('.oddech-etap');
 	const fazaOddechu = el<HTMLElement>('.oddech-faza');
 	const zostaloOddechu = el<HTMLElement>('.oddech-zostalo');
+	const postepOddechu = el<SVGCircleElement>('.postep-maly');
 	let pokazanyKrok = -1;
 	let otwarta = true;
 	let ekranTrzymany = false;
@@ -118,7 +119,7 @@ export function otworzSesje(zestaw: Zestaw, sciezka: Sciezka, ekran: HTMLElement
 		cyfry.setAttribute('aria-label', `Zostało ${minutySekundy(zostalo)}`);
 		postep.style.strokeDashoffset = String(1 - wyglad.zostaloObwodu);
 		svg.style.setProperty('--skala', String(wyglad.skala));
-		rysujOddech(wyglad.rodzaj === 'rozluznienie' && stan.rodzaj !== 'gotowy', k.czasMs - zostalo, k.nazwa, zostalo);
+		rysujOddech(wyglad.rodzaj === 'rozluznienie' && stan.rodzaj !== 'gotowy', k.czasMs - zostalo, k.nazwa, zostalo, wyglad.zostaloObwodu);
 	};
 
 	const obrocPierscien = () => {
@@ -148,7 +149,7 @@ export function otworzSesje(zestaw: Zestaw, sciezka: Sciezka, ekran: HTMLElement
 		zwinRycine = setTimeout(schowajRycine, 2_500);
 	};
 
-	const rysujOddech = (widac: boolean, mineloMs: number, nazwaFazy: string, zostaloMs: number) => {
+	const rysujOddech = (widac: boolean, mineloMs: number, nazwaFazy: string, zostaloMs: number, zostaloObwodu: number) => {
 		blokOddechu.hidden = !widac;
 		ekran.dataset.oddech = String(widac);
 		if (!widac) return;
@@ -160,6 +161,7 @@ export function otworzSesje(zestaw: Zestaw, sciezka: Sciezka, ekran: HTMLElement
 		const zegar = minutySekundy(zostaloMs);
 		zostaloOddechu.textContent = zegar;
 		zostaloOddechu.setAttribute('aria-label', `Zostało ${zegar}`);
+		postepOddechu.style.strokeDashoffset = String(1 - zostaloObwodu);
 		svg.style.setProperty('--skala', '1');
 		plucaOddechu.style.setProperty('--oddech', String(o.pluca));
 	};

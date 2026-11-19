@@ -6,17 +6,17 @@ final class MusicE2ETests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["-e2e"]
         app.launch()
-        let cosmos = app.buttons["start.music.kosmos"]
-        XCTAssertTrue(cosmos.waitForExistence(timeout: 5))
-        XCTAssertFalse(app.buttons["start.music.kosmos"].isSelected)
-        cosmos.tap()
-        XCTAssertTrue(cosmos.isSelected)
+        let forest = app.buttons["start.music.las"]
+        XCTAssertTrue(forest.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["start.music.las"].isSelected)
+        forest.tap()
+        XCTAssertTrue(forest.isSelected)
         app.terminate()
 
         app.launchArguments = []
         app.launch()
-        XCTAssertTrue(app.buttons["start.music.kosmos"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.buttons["start.music.kosmos"].isSelected)
+        XCTAssertTrue(app.buttons["start.music.las"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["start.music.las"].isSelected)
         XCTAssertFalse(app.buttons["start.music.bez"].isSelected)
 
         app.buttons["start.set.0"].tap()

@@ -99,4 +99,28 @@ final class SessionE2ETests: XCTestCase {
         app.images["session.figureZoomed"].tap()
         XCTAssertTrue(app.images["session.figureZoomed"].waitForNonExistence(timeout: 5))
     }
+
+    @MainActor
+    func testSessionFitsWithPwaSizedRing() throws {
+        app.buttons["start.set.0"].tap()
+        app.buttons["session.start"].tap()
+        let ring = app.descendants(matching: .any)["session.ring"]
+        let instructions = app.descendants(matching: .any)["session.instructions"]
+        for name in ["napinanie", "rozluznienie"] {
+            XCTAssertTrue(ring.waitForExistence(timeout: 5))
+            let folder = URL(fileURLWithPath: ProcessInfo.processInfo.environment["MINUTNIK_ZRZUTY"] ?? NSTemporaryDirectory())
+            try XCUIScreen.main.screenshot().pngRepresentation.write(to: folder.appendingPathComponent("minutnik-porownanie-\(name)-ios.png"))
+            XCTAssertGreaterThanOrEqual(ring.frame.height, 100, name)
+            XCTAssertLessThanOrEqual(instructions.frame.maxY, app.buttons["session.pause"].frame.minY, name)
+            let more = app.buttons["session.instructionsMore"]
+            if more.exists {
+                more.tap()
+                let expanded = app.descendants(matching: .any)["session.instructionsExpanded"].firstMatch
+                XCTAssertTrue(expanded.waitForExistence(timeout: 5), name)
+                expanded.tap()
+                XCTAssertTrue(expanded.waitForNonExistence(timeout: 5), name)
+            }
+            app.buttons["session.skip"].tap()
+        }
+    }
 }

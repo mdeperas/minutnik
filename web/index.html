@@ -44,7 +44,7 @@
 			<header class="pasek">
 				<button type="button" class="wroc" data-akcja="wroc">Wróć</button>
 				<h1 class="tytul"></h1>
-				<button type="button" class="muzyka-przelacz" data-akcja="muzyka" aria-pressed="false" hidden>♪</button>
+				<button type="button" class="muzyka-przelacz" data-akcja="muzyka" aria-pressed="false" hidden><svg class="nuta" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><g fill="currentColor"><ellipse cx="8.4" cy="17.6" rx="3.8" ry="3.1"/><rect x="10.4" y="3.5" width="1.9" height="14.1"/><path d="M12.3 3.5 19.5 2v4.2l-7.2 1.7z"/></g><path class="kreska" d="M3 3l18 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
 			</header>
 			<div class="naglowek">
 				<p class="licznik"><span class="pozycja"></span> <span class="zostalo-sesji"></span></p>
@@ -63,8 +63,19 @@
 					<span class="oddech-etap" aria-live="polite"></span>
 				</div>
 			</div>
-			<p class="oddech" hidden><span class="oddech-faza"></span> <span class="oddech-zostalo"></span></p>
-			<div class="rycina" data-akcja="rycina" aria-hidden="true" hidden></div>
+			<div class="wiersz">
+				<div class="rycina" data-akcja="rycina" aria-hidden="true" hidden></div>
+				<div class="oddech" hidden>
+					<span class="oddech-faza"></span>
+					<div class="zegar-fazy">
+						<svg viewBox="0 0 100 100" aria-hidden="true">
+							<circle class="tor-maly" cx="50" cy="50" r="44"></circle>
+							<circle class="postep-maly" cx="50" cy="50" r="44" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0" transform="rotate(-90 50 50)"></circle>
+						</svg>
+						<span class="oddech-zostalo"></span>
+					</div>
+				</div>
+			</div>
 			</div>
 			<div class="zaslona" data-akcja="rycina" hidden></div>
 			<p class="uwaga-ekran" role="status" hidden>Ekran może zgasnąć w trakcie sesji.</p>

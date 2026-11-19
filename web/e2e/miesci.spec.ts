@@ -19,7 +19,7 @@ for (const rozmiar of ekrany) {
 		await page.getByRole('button', { name: /^12 grup/ }).click();
 		const sesja = page.locator('#sesja');
 		await expect(sesja.locator('.opis dt').first()).toHaveText('Jak');
-		for (const akcja of ['Start', 'Pomiń', 'Pomiń']) {
+		for (const [krok, akcja] of ['Start', 'Pomiń', 'Pomiń'].entries()) {
 			await sesja.getByRole('button', { name: akcja, exact: true }).click();
 			wymiary = await bezPrzewijania(page);
 			expect(wymiary.wysokosc).toBeLessThanOrEqual(wymiary.okno);
@@ -27,6 +27,12 @@ for (const rozmiar of ekrany) {
 			expect(dol!.y + dol!.height).toBeLessThanOrEqual(rozmiar.height);
 			const pierscien = await sesja.locator('.pierscien').boundingBox();
 			expect(pierscien!.height).toBeGreaterThan(100);
+			const zrzuty = process.env.MINUTNIK_ZRZUTY;
+			if (zrzuty && rozmiar.width === 393 && krok < 2) {
+				const nazwa = (await sesja.getAttribute('data-oddech')) === 'true' ? 'rozluznienie' : 'napinanie';
+				await page.waitForTimeout(700);
+				await page.screenshot({ path: `${zrzuty}/minutnik-porownanie-${nazwa}-pwa.png` });
+			}
 		}
 	});
 }

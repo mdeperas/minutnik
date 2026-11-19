@@ -23,7 +23,7 @@ Bramka merge'a: dodatkowo schemat `MinutnikE2E` (UI-testy na symulatorze, tryb `
 | 9 | Mapowanie powiadomień `AVAudioSession` na zdarzenia (przerwanie z zawieszenia apki pomijane, `shouldResume`, tylko `oldDeviceUnavailable`) | `AudioSessionEventMapping` | P2 | unit | `AudioSessionEventMappingTests` (4) | 2026-11-18 | |
 | 6 | Przyspieszony zegar e2e (`MINUTNIK_E2E_TIME_SCALE`) | `AcceleratedClock` (`SimulatedEnvironment.swift`) | P3 | unit | `AcceleratedClockTests` (1) | 2026-11-18 | |
 | 7 | Sygnały dźwiękowe: napnij wysoki, rozluźnij niższy, koniec trzy rosnące | `Tone` | P3 | unit | `ToneTests` (1) | 2026-11-18 | Brzmienie na telefonie ręcznie |
-| 17 | Muzyka w tle: wybór Bez/Synthwave/Kosmos zapamiętany, start z sesją, cichnie przy pauzie/końcu/wyciszeniu, głośność 0,3 < sygnały | `MusicTrack`, `SessionModel`, `LoopMusicPlayer`, `StartView`, `SessionView` | P2 | unit + integracja + e2e | `MusicTrackTests` (2), `SessionMusicIntegrationTests`, `MusicE2ETests` | 2026-11-19 | Dźwięk i blokada ekranu: ręcznie M6 |
+| 17 | Muzyka w tle: wybór Bez/Synthwave/Kosmos/Las zapamiętany, start z sesją, cichnie przy pauzie/końcu/wyciszeniu, głośność 0,3 < sygnały | `MusicTrack`, `SessionModel`, `LoopMusicPlayer`, `StartView`, `SessionView` | P2 | unit + integracja + e2e | `MusicTrackTests` (2), `SessionMusicIntegrationTests`, `MusicE2ETests` | 2026-11-19 | Dźwięk i blokada ekranu: ręcznie M6 |
 | 10 | Format „zostało” m:ss, zaokrąglenie w górę | `ClockText` | P3 | unit | `ClockTextTests` (1) | 2026-11-18 | |
 
 ## Web (`web/`)

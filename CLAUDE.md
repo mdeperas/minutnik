@@ -137,7 +137,7 @@ Jedna lista do zbiorczej próby, po kolei; przy każdym punkcie odpisz ✅/❌. 
 
 - M6 Muzyka: na starcie „Muzyka: Kosmos” → „Start” → muzyka gra ciszej niż sygnały, tiki 3-2-1 słychać; zablokuj ekran → muzyka i sygnały grają dalej;
   „Pauza” → muzyka płynnie cichnie, „Wznów” → wraca; ikona nuty u góry → wycisza; na końcu muzyka wygasa; pętla po 2,5 min bez kliku;
-  po zabiciu apki wybór „Kosmos” zostaje. To samo raz z „Synthwave”.
+  po zabiciu apki wybór „Kosmos” zostaje. To samo raz z „Synthwave” i z „Las” (ptaki i strumień). Ikona nuty: wyciszona = szara nuta przekreślona, jak w PWA.
 
 ## Ręcznie na iPhonie: PWA (czego Playwright nie sprawdzi)
 
@@ -151,7 +151,7 @@ Po `bin/publikuj` i zielonym przebiegu, Safari na iPhonie; przy każdym punkcie 
 - W6 Historia/eksport: sesja do końca i druga przerwana → „Ukończona · N min” i „Przerwana po K z N faz”, najnowsza na górze;
   po zamknięciu apki z przełącznika wpisy są dalej; „Eksportuj” → arkusz z `minutnik-historia.json` → zapis w Plikach, oba wpisy.
 - W7 Offline: tryb samolotowy, zamknięcie i start z ikony → lista i sesja działają.
-- W9 Muzyka: „Muzyka: Synthwave” → „Start” → muzyka gra (ekran włączony) pod sygnałami; „Pauza” wycisza płynnie; przycisk ♪ wycisza;
+- W9 Muzyka: „Muzyka: Synthwave” → „Start” → muzyka gra (ekran włączony) pod sygnałami; „Pauza” wycisza płynnie; przycisk z nutą wycisza (nuta przekreślona);
   po pierwszym odtworzeniu tryb samolotowy → ta sama ścieżka dalej gra.
 - W8 Aktualizacja: po nowym `bin/publikuj` start z ikony → po chwili nowa wersja na liście bez ręcznego odświeżania;
   publikacja w trakcie sesji → sesja nie przeładowuje się, nowa wersja dopiero po jej końcu; historia zostaje.

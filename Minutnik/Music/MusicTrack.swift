@@ -4,6 +4,7 @@ enum MusicTrack: String, CaseIterable, Identifiable {
     case none = "bez"
     case synthwave
     case cosmos = "kosmos"
+    case forest = "las"
 
     static let defaultsKey = "minutnik.muzyka"
     static let volume: Float = 0.3
@@ -16,6 +17,7 @@ enum MusicTrack: String, CaseIterable, Identifiable {
         case .none: "Bez"
         case .synthwave: "Synthwave"
         case .cosmos: "Kosmos"
+        case .forest: "Las"
         }
     }
 

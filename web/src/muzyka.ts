@@ -1,9 +1,9 @@
 import type { Stan } from './odtwarzacz';
 
-export const sciezki = ['bez', 'synthwave', 'kosmos'] as const;
+export const sciezki = ['bez', 'synthwave', 'kosmos', 'las'] as const;
 export type Sciezka = (typeof sciezki)[number];
 
-export const nazwySciezek: Record<Sciezka, string> = { bez: 'Bez', synthwave: 'Synthwave', kosmos: 'Kosmos' };
+export const nazwySciezek: Record<Sciezka, string> = { bez: 'Bez', synthwave: 'Synthwave', kosmos: 'Kosmos', las: 'Las' };
 
 export const glosnoscMuzyki = 0.3;
 export const wyciszanieSekundy = 1.5;

@@ -5,6 +5,8 @@ final class MusicTrackTests: XCTestCase {
     func testStoredChoiceComesBackAndUnknownMeansNoMusic() {
         XCTAssertEqual(MusicTrack(stored: "kosmos"), .cosmos)
         XCTAssertEqual(MusicTrack(stored: "synthwave"), .synthwave)
+        XCTAssertEqual(MusicTrack(stored: "las"), .forest)
+        XCTAssertEqual(MusicTrack.forest.fileName, "las")
         XCTAssertEqual(MusicTrack(stored: nil), MusicTrack.none)
         XCTAssertEqual(MusicTrack(stored: "disco"), MusicTrack.none)
         XCTAssertEqual(MusicTrack.cosmos.fileName, "kosmos")

@@ -230,19 +230,69 @@ body {
 	color: var(--tekst-drugi);
 	font-size: 0.85rem;
 }
-.oddech {
-	margin: 0;
-	flex-shrink: 0;
+.wiersz {
 	display: flex;
-	align-items: baseline;
-	gap: 0.75rem;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	width: 100%;
+	flex-shrink: 0;
+}
+.sesja[data-oddech='true'] .wiersz {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	justify-items: center;
+}
+.sesja[data-oddech='true'] .pierscien {
+	width: min(100cqw, 60cqh, 20rem);
+}
+.sesja[data-oddech='true'] .postep {
+	display: none;
+}
+.sesja[data-oddech='true'] .tor {
+	stroke-width: 6;
+}
+.oddech {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.4rem;
 	color: #fff;
-	font-size: clamp(1.4rem, 4.5dvh, 2rem);
-	font-weight: 600;
 	font-variant-numeric: tabular-nums;
 }
+.zegar-fazy {
+	position: relative;
+	width: min(22cqh, 5.5rem);
+	aspect-ratio: 1;
+	display: grid;
+	place-items: center;
+}
+.zegar-fazy svg {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+.tor-maly,
+.postep-maly {
+	fill: none;
+	stroke-width: 7;
+}
+.tor-maly {
+	stroke: var(--tor);
+}
+.postep-maly {
+	stroke: var(--kolor);
+	stroke-linecap: round;
+}
+.oddech-zostalo {
+	position: relative;
+	font-size: clamp(1.1rem, 3dvh, 1.5rem);
+	font-weight: 700;
+}
 .oddech-faza {
-	font-size: 0.6em;
+	font-size: 1rem;
+	font-weight: 700;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
 	color: var(--kolor-napisu);
@@ -251,7 +301,7 @@ body {
 	fill: var(--kolor);
 	opacity: 0;
 	transform-origin: 100px 100px;
-	transform: scale(var(--oddech, 1));
+	transform: scale(calc(var(--oddech, 1) * 1.15));
 	transition: transform 0.25s linear;
 }
 .sesja[data-oddech='true'] .pluca {
@@ -556,8 +606,16 @@ body {
 	justify-self: end;
 	min-width: 2.75rem;
 	color: var(--akcent);
+	display: grid;
+	place-items: center;
+	padding: 0;
+}
+.muzyka-przelacz .kreska {
+	display: none;
 }
 .muzyka-przelacz[aria-pressed='true'] {
 	color: #6b6e76;
-	text-decoration: line-through;
+}
+.muzyka-przelacz[aria-pressed='true'] .kreska {
+	display: inline;
 }

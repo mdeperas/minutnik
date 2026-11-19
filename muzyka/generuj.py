@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import tempfile
+import urllib.request
 import wave
 from pathlib import Path
 
@@ -10,6 +11,11 @@ from scipy.signal import butter, sosfilt
 SR = 44100
 DLUGOSC = 150.0
 PRZENIKANIE = 8.0
+NAGRANIA_LASU = (
+    ("https://upload.wikimedia.org/wikipedia/commons/6/65/Waidachswald_Oberschefflenz_Abend_20250616_2005.ogg", 1.0),
+    ("https://upload.wikimedia.org/wikipedia/commons/9/9e/Forest_lawn_creek.ogg", 0.35),
+)
+PAMIEC_NAGRAN = Path.home() / "Library" / "Caches" / "minutnik-muzyka"
 CEL = Path(__file__).resolve().parent.parent / "web" / "public" / "muzyka"
 
 
@@ -83,6 +89,37 @@ def kosmos(los):
     return wyjscie
 
 
+def pobierz(adres, plik):
+    zadanie = urllib.request.Request(adres, headers={"User-Agent": "minutnik-muzyka/1.0"})
+    with urllib.request.urlopen(zadanie) as odpowiedz:
+        plik.write_bytes(odpowiedz.read())
+
+
+def wczytaj_nagranie(adres):
+    PAMIEC_NAGRAN.mkdir(parents=True, exist_ok=True)
+    plik = PAMIEC_NAGRAN / Path(adres).name
+    if not plik.exists():
+        pobierz(adres, plik)
+    surowe = subprocess.run(
+        ["ffmpeg", "-v", "error", "-i", str(plik), "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"],
+        check=True, capture_output=True,
+    ).stdout
+    return np.frombuffer(surowe, dtype="<f4").astype(np.float64)
+
+
+def las(los):
+    n = int((DLUGOSC + PRZENIKANIE) * SR)
+    wyjscie = np.zeros(n)
+    for adres, waga in NAGRANIA_LASU:
+        nagranie = wczytaj_nagranie(adres)
+        if len(nagranie) < n:
+            raise SystemExit(f"Za krótkie nagranie: {adres}")
+        start = int(min(10 * SR, len(nagranie) - n))
+        fragment = nagranie[start:start + n]
+        wyjscie += fragment / np.sqrt(np.mean(fragment ** 2)) * waga
+    return wyjscie
+
+
 def zapetl(sygnal):
     n, x = int(DLUGOSC * SR), int(PRZENIKANIE * SR)
     petla = sygnal[:n].copy()
@@ -104,7 +141,7 @@ def zapisz(nazwa, sygnal):
 
 if __name__ == "__main__":
     CEL.mkdir(parents=True, exist_ok=True)
-    for nazwa, utworz in (("synthwave", synthwave), ("kosmos", kosmos)):
+    for nazwa, utworz in (("synthwave", synthwave), ("kosmos", kosmos), ("las", las)):
         if len(sys.argv) > 1 and nazwa not in sys.argv[1:]:
             continue
         zapisz(nazwa, zapetl(utworz(np.random.default_rng(7))))
