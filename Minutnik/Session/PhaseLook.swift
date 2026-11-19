@@ -40,14 +40,14 @@ enum PhaseKind: Equatable {
 
     var ringColor: LookColor {
         switch self {
-        case .tension: LookColor(hue: PhaseLook.authorHue, saturation: 0.8, lightness: 0.64)
+        case .tension: LookColor(hue: PhaseLook.tensionHue, saturation: 0.8, lightness: 0.64)
         case .relaxation: PhaseLook.relaxationColor
         }
     }
 
     var labelColor: LookColor {
         switch self {
-        case .tension: LookColor(hue: PhaseLook.authorHue, saturation: 0.9, lightness: 0.84)
+        case .tension: LookColor(hue: PhaseLook.tensionHue, saturation: 0.9, lightness: 0.84)
         case .relaxation: PhaseLook.relaxationColor
         }
     }
@@ -66,7 +66,7 @@ struct PhaseLook: Equatable {
     static let secondaryText = LookColor(hex: 0xC1C3C8)
     static let ringLineFraction = 10.0 / 200
     static let smallestScale = 0.8
-    static let authorHue = 190.0
+    static let tensionHue = 190.0
     static let relaxationColor = LookColor(hex: 0x8FBFA3)
 
     let kind: PhaseKind

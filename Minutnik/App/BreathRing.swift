@@ -12,7 +12,7 @@ struct BreathRing: View {
             ZStack {
                 Circle()
                     .fill(color.opacity(0.22))
-                    .scaleEffect(reduceMotion ? 1 : 0.4 + 0.6 * breath.fullness)
+                    .scaleEffect(breath.lungScale(reduceMotion: reduceMotion))
                     .animation(reduceMotion ? nil : .linear(duration: 0.25), value: breath.fullness)
                 Circle().stroke(Color(PhaseLook.track), lineWidth: line)
                     .padding(line / 2)

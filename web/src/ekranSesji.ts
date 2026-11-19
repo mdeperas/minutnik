@@ -3,7 +3,8 @@ import type { Zestaw } from './katalog';
 import { Odtwarzacz, krokiZestawu, type Zdarzenie } from './odtwarzacz';
 import type { Srodowisko } from './srodowisko';
 import { odliczaniePomiedzy, sygnalPoZmianie, type Chwila } from './sygnaly';
-import { pierscienOddechu, zmianaEtapuPomiedzy } from './oddech';
+import { pierscienOddechu } from './oddech';
+import { wibracjaPoSygnale, wibracjaPomiedzy } from './haptyka';
 import { linieInstrukcji, minutySekundy, pozycjaGrupy } from './tekstSesji';
 import { svgRyciny } from './ryciny';
 import { widokSesji } from './widokSesji';
@@ -207,10 +208,9 @@ export function otworzSesje(zestaw: Zestaw, sciezka: Sciezka, ekran: HTMLElement
 	const poZdarzeniach = (zdarzenia: Zdarzenie[], krokPrzed: number) => {
 		zapiszWpis(zdarzenia, krokPrzed);
 		const sygnal = sygnalPoZmianie(zdarzenia, odtwarzacz.kroki);
-		if (sygnal) {
-			srodowisko.dzwiek.zagraj(sygnal);
-			srodowisko.wibracje.wibruj('zmiana');
-		}
+		if (sygnal) srodowisko.dzwiek.zagraj(sygnal);
+		const wibracja = wibracjaPoSygnale(sygnal);
+		if (wibracja) srodowisko.wibracje.wibruj(wibracja);
 		pilnujEkranu();
 		pilnujMuzyki();
 	};
@@ -225,17 +225,12 @@ export function otworzSesje(zestaw: Zestaw, sciezka: Sciezka, ekran: HTMLElement
 		return stan.rodzaj === 'trwa' ? { krok: stan.krok, zostalo: odtwarzacz.zostaloWFazie(srodowisko.teraz()) } : undefined;
 	};
 
-	const zmianaOddechu = (przed: Chwila | undefined, teraz: Chwila | undefined) => {
-		if (!teraz) return false;
-		const k = odtwarzacz.kroki[teraz.krok];
-		return zmianaEtapuPomiedzy(przed, teraz, k.czasMs, rodzajFazy(k.nazwa));
-	};
-
 	const odliczaj = () => {
 		const chwila = chwilaTeraz();
 		const tik = odliczaniePomiedzy(ostatniaChwila, chwila);
 		if (tik) srodowisko.dzwiek.zagraj('odliczanie');
-		if (tik || zmianaOddechu(ostatniaChwila, chwila)) srodowisko.wibracje.wibruj('tik');
+		const wibracja = wibracjaPomiedzy(ostatniaChwila, chwila, odtwarzacz.kroki);
+		if (wibracja) srodowisko.wibracje.wibruj(wibracja);
 		ostatniaChwila = chwila;
 	};
 

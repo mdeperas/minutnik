@@ -5,6 +5,7 @@ dźwięk w tle przez background audio. Stan: lista zestawów → ekran odtwarzac
 Wzorzec projektu: apka Thread Cam (tam nic nie zmieniamy).
 
 ## Środowisko
+- Kopia źródeł: remote `origin` = prywatne `mdeperas/minutnik-zrodla` (`git push origin --all`); publiczne `mdeperas/minutnik` dostaje tylko PWA przez `bin/publikuj`, kodu tam nie pushujemy. `lokalne/` jest poza gitem i poza kopią.
 
 - Darmowe Apple ID (Personal Team, ID w `lokalne/podpis.xcconfig`): brak iCloud capability, App Groups niepewne,
   najwyżej 3 apki na telefonie (Thread Cam + Minutnik), podpis ważny 7 dni od pobrania profilu, niezależnie od Thread Cam.

@@ -1,9 +1,6 @@
-import type { Chwila } from './sygnaly';
-import type { RodzajFazy } from './wyglad';
-
 export type EtapOddechu = 'wdech' | 'pelne' | 'wydech' | 'puste';
 
-export const etapMs = 4_000;
+const etapMs = 4_000;
 
 const etapy: readonly EtapOddechu[] = ['wdech', 'pelne', 'wydech', 'puste'];
 
@@ -15,7 +12,6 @@ export interface Oddech {
 	sekunda: number;
 	numer: number;
 	postepEtapu: number;
-	postepCyklu: number;
 	pelnosc: number;
 }
 
@@ -31,12 +27,11 @@ export function oddech(mineloMs: number): Oddech {
 		sekunda: etapMs / 1000 - Math.floor(wEtapie / 1000),
 		numer,
 		postepEtapu,
-		postepCyklu: ((numer % etapy.length) + postepEtapu) / etapy.length,
 		pelnosc: etap === 'wdech' ? postepEtapu : etap === 'wydech' ? 1 - postepEtapu : etap === 'pelne' ? 1 : 0
 	};
 }
 
-export const najmniejszePluca = 0.4;
+const najmniejszePluca = 0.4;
 
 export function skalaPluc(pelnosc: number, ograniczRuch: boolean): number {
 	return ograniczRuch ? 1 : najmniejszePluca + (1 - najmniejszePluca) * pelnosc;
@@ -53,7 +48,3 @@ export function pierscienOddechu(mineloMs: number, ograniczRuch: boolean): Piers
 	return { cyfry: String(o.sekunda), napis: o.napis, pluca: skalaPluc(o.pelnosc, ograniczRuch) };
 }
 
-export function zmianaEtapuPomiedzy(przed: Chwila | undefined, teraz: Chwila | undefined, czasMs: number, rodzaj: RodzajFazy): boolean {
-	if (rodzaj !== 'rozluznienie' || !przed || !teraz || przed.krok !== teraz.krok || teraz.zostalo <= 0) return false;
-	return oddech(czasMs - teraz.zostalo).numer !== oddech(czasMs - przed.zostalo).numer;
-}

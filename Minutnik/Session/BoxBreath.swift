@@ -19,7 +19,6 @@ struct BoxBreath: Equatable {
     let secondsLeft: Int
     let index: Int
     let stageProgress: Double
-    let cycleProgress: Double
 
     init(elapsed: TimeInterval) {
         let time = max(0, elapsed)
@@ -29,7 +28,6 @@ struct BoxBreath: Equatable {
         stage = stages[index % stages.count]
         secondsLeft = Int(Self.stageDuration) - Int(inStage.rounded(.down))
         stageProgress = inStage / Self.stageDuration
-        cycleProgress = (Double(index % stages.count) + stageProgress) / Double(stages.count)
     }
 
     var fullness: Double {
@@ -39,6 +37,12 @@ struct BoxBreath: Equatable {
         case .exhale: 1 - stageProgress
         case .holdEmpty: 0
         }
+    }
+
+    static let smallestLungs = 0.4
+
+    func lungScale(reduceMotion: Bool) -> Double {
+        reduceMotion ? 1 : Self.smallestLungs + (1 - Self.smallestLungs) * fullness
     }
 }
 

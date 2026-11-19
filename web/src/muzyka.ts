@@ -7,7 +7,7 @@ export const nazwySciezek: Record<Sciezka, string> = { bez: 'Bez', synthwave: 'S
 
 export const glosnoscMuzyki = 0.3;
 export const wyciszanieSekundy = 1.5;
-export const katalogMuzyki = 'muzyka/';
+const katalogMuzyki = 'muzyka/';
 
 export function odczytajSciezke(tekst: string | null): Sciezka {
 	return sciezki.find((s) => s === tekst) ?? 'bez';

@@ -12,7 +12,9 @@ export interface Muzyka {
 	zatrzymaj(): void;
 }
 
-export type Wibracja = 'tik' | 'zmiana';
+import { wibruj, type Wibracja } from './haptyka';
+
+export type { Wibracja };
 
 export interface Wibracje {
 	wibruj(rodzaj: Wibracja): void;
@@ -157,11 +159,9 @@ function webAudio(): { dzwiek: Dzwiek; muzyka: Muzyka } {
 	return { dzwiek, muzyka };
 }
 
-const wzoryWibracji: Record<Wibracja, number | number[]> = { tik: 40, zmiana: [80, 60, 80] };
-
 const wibracjeNavigatora: Wibracje = {
 	wibruj(rodzaj) {
-		if (typeof navigator.vibrate === 'function') navigator.vibrate(wzoryWibracji[rodzaj]);
+		wibruj(rodzaj, typeof navigator.vibrate === 'function' ? navigator.vibrate.bind(navigator) : undefined);
 	}
 };
 
