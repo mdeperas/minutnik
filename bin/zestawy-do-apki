@@ -1,9 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-zrodlo="lokalne/zestawy.json"
-if [ ! -f "$zrodlo" ]; then
-  zrodlo="web/zestawy-publiczne.json"
-  echo "warning: brak lokalne/zestawy.json, apka dostaje wariant publiczny"
-fi
-cp "$zrodlo" "$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH/zestawy.json"
+cel="$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH"
+wpnij() {
+  local zrodlo="lokalne/$1" publiczne="$2"
+  if [ ! -f "$zrodlo" ]; then
+    zrodlo="$publiczne"
+    echo "warning: brak lokalne/$1, apka dostaje wariant publiczny"
+  fi
+  cp "$zrodlo" "$cel/$1"
+}
+wpnij zestawy.json web/zestawy-publiczne.json
+wpnij o-cwiczeniu.json web/o-cwiczeniu-publiczne.json

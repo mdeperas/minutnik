@@ -448,3 +448,72 @@ body {
 .start-stopka p {
 	margin: 0;
 }
+.o-cwiczeniu-otworz {
+	min-height: 2.75rem;
+	padding: 0 1.1rem;
+	justify-self: start;
+	width: auto;
+	border: 1px solid #3a3c43;
+	border-radius: 999px;
+	background: #111216;
+	color: var(--akcent-napis);
+	font: inherit;
+	font-size: 1.05rem;
+	font-weight: 700;
+	cursor: pointer;
+}
+.czytanie {
+	background: #000;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	-webkit-overflow-scrolling: touch;
+	gap: 1rem;
+}
+.czytanie .pasek {
+	position: sticky;
+	top: calc(-1 * max(1rem, env(safe-area-inset-top)));
+	z-index: 1;
+	margin: calc(-1 * max(1rem, env(safe-area-inset-top))) 0 0;
+	padding-top: max(1rem, env(safe-area-inset-top));
+	padding-bottom: 0.5rem;
+	background: #000;
+}
+.tresc {
+	flex: none;
+	max-width: 34rem;
+	color: #e8e9ec;
+	font-size: 1.125rem;
+	line-height: 1.6;
+}
+.tresc section + section {
+	margin-top: 1.75rem;
+}
+.tresc h2 {
+	margin: 0 0 0.5rem;
+	color: var(--akcent-napis);
+	font-size: 1.3rem;
+	line-height: 1.25;
+}
+.tresc p {
+	margin: 0 0 0.75rem;
+}
+.tresc ul {
+	margin: 0;
+	padding-left: 1.25rem;
+}
+.tresc li + li {
+	margin-top: 0.5rem;
+}
+.tresc li::marker {
+	color: var(--szalwia);
+}
+.tresc .zrodlo {
+	margin-top: 2rem;
+	color: var(--tekst-drugi);
+	font-size: 0.95rem;
+	font-style: italic;
+}
+.czytanie > .przycisk {
+	flex: none;
+	align-self: stretch;
+}

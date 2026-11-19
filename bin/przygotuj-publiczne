@@ -3,7 +3,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 cel="${1:-$HOME/Repositories/minutnik-publiczne}"
 prywatne=(docs/research)
-for plik in lokalne/srodowisko.sh lokalne/podpis.xcconfig lokalne/zakazane.txt lokalne/zestawy.json; do
+for plik in lokalne/srodowisko.sh lokalne/podpis.xcconfig lokalne/zakazane.txt lokalne/zestawy.json lokalne/o-cwiczeniu.json; do
   [ -f "$plik" ] || { echo "Brak $plik: bez niego nie sprawdzę, czy nic prywatnego nie wycieka." >&2; exit 1; }
 done
 [ ! -e "$cel" ] || { echo "$cel już istnieje. Usuń go albo podaj inny katalog." >&2; exit 1; }

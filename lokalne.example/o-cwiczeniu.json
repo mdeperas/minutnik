@@ -1,0 +1,11 @@
+{
+  "tytul": "O ćwiczeniu",
+  "sekcje": [
+    {
+      "naglowek": "Nagłówek sekcji",
+      "akapity": ["Akapit tekstu."],
+      "punkty": ["Punkt listy."]
+    }
+  ],
+  "zrodlo": "Na podstawie: tytuł źródła."
+}

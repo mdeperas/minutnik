@@ -11,7 +11,7 @@ Wzorzec projektu: apka Thread Cam (tam nic nie zmieniamy).
 - Projekt Xcode generuje `xcodegen` z `project.yml`; `Minutnik.xcodeproj/` i `build/` są w `.gitignore`.
 - Prywatne wartości żyją tylko w `lokalne/` (w `.gitignore`; wzór w `lokalne.example/`, raz po klonie `cp -R lokalne.example lokalne`):
   `srodowisko.sh` (ID iPhone'a, źródło PRM), `podpis.xcconfig` (Team ID, przez `Minutnik.xcconfig`), `zakazane.txt` (frazy, które nie mogą wyjść publicznie; linia `!fraza` = wyjątek wycinany przed sprawdzeniem, np. login `!mdeperas`),
-  `zestawy.json` (teksty PRM z książki, z `bin/generuj-zestawy`). Bez `lokalne/` testy i build na symulatorze idą na `web/zestawy-publiczne.json`.
+  `zestawy.json` (teksty PRM z książki, z `bin/generuj-zestawy`), `o-cwiczeniu.json` (ekran „O ćwiczeniu” w apce, blisko książki; wzór formatu w `lokalne.example/`). Bez `lokalne/` testy i build na symulatorze idą na `web/zestawy-publiczne.json`.
 - Publiczna kopia: `bin/przygotuj-publiczne [katalog]` (domyślnie `~/Repositories/minutnik-publiczne`) robi z HEAD nowe repo z jednym commitem,
   bez `docs/research/`, i sprawdza je `bin/sprawdz-publiczne.ts` (prywatne wartości z `lokalne/`, e-mail z gita, `$HOME`, frazy 5 słów z książki).
   Historia tego repo zostaje prywatna; publikujemy tylko tę kopię.
@@ -40,6 +40,7 @@ Wzorzec projektu: apka Thread Cam (tam nic nie zmieniamy).
   `node_modules/`, `dist/` i wyniki Playwrighta są w `web/.gitignore`. Raz po klonie: `cd web && npm ci && npx playwright install webkit`.
 - Bramka commitu (Vitest, limit 30 s): `cd web && npm test`. Bramka merge'a, razem z commitu (Playwright, WebKit + profil iPhone 15,
   limit 5 min, sam buduje i stawia `vite preview` na porcie 4173): `cd web && npm run e2e`. Build: `npm run build` → `web/dist/` (`base` `/minutnik/` pod Pages).
+- „O ćwiczeniu”: PWA czyta `web/o-cwiczeniu-publiczne.json` (streszczenie własnymi słowami, `dekodujTekst` w `src/oCwiczeniu.ts`); apka dostaje przy buildzie `lokalne/o-cwiczeniu.json`, bez niego wariant publiczny (`bin/zestawy-do-apki`). Przewija się tylko ten ekran. `sprawdz-publiczne.ts` szuka fraz z obu plików z `lokalne/`.
 - Zestawy: PWA importuje w buildzie `web/zestawy-publiczne.json` (instrukcje własnymi słowami) przez alias `virtual:zestawy` (`vite.config.ts`);
   tak idzie też do deployu. Inny plik tylko do lokalnej próby: `MINUTNIK_ZESTAWY=<ścieżka> npm run build`.
   Zgodność struktury z oryginałem: `bin/sprawdz-wariant-zestawow` (po każdym `bin/generuj-zestawy`).

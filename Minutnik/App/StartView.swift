@@ -3,6 +3,7 @@ import SwiftUI
 struct StartView: View {
     let environment: AppEnvironment
     @State private var session: SessionModel?
+    @State private var readingAbout = false
 
     private let tension = Color(PhaseKind.tension.ringColor)
     private let tensionLabel = Color(PhaseKind.tension.labelColor)
@@ -16,6 +17,7 @@ struct StartView: View {
                     .font(.title3.bold())
                     .foregroundStyle(.white)
                 setCards
+                aboutButton
                 Spacer(minLength: 0)
                 Text(environment.version.label)
                     .font(.footnote)
@@ -27,6 +29,7 @@ struct StartView: View {
             .padding(.vertical, 12)
             .background(backdrop.ignoresSafeArea())
             .navigationDestination(item: $session) { SessionView(model: $0) }
+            .navigationDestination(isPresented: $readingAbout) { ReadingView(text: environment.about) }
         }
         .task { await environment.notifier.requestAuthorization() }
         .loggedScreen("start")
@@ -61,6 +64,19 @@ struct StartView: View {
             .accessibilityElement(children: .combine)
         }
         .padding(.top, 12)
+    }
+
+    private var aboutButton: some View {
+        Button { readingAbout = true } label: {
+            Text("O ćwiczeniu ›")
+                .font(.headline)
+                .foregroundStyle(tensionLabel)
+                .padding(.horizontal, 18)
+                .frame(minHeight: 44)
+                .background(Capsule().fill(Color(white: 0.07)))
+                .overlay(Capsule().strokeBorder(Color(white: 0.25), lineWidth: 1))
+        }
+        .accessibilityIdentifier("start.about")
     }
 
     @ViewBuilder

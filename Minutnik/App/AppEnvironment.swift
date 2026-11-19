@@ -11,6 +11,7 @@ struct AppEnvironment {
     let history: SessionHistory
     let haptics: HapticPlayer
     let figures: FigureCatalog?
+    var about: Result<ReadingText, Error> = .failure(ReadingTextError.missingFile)
 
     static var current: AppEnvironment {
         #if targetEnvironment(simulator)
@@ -26,7 +27,8 @@ struct AppEnvironment {
             catalog: Result { try ExerciseCatalog.bundled() },
             history: SessionHistory(storage: FileHistoryStorage()),
             haptics: CoreHapticPlayer(),
-            figures: FigureCatalog.bundled()
+            figures: FigureCatalog.bundled(),
+            about: Result { try ReadingText.bundled() }
         )
     }
 

@@ -5,17 +5,28 @@ import { Aktualizacja } from './aktualizacja';
 import { Historia } from './historia';
 import { srodowiskoPrzegladarki } from './srodowisko';
 import { minutyZestawu } from './tekstSesji';
+import tekstOCwiczeniu from '../o-cwiczeniu-publiczne.json';
+import { dekodujTekst } from './oCwiczeniu';
+import { polaczCzytanie, wypelnijCzytanie } from './ekranCzytania';
 
 const srodowisko = srodowiskoPrzegladarki(window.__minutnikPodrobki);
 const listaEkran = document.querySelector<HTMLElement>('#lista-ekran')!;
 const lista = document.querySelector<HTMLUListElement>('#zestawy')!;
 const sesja = document.querySelector<HTMLElement>('#sesja')!;
 const historia = new Historia(srodowisko.magazynHistorii);
+const czytanie = document.querySelector<HTMLElement>('#o-cwiczeniu')!;
+const otworzCzytanie = listaEkran.querySelector<HTMLButtonElement>('.o-cwiczeniu-otworz')!;
 
 listaEkran.querySelector<HTMLElement>('.wersja')!.textContent = `Wersja ${__WERSJA__} · ${__DATA_WYDANIA__}`;
 listaEkran.querySelector<HTMLElement>('.instalacja')!.hidden = srodowisko.zainstalowana();
 const aktualizacja = new Aktualizacja(() => location.reload());
 srodowisko.poNowejWersji(() => aktualizacja.nowaWersja());
+try {
+	wypelnijCzytanie(czytanie, dekodujTekst(tekstOCwiczeniu));
+	polaczCzytanie(czytanie, listaEkran, otworzCzytanie);
+} catch {
+	otworzCzytanie.hidden = true;
+}
 
 try {
 	dekodujKatalog(surowe).forEach((zestaw, indeks) => {

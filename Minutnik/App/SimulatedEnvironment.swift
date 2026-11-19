@@ -32,7 +32,8 @@ enum SimulatedEnvironment {
             catalog: Result { try ExerciseCatalog.bundled() },
             history: SessionHistory(storage: InMemoryHistoryStorage()),
             haptics: RecordingHapticPlayer(),
-            figures: FigureCatalog.bundled()
+            figures: FigureCatalog.bundled(),
+            about: Result { try ReadingText.bundled() }
         )
     }
 }

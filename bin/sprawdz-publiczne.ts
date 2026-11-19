@@ -28,7 +28,8 @@ const frazy = (tekst: string) => {
 	const slowa = normalizuj(tekst).split(' ');
 	return slowa.slice(0, Math.max(0, slowa.length - DLUGOSC_FRAZY + 1)).map((_, i) => slowa.slice(i, i + DLUGOSC_FRAZY).join(' '));
 };
-const frazyKsiazki = new Set(teksty(JSON.parse(czytaj('zestawy.json'))).flatMap(frazy));
+const tekstyKsiazki = ['zestawy.json', 'o-cwiczeniu.json'];
+const frazyKsiazki = new Set(tekstyKsiazki.flatMap((plik) => teksty(JSON.parse(czytaj(plik)))).flatMap(frazy));
 if (!existsSync(join(cel, '.git'))) {
 	console.error(`${cel}: to nie jest repo gita`);
 	process.exit(1);
